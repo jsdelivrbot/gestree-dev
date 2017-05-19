@@ -1,0 +1,183 @@
+<div class="panel">
+    <div class="tabbable-line">
+        <ul id="lefttopmenutabs" role="tablist" class="nav nav-tabs">
+            <a data-toggle="tab" data-tooltip="Camadas" href="#layers" role="tab" class="nav-item nav-link tooltip-bl active"><i class="my-icon my-icon-camadas"></i></a>
+            <a data-toggle="tab" data-tooltip="Legenda" href="#legenda" role="tab" class="nav-item nav-link tooltip-bl"><i class="my-icon my-icon-legends"></i></a>
+            <a data-toggle="tab" data-tooltip="Impressão" href="#imprimir" role="tab" class="nav-item nav-link tooltip-bl"><i class="my-icon my-icon-imprimir"></i></a>
+            <a data-toggle="tab" data-tooltip="Base Documental" href="#documental" role="tab" class="nav-item nav-link tooltip-bl"><i class="my-icon my-icon-basedoc"></i></a>
+            <button type="button" ng-click="tc.hideMenu()" class="btn btn-secondary btn-circle btn-hide">
+                <i class="fa fa-arrow-left"></i>
+            </button>
+        </ul>
+        <!--<div id="tabcontent" class="tab-content">
+            <div id="layers" role="tabpanel" class="tab-pane active">
+                <div class="tree-container">
+                    <div id="tree" class="panel-body fancytree-plain fancytree-colorize-selected fancytree-fade-expander"></div>
+                </div>
+                <div class="bottom-tree-commands">
+                    <button data-tooltip="Expandir" ng-click="tc.expandTree()" class="btn btn-secondary btn-circle">
+                        <i class="fa fa-expand"></i>
+                    </button>
+                    <button data-tooltip="Colapsar" ng-click="tc.collapseTree()" class="btn btn-secondary btn-circle">
+                        <i class="fa fa-compress"></i>
+                    </button>
+                    <button data-tooltip="Limpar" ng-click="tc.deselectAll()" class="btn btn-secondary btn-circle">
+                        <i class="fa fa-minus-square"></i>
+                    </button>
+                    <button data-tooltip="Ajuda" ng-click="tc.help()" class="btn btn-secondary btn-circle">
+                        <i class="fa fa-question"></i>
+                    </button>
+                </div>
+                <section class="base-layer" ng-controller="BaseLayerController as blCtrl">
+                    <span class="dropup">
+                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{blCtrl.baseLayer}}
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="" ng-repeat="baseLayer in blCtrl.baseLayers" ng-click="blCtrl.setBaseLayer(baseLayer)">{{baseLayer.name}}</a>
+                        </div>
+                    </span>
+                </section>
+            </div>
+            <div id="legenda" role="tabpanel" class="tab-pane" ng-controller="LegendsController as lgsCtrl">
+                <section class="legends-container">
+                    <ul class="list-group legends-list" ng-repeat="group in groups">
+                        <b>{{group.title}}</b>
+                        <li class="list-group-item legends-item" ng-repeat="legend in group.data">
+                            <div>{{legend.title}}</div>
+                            <div class="image-container">
+                                <img ng-src="https://gistree.espigueiro.pt:3001/wms?REQUEST=GetLegendGraphic&VERSION=1.1.1&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER={{legend.workspace}}:{{legend.name}}&LEGEND_OPTIONS=forceLabels:on;fontSize:11&SCALE=1000000">
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+            <div id="imprimir" role="tabpanel" class="tab-pane" ng-controller="PagesController as pagesCtrl">
+                <section class="legends-container">
+                    <h5>Impressão de Plantas</h5>
+                    <section ng-show="pagesCtrl.activeTab(1)">
+                        <h6>1. Desenhar</h6>
+                        <section ng-controller="DrawingController as drawCtrl" class="print-content">
+                            <hr style="margin: 0.5em">
+                            <div class="subtitle">Defina no mapa a área da pretensão.</div>
+                            <div class="draw-info">{{drawCtrl.info}}</div>
+                            <hr style="margin: 0.5em">
+                            <div class="drawing-commands">
+                                <button data-tooltip="Ponto" class="btn btn-secondary btn-circle icon point tooltip-bottom" ng-click="drawCtrl.setDrawingMode('Point')"></button>
+                                <button data-tooltip="Linha" class="btn btn-secondary btn-circle icon line tooltip-bottom" ng-click="drawCtrl.setDrawingMode('LineString')"></button>
+                                <button data-tooltip="Polígono" class="btn btn-secondary btn-circle icon polygon tooltip-bottom" ng-click="drawCtrl.setDrawingMode('Polygon')"></button>
+                                <button data-tooltip="Limpar Desenhos" class="btn btn-secondary btn-circle icon remove tooltip-bottom" ng-click="drawCtrl.clearDraw()"></button>
+                            </div>
+                        </section>
+                        <div class="nav-buttons">
+                            <button class="btn btn-secondary" disabled>
+                                <i class="fa fa-arrow-left"></i> Anterior
+                            </button>
+                            <button ng-click="pagesCtrl.nextPage(true)" class="btn btn-secondary">
+                                Seguinte <i class="fa fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </section>
+                    <section ng-show="pagesCtrl.activeTab(2)">
+                        <h6>2. Dados da Requisição</h6>
+                        <section ng-controller="FormController as formCtrl">
+                            <form name="form" class="my-form" novalidate>
+                                <hr style="margin: 0.5em">
+                                <div class="row no-gutters form-line">
+                                    <label class="col-4" for="requerente">Requerente:</label>
+                                    <input type="text" class="col-7" id="requerente" ng-model="formCtrl.userData.requerente" placeholder="Nome do Requerente">
+                                </div>
+                                <div class="row no-gutters form-line">
+                                    <label class="col-4" for="proprietario">Proprietário:</label>
+                                    <input type="text" class="col-7" id="proprietario" ng-model="formCtrl.userData.proprietario" placeholder="Nome do Proprietário">
+                                </div>
+                                <div class="row no-gutters form-line" style="margin-bottom: 0.25em;">
+                                    <label class="col-4" for="nif">NIF:</label>
+                                    <input type="number" name="uNif" class="col-7" id="nif" ng-minlength="9" ng-maxlength="9" ng-model="formCtrl.userData.nif"
+                                        placeholder="Nro Identificação Fiscal">
+                                </div>
+                                <div class="row no-gutters form-line" ng-controller="FreguesiasController as frCtrl">
+                                    <label class="col-4" for="freguesia">Freguesia:</label>
+                                    <span class="col-7 dropdown">
+                                        <button id="freguesia" ng-class="{'fr-selected': frCtrl.isSelected()}" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            {{frCtrl.freguesia}}
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" ng-repeat="freguesia in frCtrl.freguesias" ng-click="frCtrl.setFreguesia(freguesia)">{{freguesia.name}}</a>
+                                        </div>
+                                    </span>
+                                </div>
+                                <div class="row no-gutters form-line">
+                                    <label class="col-4" for="local">Local:</label>
+                                    <input type="text" class="col-7" id="local" ng-model="formCtrl.userData.local" placeholder="Nome do Local">
+                                </div>
+                                <div ng-show="form.uNif.$invalid" class="form-line form-error">NIF necessita de 9 algarismos.</div>
+                                <hr style="margin: 0.5em">
+                                <div class="nav-buttons clearfix">
+                                    <button type="button" ng-click="pagesCtrl.active = pagesCtrl.active - 1" class="btn btn-secondary ">
+                                        <i class="fa fa-arrow-left"></i> Anterior</button>
+                                    <button ng-click="pagesCtrl.nextPage(form.$valid)" class="btn btn-secondary ">Seguinte 
+                                        <i class="fa fa-arrow-right"></i></button>
+                                </div>
+                            </form>
+                        </section>
+                    </section>
+                    <section ng-show="pagesCtrl.activeTab(3)" ng-controller="LayoutSelectionController as layoutCtrl">
+                        <h6>3. Plantas disponíveis</h6>
+                        <form name="form" class="my-form" novalidate>
+                            <hr style="margin: 0.5em;">
+                            <div class="checkbox-container">
+                                <div class="checkbox" ng-repeat="layout in layoutCtrl.layouts">
+                                    <label style="display: block">
+                                    <input type="checkbox" ng-model="layout.selected" ng-change="layoutCtrl.change()" value="">
+                                    <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                                    <div class="checkbox-title">{{layout.name}}</div>
+                                    <div class="checkbox-info">(Escala 1:{{layout.escala}} - Tamanho {{layout.tamanho}})</div>
+                                    </label>
+                                </div>
+                            </div>
+                            <hr style="margin: 0.5em;">
+                        </form>
+                        <div class="nav-buttons">
+                            <button type="button" ng-click="pagesCtrl.active = pagesCtrl.active - 1" class="btn btn-secondary ">
+                                <i class="fa fa-arrow-left"></i> Anterior</button>
+                            <button ng-disabled="layoutCtrl.noSelect" ng-click="layoutCtrl.printLayouts();pagesCtrl.nextPage(true)" class="btn btn-secondary ">
+                                Seguinte <i class="fa fa-arrow-right"></i></button>
+                        </div>
+                    </section>
+                    <section ng-show="pagesCtrl.activeTab(4)" ng-controller="PrintResultController as prCtrl">
+                        <h6>4. Impressões </h6>
+                        <section class="print-content">
+                            <hr style="margin: 0.5em;">
+                            <div ng-show="prCtrl.printResults.length == 0">
+                                <div class="info">{{prCtrl.message1}}</div>
+                                <div class="info">{{prCtrl.message2}}</div>
+                            </div>
+                            <div ng-show="prCtrl.printResults.length > 0">
+                                <div class="draw-info">A(s) Planta(s) requesitada(s) estão disponíveis para download nos links abaixo.</div>
+                                <ul>
+                                    <li style="padding: 0.2em;" ng-repeat="printResult in prCtrl.printResults">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                        <a class="print" ng-href="{{printResult.url}}">
+                                            <span> {{printResult.title}} </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <hr style="margin: 0.5em;">
+                            <div class="nav-buttons clearfix">
+                                <button type="button" ng-click="prCtrl.newPrint()" class="btn btn-secondary "><i class="fa fa-print"></i> Nova Impressão</button>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </div>
+            <div id="documental" role="tabpanel" class="tab-pane">
+                <section class="legends-container">
+                    <h5>Base Documental</h5>
+                    <category-list></category-list>
+                </section>
+            </div>
+        </div>-->
+    </div>
+</div>

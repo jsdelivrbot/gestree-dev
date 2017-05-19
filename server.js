@@ -19,6 +19,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+var rtLayers = require(path.join(__dirname, 'server/routes/layers.js'));
+
+app.use('/layers', rtLayers((express.Router())));
+
 app.get('/*', function (req, res) {
     res.sendFile('index.html', {
         root: './public'

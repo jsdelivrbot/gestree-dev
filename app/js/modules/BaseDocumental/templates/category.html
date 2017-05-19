@@ -1,0 +1,4 @@
+<div ng-repeat="item in catCtrl.items" class="list-group">
+    <div class="bd-section noselect list-group-item" ng-click="catCtrl.setActive($index)" ng-class="{active: catCtrl.active == $index && catCtrl.isActive}">&nbsp;{{item.categoria}}</div>
+    <subcategory-list class="content" index="catCtrl.subIndex" base-address="catCtrl.baseAddress" subcategory="item.content" ng-show="catCtrl.active == $index && catCtrl.isActive"></subcategory-list>
+</div>

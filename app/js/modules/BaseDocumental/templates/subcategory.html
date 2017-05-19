@@ -1,0 +1,12 @@
+<div ng-repeat="item in subCatCtrl.subcategory">
+    <div ng-click="subCatCtrl.setActive($index)" ng-class="{active: subCatCtrl.active == $index}" class="bd-title noselect">{{item.subcategoria}}
+        <div ng-show="subCatCtrl.active == $index" class="float-my-children clearfix subcategory-content">
+            <img ng-src="{{item.img}}" ng-show="item.img" height="54px" width="75px" />
+            <div style="font-size: 0.8em; padding-left: 1em;" ng-repeat="url in item.content">
+                <a target="_blank" ng-href="{{subCatCtrl.baseAddress}}{{url.address}}">
+                    <i class="fa fa-download"></i>&nbsp; {{url.name}}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
