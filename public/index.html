@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="unicerApp">
+  <head>
+    <title>Gestree - Unicer</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Plataforma WebSIG para o Plano Director Municipal de Vila Real">
+    <meta name="keywords" content="Plano Director Municipal, Vila Real, WebSIG, Gistree">
+    <meta name="author" content="Gistree, Sistemas de Informação Geográfica, Floresta e Ambiente, Lda">
+    <base href="/">
+    <!-- bower:css-->
+    <link rel="stylesheet" href="lib/angular-ui-select/dist/select.css" />
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="lib/ng-dialog/css/ngDialog.css" />
+    <link rel="stylesheet" href="lib/ng-dialog/css/ngDialog-theme-default.css" />
+    <!-- endbower-->
+    <!-- inject:css-->
+    <link rel="stylesheet" href="lib/openlayers/dist/ol-debug.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- endinject-->
+    <link rel="shortcut icon" href="public/images/favicon.ico">
+  </head>
+  <body ng-cloak>
+    <nav class="navbar navbar-toggleable-md fixed-top"><a href="#" class="navbar-brand"><img src="/images/menu/logo.png" width="125" height="45"></a>
+      <!--div.collapse.navbar-collapse(id="login" ng-controller="LoginController as lgCtrl")
+      ul.navbar-nav.ml-auto
+          li.nav-item
+              button.btn.btn-login(ng-click="lgCtrl.login()" ng-hide="lgCtrl.isLogged") &nbsp;Log in&nbsp;
+              span(ng-show="lgCtrl.isLogged")
+                  span.wellcome Bem-vindo, {{lgCtrl.username}}! 
+                  button.btn.btn-login(ng-click="lgCtrl.logout()") &nbsp;Log out&nbsp; 
+      -->
+    </nav>
+    <div class="container-fluid no-padding full_height">
+      <div class="row no-gutters full_height">
+        <div id="menu-container" ng-hide="menuIsHidden" class="col-3 full_height">
+          <control-panel></control-panel>
+        </div>
+        <div id="map-container" ng-class="{'col-12': menuIsHidden}" class="full_height col-9">
+          <div id="map" class="map full_height"></div>
+          <map-interactions menu-is-hidden="menuIsHidden">                 </map-interactions>
+        </div>
+      </div>
+    </div>
+    <!-- bower:js-->
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/angular-ui-select/dist/select.js"></script>
+    <script src="lib/jquery/dist/jquery.js"></script>
+    <script src="lib/tether/dist/js/tether.js"></script>
+    <script src="lib/jquery-ui/jquery-ui.js"></script>
+    <script src="lib/jquery.fancytree/dist/jquery.fancytree-all.js"></script>
+    <script src="lib/ng-dialog/js/ngDialog.js"></script>
+    <!-- endbower-->
+    <!-- inject:js-->
+    <script src="lib/openlayers/dist/ol-debug.js"></script>
+    <script src="js/app1.0.0.js"></script>
+    <!-- endinject-->
+  </body>
+</html>

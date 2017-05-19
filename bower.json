@@ -1,0 +1,39 @@
+{
+  "name": "gestree-dev",
+  "description": "",
+  "main": "server.js",
+  "authors": [
+    "JoKord <jtpcordeiro@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.6.4",
+    "angular-ui-select": "^0.19.8",
+    "bootstrap": "^4.0.0",
+    "font-awesome": "font-awsome#^4.7.0",
+    "jquery.fancytree": "fancytree#^2.22.5",
+    "ng-dialog": "^1.1.0"
+  },
+  "overrides": {
+    "bootstrap": {
+      "main": [
+        "dist/css/bootstrap.css"
+      ]
+    },
+    "font-awesome": {
+      "main": [
+        "css/font-awesome.css"
+      ]
+    }
+  }
+}

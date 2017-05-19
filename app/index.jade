@@ -1,0 +1,24 @@
+doctype html
+html(lang='en' ng-app='unicerApp')
+  head
+    title Gestree - Unicer
+    include views/layouts/head
+  body(ng-cloak)
+    nav.navbar.navbar-toggleable-md.fixed-top
+        a.navbar-brand(href='#')
+            img(src="/images/menu/logo.png" width="125" height="45")
+        //div.collapse.navbar-collapse(id="login" ng-controller="LoginController as lgCtrl")
+            ul.navbar-nav.ml-auto
+                li.nav-item
+                    button.btn.btn-login(ng-click="lgCtrl.login()" ng-hide="lgCtrl.isLogged") &nbsp;Log in&nbsp;
+                    span(ng-show="lgCtrl.isLogged")
+                        span.wellcome Bem-vindo, {{lgCtrl.username}}! 
+                        button.btn.btn-login(ng-click="lgCtrl.logout()") &nbsp;Log out&nbsp; 
+    .container-fluid.no-padding.full_height
+        .row.no-gutters.full_height
+            #menu-container.col-3.full_height(ng-hide="menuIsHidden")
+                control-panel
+            #map-container.full_height.col-9(ng-class="{'col-12': menuIsHidden}")
+                #map.map.full_height
+                map-interactions(menu-is-hidden="menuIsHidden")                  
+    include views/layouts/footer

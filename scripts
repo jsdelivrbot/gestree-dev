@@ -1,0 +1,17 @@
+
+//link(rel='stylesheet', href="style/vendor.css")
+//link(rel='stylesheet', href="style/font-awesome/css/font-awesome.min.css")
+//link(rel='stylesheet', href="style/style.min.css")
+
+//script(src="vendor/tether.min.js")
+//script(src="vendor/jquery.min.js")
+//script(src="vendor/jquery-ui.min.js")
+//script(src="vendor/fancytree-build.min.js")
+//script(src="vendor/ol.js")
+//script(src="vendor/proj4.js")
+//script(src="vendor/bootstrap.min.js")
+//script(src="vendor/angular.min.js")
+//script(src="vendor/angular-sanitize.min.js")
+//script(src="vendor/ngDialog.min.js")
+//script(src="vendor/select.min.js")
+//script(src="app/app-#{version}.js")    
