@@ -22,12 +22,15 @@
     "bootstrap": "^4.0.0",
     "font-awesome": "font-awsome#^4.7.0",
     "jquery.fancytree": "fancytree#^2.22.5",
-    "ng-dialog": "^1.1.0"
+    "ng-dialog": "^1.1.0",
+    "proj4": "^2.4.3",
+    "angular-sanitize": "^1.6.4"
   },
   "overrides": {
     "bootstrap": {
       "main": [
-        "dist/css/bootstrap.css"
+        "dist/css/bootstrap.css",
+        "dist/js/bootstrap.js"
       ]
     },
     "font-awesome": {

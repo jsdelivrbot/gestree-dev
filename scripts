@@ -3,15 +3,16 @@
 //link(rel='stylesheet', href="style/font-awesome/css/font-awesome.min.css")
 //link(rel='stylesheet', href="style/style.min.css")
 
-//script(src="vendor/tether.min.js")
-//script(src="vendor/jquery.min.js")
-//script(src="vendor/jquery-ui.min.js")
-//script(src="vendor/fancytree-build.min.js")
-//script(src="vendor/ol.js")
-//script(src="vendor/proj4.js")
-//script(src="vendor/bootstrap.min.js")
-//script(src="vendor/angular.min.js")
-//script(src="vendor/angular-sanitize.min.js")
-//script(src="vendor/ngDialog.min.js")
-//script(src="vendor/select.min.js")
-//script(src="app/app-#{version}.js")    
+//script(src="vendor/tether.min.js") ESTÁ
+//script(src="vendor/jquery.min.js") ESTÁ
+//script(src="vendor/jquery-ui.min.js") ESTÁ
+//script(src="vendor/fancytree-build.min.js") ESTÁ
+//script(src="vendor/ol.js") ESTÁ
+//script(src="vendor/proj4.js") ESTÁ
+//script(src="vendor/bootstrap.min.js") ESTÁ
+//script(src="vendor/angular.min.js") ESTÁ
+//script(src="vendor/angular-sanitize.min.js") ESTÁ
+//script(src="vendor/ngDialog.min.js") ESTÁ
+//script(src="vendor/select.min.js") ESTÁ
+
+//script(src="app/app-#{version}.js") ESTÁ   
