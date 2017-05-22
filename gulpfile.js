@@ -36,6 +36,9 @@ var paths = {
     ],
     serverScripts: [
         'server/controllers/*.js'
+    ],
+    templates: [
+        './app/views/templates/*'
     ]
 };
 
@@ -47,6 +50,11 @@ gulp.task('jade:compile', function () {
         }))
         .pipe(gulp.dest('./public'));
 });
+
+gulp.task('templates:copy', function () {
+    gulp.src(paths.templates)
+        .pipe(gulp.dest('./public/views/templates'));
+})
 
 //Concatinate js into index.js, minify and save in public/js.
 gulp.task('js:minify', function () {
@@ -140,7 +148,7 @@ gulp.task('watch', function () {
 });
 
 //Default task.
-gulp.task('default', ['bower:run', 'copy:openlayers', 'jade:compile', 'js:minify', 'css:minify', 'scripts:inject', 'copy:images']);
+gulp.task('default', ['bower:run', 'copy:openlayers', 'jade:compile', 'templates:copy', 'js:minify', 'css:minify', 'scripts:inject', 'copy:images']);
 
 //Dev environment task.
-gulp.task('dev', ['nodemon:run', 'bower:run', 'copy:openlayers', 'jade:compile', 'js:minify', 'css:minify', 'scripts:inject', 'watch', 'copy:images']);
+gulp.task('dev', ['nodemon:run', 'bower:run', 'copy:openlayers', 'jade:compile', 'templates:copy', 'js:minify', 'css:minify', 'scripts:inject', 'watch', 'copy:images']);

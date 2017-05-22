@@ -9,11 +9,12 @@
     <meta name="author" content="Gistree, Sistemas de Informação Geográfica, Floresta e Ambiente, Lda">
     <base href="/">
     <!-- bower:css-->
-    <link rel="stylesheet" href="lib/angular-ui-select/dist/select.css" />
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="lib/jquery.fancytree/dist/skin-bootstrap/ui.fancytree.css" />
     <link rel="stylesheet" href="lib/ng-dialog/css/ngDialog.css" />
     <link rel="stylesheet" href="lib/ng-dialog/css/ngDialog-theme-default.css" />
+    <link rel="stylesheet" href="lib/angular-ui-select/dist/select.css" />
     <!-- endbower-->
     <!-- inject:css-->
     <link rel="stylesheet" href="lib/openlayers/dist/ol-debug.css">
@@ -35,24 +36,27 @@
     <div class="container-fluid no-padding full_height">
       <div class="row no-gutters full_height">
         <div id="menu-container" ng-hide="menuIsHidden" class="col-3 full_height">
-          <!--control-panel-->
+          <control-panel></control-panel>
         </div>
         <div id="map-container" ng-class="{'col-12': menuIsHidden}" class="full_height col-9">
           <div id="map" class="map full_height"></div>
-          <!--map-interactions(menu-is-hidden="menuIsHidden")                  -->
+          <map-interactions menu-is-hidden="menuIsHidden"></map-interactions>
         </div>
       </div>
     </div>
     <!-- bower:js-->
-    <script src="lib/angular/angular.js"></script>
-    <script src="lib/angular-ui-select/dist/select.js"></script>
     <script src="lib/jquery/dist/jquery.js"></script>
     <script src="lib/tether/dist/js/tether.js"></script>
     <script src="lib/bootstrap/dist/js/bootstrap.js"></script>
     <script src="lib/jquery-ui/jquery-ui.js"></script>
-    <script src="lib/jquery.fancytree/dist/jquery.fancytree-all.js"></script>
+    <script src="lib/jquery.fancytree/dist/src/jquery.fancytree.js"></script>
+    <script src="lib/jquery.fancytree/dist/src/jquery.fancytree.edit.js"></script>
+    <script src="lib/jquery.fancytree/dist/src/jquery.fancytree.glyph.js"></script>
+    <script src="lib/jquery.fancytree/dist/src/jquery.fancytree.wide.js"></script>
+    <script src="lib/angular/angular.js"></script>
     <script src="lib/ng-dialog/js/ngDialog.js"></script>
     <script src="lib/proj4/dist/proj4.js"></script>
+    <script src="lib/angular-ui-select/dist/select.js"></script>
     <script src="lib/angular-sanitize/angular-sanitize.js"></script>
     <!-- endbower-->
     <!-- inject:js-->

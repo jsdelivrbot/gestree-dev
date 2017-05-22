@@ -3,9 +3,9 @@
 
     angular.module('unicerApp', [
         'MapModule',
-        /*'LegendsModule',
+        'LegendsModule',
         'MapInteractionsModule',
-        'PrintingModule',
+        /*'PrintingModule',
         'SearchLocationModule',
         'BaseDocumentalModule',
         'ngDialog'*/

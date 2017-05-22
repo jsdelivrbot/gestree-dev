@@ -34,24 +34,24 @@ li {
 
 ::-webkit-input-placeholder {
     /* WebKit, Blink, Edge */
-    color: rgba(40.4%, 66.3%, 14.9%, 0.75);
+    color: rgba(19.34%, 58.96%, 21.7%, 0.75);
 }
 
 :-moz-placeholder {
     /* Mozilla Firefox 4 to 18 */
-    color: rgb(40.4%, 66.3%, 14.9%);
+    color: rgb(19.34%, 58.96%, 21.7%);
     opacity: 0.75;
 }
 
 ::-moz-placeholder {
     /* Mozilla Firefox 19+ */
-    color: rgb(40.4%, 66.3%, 14.9%);
+    color: rgba(19.34%, 58.96%, 21.7%, 0.75);
     opacity: 0.75;
 }
 
 :-ms-input-placeholder {
     /* Internet Explorer 10-11 */
-    color: rgba(40.4%, 66.3%, 14.9%, 0.75);
+    color: rgba(19.34%, 58.96%, 21.7%, 0.75);
 }
 
 input[type=number]::-webkit-inner-spin-button,
@@ -89,7 +89,7 @@ input[type=number] {
 
 .ngdialog.ngdialog-theme-default .ngdialog-content {
     width: 300px;
-    background: #fff;
+    background: #f7f7f7;
     color: #666;
 }
 
@@ -97,14 +97,14 @@ input[type=number] {
     font-size: 1em;
     padding: 0.3em 0.5em;
     cursor: pointer;
-    background-color: #67a926;
-    color: #fff;
-    border-color: #4e7f10 !important;
+    background-color: #297D2E;
+    color: #f7f7f7;
+    border-color: #A2C199 !important;
 }
 
 #login button:hover {
-    color: #fff;
-    background-color: #4e7f10;
+    color: #f7f7f7;
+    background-color: #A2C199;
 }
 
 #login button:focus {
@@ -114,7 +114,7 @@ input[type=number] {
 }
 
 #login .wellcome {
-    color: #4e7f10;
+    color: #297D2E;
     margin-right: 1em;
 }
 
@@ -131,7 +131,7 @@ input[type=number] {
 #map {
     height: 100%;
     width: 100%;
-    background-color: #fff;
+    background-color: #f7f7f7;
 }
 
 
@@ -141,8 +141,10 @@ input[type=number] {
 /* JOKORD.OVERVIEW.MAP [START] */
 
 .ol-overviewmap {
-    right: 0.5em;
-    top: 0.5em;
+    right: .5em;
+    left: inherit;
+    top: .5em;
+    bottom: inherit;
 }
 
 .ol-overviewmap.ol-uncollapsible {
@@ -161,11 +163,11 @@ input[type=number] {
     height: 12em;
     margin: 0.25em;
     width: 12em;
-    background-color: rgba(69%, 88.6%, 49.4%, 0.5);
+    background-color: rgba(41, 125, 46, 0.5);
 }
 
 .ol-overviewmap .ol-overviewmap-map:hover {
-    background-color: rgba(69%, 88.6%, 49.4%, 0.75);
+    background-color: rgba(41, 125, 46, 0.75);
 }
 
 .ol-overviewmap button {
@@ -184,13 +186,13 @@ input[type=number] {
 }
 
 .ol-overviewmap.ol-control button {
-    border-color: #67a926 !important;
-    background-color: #4e7f10 !important;
+    border-color: #297D2E !important;
+    background-color: #A2C199 !important;
 }
 
 .ol-overviewmap.ol-control button:hover {
-    background-color: #67a926 !important;
-    border-color: #4e7f10 !important;
+    background-color: #297D2E !important;
+    border-color: #A2C199 !important;
 }
 
 .ol-overviewmap-box {
@@ -222,20 +224,20 @@ input[type=number] {
 #toolbar button.active {
     padding: 0.25rem 0.5rem;
     color: #333;
-    background-color: #b0e27e;
+    background-color: #A2C199;
 }
 
 #toolbar button.btn-primary {
-    border-color: #67a926;
+    border-color: #297D2E;
     cursor: pointer;
-    background-color: #4e7f10;
-    color: #fff;
+    background-color: #A2C199;
+    color: #f7f7f7;
 }
 
 #toolbar .btn-primary:hover {
-    background-color: #67a926;
-    border-color: #4e7f10;
-    color: #fff;
+    background-color: #297D2E;
+    border-color: #A2C199;
+    color: #f7f7f7;
 }
 
 
@@ -245,14 +247,15 @@ input[type=number] {
 /* JOKORD.MAP.SearchBar [Start] */
 
 .search-bar {
-    min-width: 270px;
-    max-width: 270px;
+    min-width: 200px;
+    max-width: 200px;
     display: -webkit-inline-flex;
     display: inline-flex;
+    background-color: #f7f7f7;
 }
 
 .selectize-input.selectize-focus {
-    border-color: #b0e27e !important;
+    border-color: #A2C199 !important;
 }
 
 .search-bar .selectize-input {
@@ -269,13 +272,13 @@ input[type=number] {
 
 .search-bar .selectize-dropdown {
     margin: 2.6em 0 0 0;
-    background-color: #b0e27e;
+    background-color: #A2C199;
 }
 
 .search-bar .selectize-dropdown .active,
 .search-bar .selectize-dropdown .ui-select-choices-row:hover {
-    background-color: #fff;
-    color: #18481A;
+    background-color: #f7f7f7;
+    color: #297D2E;
 }
 
 .search-bar .selectize-dropdown .active .ui-select-highlight,
@@ -331,7 +334,7 @@ input[type=number] {
 
 .identify-container .content {
     padding: 0 0.3em;
-    background-color: #b0e27e;
+    background-color: #A2C199;
 }
 
 .identify-container .content:not(:last-child) {
@@ -365,7 +368,7 @@ input[type=number] {
 .ol-scale-line {
     bottom: 25px;
     left: 5px;
-    background-color: #b0e27e;
+    background-color: #A2C199;
 }
 
 .ol-scale-line>.ol-scale-line-inner {
@@ -401,7 +404,7 @@ input[type=number] {
 }
 
 .bottom-bar-right .card-header {
-    background-color: rgba(40.4%, 66.3%, 14.9%, 0.75);
+    background-color: rgba(19.34%, 58.96%, 21.7%, 0.75);
     border-color: #333;
     text-align: center;
     padding: 0.1rem 0.1rem;
@@ -415,11 +418,11 @@ input[type=number] {
     font-weight: bold;
     font-family: Courier New, Courier, monospace;
     text-align: center;
-    background-color: #b0e27e;
+    background-color: #A2C199;
 }
 
 .box {
-    background-color: #b0e27e;
+    background-color: #A2C199;
     border-color: #333;
     border: 1px solid #333;
     border-radius: 2px;
@@ -448,9 +451,10 @@ input[type=number] {
 }
 
 .navbar {
-    -webkit-box-shadow: 0px 1px 15px #67a926;
-    -moz-box-shadow: 0px 1px 15px #67a926;
-    box-shadow: 0px 1px 15px #67a926;
+    -webkit-box-shadow: 0px 1px 15px #297D2E;
+    -moz-box-shadow: 0px 1px 15px #297D2E;
+    box-shadow: 0px 1px 15px #297D2E;
+    background-color: #f7f7f7;
 }
 
 
@@ -461,12 +465,13 @@ input[type=number] {
 
 #menu-container .panel {
     padding: 0.25rem;
-    border: 1px solid #67a926;
+    border: 1px solid #297D2E;
     border-top: 1px solid transparent;
+    background-color: #f7f7f7;
 }
 
 #menu-container .panel .my-icon {
-    background-image: url("../app/icons/tab-icons.png");
+    background-image: url("../images/icons/tab-icons.png");
     height: 23px;
     width: 23px;
     display: inline-block;
@@ -502,10 +507,6 @@ input[type=number] {
     margin: 0px;
 }
 
-.tabbable-line>.nav-tabs> {
-    margin-right: 2px;
-}
-
 .tabbable-line>.nav-tabs>a {
     margin-right: 0;
     color: #666;
@@ -517,19 +518,19 @@ input[type=number] {
 
 .tabbable-line>.nav-tabs>li.open,
 .tabbable-line>.nav-tabs>a:hover {
-    border: 1px solid #b0e27e;
-    border-bottom: 3px solid #b0e27e;
+    border: 1px solid #A2C199;
+    border-bottom: 3px solid #A2C199;
     border-radius: 5px;
-    color: #67a926;
+    color: #297D2E;
 }
 
 .tabbable-line>.nav-tabs>a.active {
-    border: 1px solid #b0e27e;
-    border-bottom: 3px solid #b0e27e;
+    border: 1px solid #A2C199;
+    border-bottom: 3px solid #A2C199;
     border-radius: 5px;
     position: relative;
-    background-color: #67a926;
-    color: #fff;
+    background-color: #297D2E;
+    color: #f7f7f7;
 }
 
 .tabbable-line>.nav-tabs>a.active>a {
@@ -543,9 +544,9 @@ input[type=number] {
 
 .tabbable-line>.tab-content {
     margin-top: -3px;
-    background-color: #fff;
+    background-color: #f7f7f7;
     border: 0;
-    border-top: 1px solid #67a926;
+    border-top: 1px solid #297D2E;
     padding: 5px 0;
 }
 
@@ -566,17 +567,17 @@ input[type=number] {
 /* JOKORD.Panel.FancyTree [Start] */
 
 .tree-container {
-    height: calc(100vh - 12.5em);
+    height: 70vh;
     box-sizing: border-box;
     overflow: auto;
     margin-top: 0.5em;
 }
 
 ul.fancytree-container {
-    height: calc(100vh - 16em);
+    height: 65vh;
     overflow: auto;
     border: 0;
-    background-color: #fff;
+    background-color: #f7f7f7;
     font-family: 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif !important;
 }
 
@@ -594,45 +595,51 @@ span.fancytree-title {
 }
 
 .fancytree-plain.fancytree-container span.fancytree-title:hover {
-    background-color: #b0e27e;
+    background-color: #A2C199;
 }
 
 span.fancytree-node span.fancytree-expander:hover {
-    color: #67a926;
+    color: #297D2E;
 }
 
 span.fancytree-node.fancytree-selected span.fancytree-expander:hover {
     color: #333;
 }
 
+span.fancytree-expanded span.fancytree-expander {
+    color: #f7f7f7;
+}
+
 .fancytree-plain.fancytree-colorize-selected span.fancytree-node.fancytree-selected.fancytree-folder span.fancytree-title,
 .fancytree-plain.fancytree-colorize-selected span.fancytree-node.fancytree-selected:hover.fancytree-folder span.fancytree-title {
-    background-color: #67a926;
-    border-color: #67a926;
+    background-color: #297D2E;
+    border-color: #297D2E;
+    color: #f7f7f7;
+    font-weight: bold;
 }
 
 .fancytree-plain.fancytree-colorize-selected span.fancytree-node.fancytree-selected.fancytree-folder,
 .fancytree-plain.fancytree-colorize-selected span.fancytree-node.fancytree-selected.fancytree-folder span.fancytree-title,
 .fancytree-plain.fancytree-colorize-selected span.fancytree-node.fancytree-selected:hover.fancytree-folder span.fancytree-title {
-    background-color: #67a926;
-    border-color: #67a926;
+    background-color: #297D2E;
+    border-color: #297D2E;
 }
 
 .fancytree-plain.fancytree-colorize-selected span.fancytree-node.fancytree-selected,
 .fancytree-plain.fancytree-colorize-selected span.fancytree-node.fancytree-selected span.fancytree-title,
 .fancytree-plain.fancytree-colorize-selected span.fancytree-node.fancytree-selected:hover span.fancytree-title {
-    background-color: #b0e27e;
-    border-color: #b0e27e;
+    background-color: #A2C199;
+    border-color: #A2C199;
     color: #333333;
 }
 
 .fancytree-plain.fancytree-container.fancytree-treefocus span.fancytree-node.fancytree-focused span.fancytree-title {
-    border-color: #67a926;
+    border-color: #297D2E;
 }
 
 .fancytree-plain.fancytree-container.fancytree-treefocus span.fancytree-node.fancytree-active span.fancytree-title {
     background-color: inherit;
-    border-color: #b0e27e;
+    border-color: #A2C199;
 }
 
 .fancytree-plain.fancytree-colorize-selected span.fancytree-node.fancytree-active.fancytree-selected span.fancytree-title {
@@ -665,7 +672,7 @@ span.fancytree-node.fancytree-selected span.fancytree-expander:hover {
 }
 
 .fancytree-plain.fancytree-container span.fancytree-node.fancytree-active:hover span.fancytree-title {
-    background-color: #b0e27e;
+    background-color: #A2C199;
 }
 
 .fancytree-level-2 span.fancytree-title {
@@ -699,21 +706,21 @@ span.fancytree-node.fancytree-selected span.fancytree-expander:hover {
     padding: 0.2rem 0.2rem;
     min-width: 13em;
     cursor: pointer;
-    background-color: #67a926;
-    color: #fff;
-    border-color: #4e7f10 !important;
+    background-color: #297D2E;
+    color: #f7f7f7;
+    border-color: #A2C199 !important;
 }
 
 .base-layer button:hover {
-    color: #fff;
-    background-color: #4e7f10;
+    color: #f7f7f7;
+    background-color: #A2C199;
 }
 
 .base-layer .btn-secondary:active,
 .btn-secondary.active,
 .show>.btn-secondary.dropdown-toggle {
-    color: #fff;
-    background-color: #4e7f10;
+    color: #f7f7f7;
+    background-color: #A2C199;
     border-color: #adadad;
 }
 
@@ -722,15 +729,15 @@ span.fancytree-node.fancytree-selected span.fancytree-expander:hover {
     bottom: 100%;
     margin-bottom: 0.1rem;
     padding: 0.2rem 0;
-    background-color: #b0e27e;
+    background-color: #A2C199;
     color: #333;
     left: -1em;
 }
 
 .base-layer .dropdown-item:hover {
-    color: #fff;
+    color: #f7f7f7;
     text-decoration: none;
-    background-color: #4e7f10;
+    background-color: #A2C199;
 }
 
 
@@ -755,17 +762,17 @@ span.fancytree-node.fancytree-selected span.fancytree-expander:hover {
     font-size: 12px;
     line-height: 1.428571429;
     border-radius: 10px;
-    border-color: #4e7f10;
+    border-color: #A2C199;
     border-width: 0.15em;
     cursor: pointer;
-    background-color: #67a926;
-    color: #fff;
+    background-color: #297D2E;
+    color: #f7f7f7;
 }
 
 .btn-circle:hover {
-    background-color: #4e7f10;
-    border-color: #67a926;
-    color: #fff;
+    background-color: #A2C199;
+    border-color: #297D2E;
+    color: #f7f7f7;
 }
 
 
@@ -775,7 +782,7 @@ span.fancytree-node.fancytree-selected span.fancytree-expander:hover {
 /* JOKORD.Panel.Legends [Start] */
 
 .legends-container {
-    height: calc(100vh - 12em);
+    height: 70vh;
     box-sizing: border-box;
     overflow: auto;
 }
@@ -799,7 +806,7 @@ span.fancytree-node.fancytree-selected span.fancytree-expander:hover {
 .legends-item {
     font-size: 1.1em;
     padding: 0.35rem 0.35rem;
-    border-color: #4e7f10;
+    border-color: #A2C199;
     color: #18481A;
 }
 
@@ -841,7 +848,7 @@ span.fancytree-node.fancytree-selected span.fancytree-expander:hover {
 }
 
 #imprimir hr {
-    border-top-color: #67a926;
+    border-top-color: #297D2E;
     border-top-color: rgba(40.4%, 66.3%, 14.9%, 0.75);
 }
 
@@ -851,7 +858,7 @@ span.fancytree-node.fancytree-selected span.fancytree-expander:hover {
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
     font-size: 0.8em;
-    color: #67a926;
+    color: #297D2E;
 }
 
 #imprimir .draw-info {
@@ -902,14 +909,14 @@ span.fancytree-node.fancytree-selected span.fancytree-expander:hover {
 .nav-buttons button {
     padding: 0.3rem 0.5rem;
     cursor: pointer;
-    background-color: #67a926;
-    color: #fff;
-    border-color: #4e7f10 !important;
+    background-color: #297D2E;
+    color: #f7f7f7;
+    border-color: #A2C199 !important;
 }
 
 .nav-buttons button:hover {
-    color: #fff;
-    background-color: #4e7f10;
+    color: #f7f7f7;
+    background-color: #A2C199;
 }
 
 .my-form {
@@ -948,18 +955,18 @@ span.fancytree-node.fancytree-selected span.fancytree-expander:hover {
 
 .my-form .dropdown button:hover {
     cursor: pointer;
-    background-color: #fff;
+    background-color: #f7f7f7;
     color: rgba(40.4%, 66.3%, 14.9%, 0.75);
 }
 
 .my-form .dropdown button:focus {
     cursor: pointer;
     background-color: rgba(40.4%, 66.3%, 14.9%, 0.75);
-    color: #fff;
+    color: #f7f7f7;
 }
 
 .my-form .dropdown .dropdown-menu {
-    background-color: #b0e27e;
+    background-color: #A2C199;
     color: #333;
     margin-bottom: 0.1rem;
     padding: 0.2rem 0;
@@ -973,9 +980,9 @@ span.fancytree-node.fancytree-selected span.fancytree-expander:hover {
 }
 
 .my-form .dropdown-item:hover {
-    color: #fff;
+    color: #f7f7f7;
     text-decoration: none;
-    background-color: #4e7f10;
+    background-color: #A2C199;
     cursor: pointer;
 }
 
@@ -1070,7 +1077,7 @@ span.fancytree-node.fancytree-selected span.fancytree-expander:hover {
 }
 
 .my-form .checkbox label input[type="checkbox"]:checked~.checkbox-info {
-    color: #67a926;
+    color: #297D2E;
 }
 
 .my-form .checkbox-title {
@@ -1140,13 +1147,13 @@ span.fancytree-node.fancytree-selected span.fancytree-expander:hover {
 }
 
 #documental .bd-section:hover {
-    color: #4e7f10;
+    color: #A2C199;
 }
 
 #documental .bd-section.active {
-    background-color: #67a926;
-    border-color: #b0e27e;
-    color: #fff;
+    background-color: #297D2E;
+    border-color: #A2C199;
+    color: #f7f7f7;
 }
 
 #documental .bd-section.active:before {
@@ -1160,7 +1167,7 @@ span.fancytree-node.fancytree-selected span.fancytree-expander:hover {
 #documental .bd-title {
     font-size: 0.75em;
     padding-left: 1.5em;
-    color: #4e7f10;
+    color: #A2C199;
     cursor: pointer;
 }
 
@@ -1239,7 +1246,7 @@ span.fancytree-node.fancytree-selected span.fancytree-expander:hover {
     z-index: 1000;
     padding: 2px;
     width: 120px;
-    background-color: #b0e27e;
+    background-color: #A2C199;
     color: #333;
     content: attr(data-tooltip);
     font-family: Arial, Helvetica, sans-serif;
@@ -1264,7 +1271,7 @@ span.fancytree-node.fancytree-selected span.fancytree-expander:hover {
     margin-left: -6px;
     margin-bottom: -12px;
     border-top-color: #000;
-    border-top-color: #b0e27e;
+    border-top-color: #A2C199;
 }
 
 [data-tooltip]:after,
@@ -1297,7 +1304,7 @@ span.fancytree-node.fancytree-selected span.fancytree-expander:hover {
     margin-bottom: 0;
     border-top-color: transparent;
     border-bottom-color: #000;
-    border-bottom-color: #b0e27e;
+    border-bottom-color: #A2C199;
 }
 
 .tooltip-bottom:hover:before,
@@ -1324,7 +1331,7 @@ span.fancytree-node.fancytree-selected span.fancytree-expander:hover {
     margin-left: -85%;
     border-top-color: transparent;
     border-bottom-color: #000;
-    border-bottom-color: #b0e27e;
+    border-bottom-color: #A2C199;
 }
 
 .tooltip-bl:hover:before,
@@ -1349,7 +1356,7 @@ span.fancytree-node.fancytree-selected span.fancytree-expander:hover {
 
 .error-code {
     bottom: 60%;
-    color: #b0e27e;
+    color: #A2C199;
     font-size: 96px;
     line-height: 100px;
 }
