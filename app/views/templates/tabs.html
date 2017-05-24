@@ -4,7 +4,6 @@
             <a data-toggle="tab" data-tooltip="Camadas" href="#layers" role="tab" class="nav-item nav-link tooltip-bl active"><i class="my-icon my-icon-camadas"></i></a>
             <a data-toggle="tab" data-tooltip="Legenda" href="#legenda" role="tab" class="nav-item nav-link tooltip-bl"><i class="my-icon my-icon-legends"></i></a>
             <a data-toggle="tab" data-tooltip="Impressão" href="#imprimir" role="tab" class="nav-item nav-link tooltip-bl"><i class="my-icon my-icon-imprimir"></i></a>
-            <a data-toggle="tab" data-tooltip="Base Documental" href="#documental" role="tab" class="nav-item nav-link tooltip-bl"><i class="my-icon my-icon-basedoc"></i></a>
             <button type="button" ng-click="tc.hideMenu()" class="btn btn-secondary btn-circle btn-hide">
                 <i class="fa fa-arrow-left"></i>
             </button>
@@ -39,18 +38,8 @@
                     </span>
                 </section>
             </div>
-            <div id="legenda" role="tabpanel" class="tab-pane" ng-controller="LegendsController as lgsCtrl">
-                <section class="legends-container">
-                    <ul class="list-group legends-list" ng-repeat="group in groups">
-                        <b>{{group.title}}</b>
-                        <li class="list-group-item legends-item" ng-repeat="legend in group.data">
-                            <div>{{legend.title}}</div>
-                            <div class="image-container">
-                                <img ng-src="https://gistree.espigueiro.pt:3001/wms?REQUEST=GetLegendGraphic&VERSION=1.1.1&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER={{legend.workspace}}:{{legend.name}}&LEGEND_OPTIONS=forceLabels:on;fontSize:11&SCALE=1000000">
-                            </div>
-                        </li>
-                    </ul>
-                </section>
+            <div id="legenda" role="tabpanel" class="tab-pane">
+                <legends-group></legends-group>              
             </div>
             <!--<div id="imprimir" role="tabpanel" class="tab-pane" ng-controller="PagesController as pagesCtrl">
                 <section class="legends-container">
@@ -170,12 +159,6 @@
                             </div>
                         </section>
                     </section>
-                </section>
-            </div>
-            <div id="documental" role="tabpanel" class="tab-pane">
-                <section class="legends-container">
-                    <h5>Base Documental</h5>
-                    <category-list></category-list>
                 </section>
             </div>-->
         </div>

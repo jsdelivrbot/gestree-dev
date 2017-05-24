@@ -21,8 +21,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 var rtLayers = require(path.join(__dirname, 'server/routes/layers.js'));
 var rtLocations = require(path.join(__dirname, 'server/routes/locations.js'));
+var rtProxy = require(path.join(__dirname, 'server/routes/geoserver.js'));
+
 app.use('/layers', rtLayers(express.Router()));
 app.use('/locations', rtLocations(express.Router()));
+app.use('/geoserver', rtProxy(express.Router()));
 
 app.get('/', function (req, res) {
     res.sendFile('index.html', {

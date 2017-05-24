@@ -4,13 +4,13 @@
         .module('MapModule')
         .factory('MapService', MapService)
 
-    MapService.$inject = ['$http'];
+    MapService.$inject = ['CONFIG', '$http', 'FeaturesStyle'];
 
-    function MapService($http) {
+    function MapService(CONFIG, $http, FeaturesStyle) {
         var _layers = {};
         var _userFeatures = {};
         if (!ol) return {};
-        var map = {},
+        var map = {},    
             defaultMapConfig = {
                 zoom: 12,
                 target: 'map',
@@ -22,7 +22,7 @@
                     layers: [
                         new ol.layer.Image({
                             source: new ol.source.ImageWMS({
-                                url: 'https://gistree.espigueiro.pt:3001/wms',
+                                url: CONFIG.URL_WMS[CONFIG.ENVIRONMENT],
                                 params: {
                                     'LAYERS': 'unicer:limite'
                                 },
@@ -31,7 +31,7 @@
                         }),
                         new ol.layer.Image({
                             source: new ol.source.ImageWMS({
-                                url: 'https://gistree.espigueiro.pt:3001/wms',
+                                url: CONFIG.URL_WMS[CONFIG.ENVIRONMENT],
                                 params: {
                                     'LAYERS': 'unicer:base'
                                 },
@@ -40,7 +40,7 @@
                         }),
                         new ol.layer.Image({
                             source: new ol.source.ImageWMS({
-                                url: 'https://gistree.espigueiro.pt:3001/wms',
+                                url: CONFIG.URL_WMS[CONFIG.ENVIRONMENT],
                                 params: {
                                     'LAYERS': 'unicer:edificios'
                                 },
@@ -129,7 +129,7 @@
                 var wmsLayer = new ol.layer.Tile({
                     opacity: layerData.opacity,
                     source: new ol.source.TileWMS({
-                        url: 'https://gistree.espigueiro.pt:3001/wms',
+                        url: CONFIG.URL_WMS[CONFIG.ENVIRONMENT],
                         params: {
                             'LAYERS': layerData.workspace + ":" + layerData.name
                         },
@@ -156,7 +156,7 @@
                 var wmsLayer = new ol.layer.Image({
                     opacity: layerData.opacity,
                     source: new ol.source.ImageWMS({
-                        url: 'https://gistree.espigueiro.pt:3001/wms',
+                        url: CONFIG.URL_WMS[CONFIG.ENVIRONMENT],
                         params: {
                             'LAYERS': layerData.workspace + ":" + layerData.name
                         },
@@ -221,7 +221,7 @@
                 var wfsLayer = new ol.layer.Vector({
                     source: new ol.source.Vector({
                         loader: function (extent) {
-                            $.ajax('http://gistree.espigueiro.pt/geoserver/wfs', {
+                            $.ajax(CONFIG.URL_WFS[CONFIG.ENVIRONMENT], {
                                 type: 'GET',
                                 data: {
                                     service: 'WFS',
@@ -244,7 +244,8 @@
                             });
                         },
                         strategy: ol.loadingstrategy.bbox,
-                    })
+                    }),
+                    style: FeaturesStyle.style
                 });
                 _layers[layerData.key] = wfsLayer;
                 if (layerData.style) {

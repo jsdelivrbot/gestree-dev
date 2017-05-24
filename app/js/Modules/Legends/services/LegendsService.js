@@ -5,7 +5,9 @@
         .module('LegendsModule')
         .service('LegendsService', LegendsService);
 
-    function LegendsService() {
+    LegendsService.$inject = ['CONFIG'];
+
+    function LegendsService(CONFIG) {
         this.groups = [];
         this.addLayerLegend = function (layer) {
             var index = _findIndex(this.groups, layer.parent);
@@ -13,8 +15,7 @@
                 if (_findIndex(this.groups[index].data, layer) == -1) {
                     this.groups[index].data.push({
                         title: layer.title,
-                        workspace: layer.data.workspace,
-                        name: layer.data.name
+                        url: CONFIG.URL_WMS[CONFIG.ENVIRONMENT] + "?REQUEST=GetLegendGraphic&VERSION=1.1.1&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=" + layer.data.workspace + ":" + layer.data.name + "&LEGEND_OPTIONS=forceLabels:on;fontSize:11&SCALE=1000000"
                     });
                 }
             } else {
@@ -24,8 +25,7 @@
                 });
                 this.groups[this.groups.length - 1].data.push({
                     title: layer.title,
-                    workspace: layer.data.workspace,
-                    name: layer.data.name
+                    url: CONFIG.URL_WMS[CONFIG.ENVIRONMENT] + "?REQUEST=GetLegendGraphic&VERSION=1.1.1&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=" + layer.data.workspace + ":" + layer.data.name + "&LEGEND_OPTIONS=forceLabels:on;fontSize:11&SCALE=1000000"
                 });
             }
         }.bind(this);

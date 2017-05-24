@@ -1,0 +1,8 @@
+<section class="legends-container">
+    <ul class="list-group legends-list" ng-repeat="group in lgCtrl.groups">
+        <b>{{group.title}}</b>
+        <li class="list-group-item legends-item" ng-repeat="legend in group.data">
+            <div legend title="{{legend.title}}"><img ng-src="{{legend.url}}"></legend>
+        </li>
+    </ul>
+</section>

@@ -11,6 +11,7 @@ var gulp = require('gulp'),
     cssmin = require('gulp-cssmin'),
     mocha = require('gulp-mocha'),
     istanbul = require('gulp-istanbul'),
+    exec = require('child_process').exec,
     karma = require('karma').Server,
     path = require('path'),
     pjson = require('./package.json');
@@ -39,7 +40,8 @@ var paths = {
     ],
     templates: [
         './app/views/templates/*'
-    ]
+    ],
+    config: './server/config/database_config.js'
 };
 
 //Compile Jade files to html and save them into the public directory.
@@ -112,6 +114,10 @@ gulp.task('nodemon:run', function () {
     nodemon({
         script: './bin/www',
         ext: 'js html',
+        env: {
+            'NODE_ENV': 'development',
+            'DATABASE_URL': 'postgres://postgres:03e8d2a1e04e5133b5e5045ae05bd700@213.58.234.45:5433/UNICER'
+        },
         ignore: ['public/**', 'app/**', 'node_modules/**']
     });
 });
@@ -138,13 +144,55 @@ gulp.task('test:server:coverage', function () {
         .pipe(istanbul.hookRequire());
 });
 
+// Run migrations
+gulp.task('set-db-url', function() {
+    return process.env.DATABASE_URL = require(paths.config)[process.env.NODE_ENV || 'development'].url;
+});
+gulp.task('migrations:up:all', ['set-db-url'], function (cb) {
+    exec('./node_modules/.bin/pg-migrate up ' +
+        '-m "server/database/migrations"',
+        function (err, stdout, stderr) {
+            console.log(stdout);
+            console.log(stderr);
+            cb(err);
+        });
+});
+gulp.task('migrations:up', ['set-db-url'], function (cb) {
+    exec('./node_modules/.bin/pg-migrate up 1 ' +
+        '-m "server/database/migrations"',
+        function (err, stdout, stderr) {
+            console.log(stdout);
+            console.log(stderr);
+            cb(err);
+        });
+});
+gulp.task('migrations:down:all', ['set-db-url'], function (cb) {
+    exec('./node_modules/.bin/pg-migrate down ' +
+        '-m "server/database/migrations"',
+        function (err, stdout, stderr) {
+            console.log(stdout);
+            console.log(stderr);
+            cb(err);
+        });
+});
+gulp.task('migrations:down', ['set-db-url'], function (cb) {
+    exec('./node_modules/.bin/pg-migrate down 1 ' +
+        '-m "server/database/migrations"',
+        function (err, stdout, stderr) {
+            console.log(stdout);
+            console.log(stderr);
+            cb(err);
+        });
+});
+
 //Watch for changes in files.
 gulp.task('watch', function () {
     gulp.watch(paths.jade, ['jade:compile']);
     gulp.watch(paths.compileScripts.js, ['js:minify']);
     gulp.watch(paths.compileScripts.css, ['css:minify']);
     gulp.watch(paths.index, ['scripts:inject']);
-    gulp.watch(paths.images, ['copy:images'])
+    gulp.watch(paths.images, ['copy:images']);
+    gulp.watch(paths.templates, ['templates:copy']);
 });
 
 //Default task.

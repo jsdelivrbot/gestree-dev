@@ -7,7 +7,7 @@
             "data": {
                 "workspace": "unicer",
                 "name": "arvores",
-                "type": "TileWMS",
+                "type": "WFS",
                 "extent": [43858.7242812507, 208452.333204688, 44110.6809999999, 209084.351648437],
                 "opacity": 1,
                 "queryable": true
@@ -48,7 +48,7 @@
                 }
             },
             {
-                "title": "Limite ",
+                "title": "Limite do Parque",
                 "preselected": true,
                 "data": {
                     "workspace": "unicer",
