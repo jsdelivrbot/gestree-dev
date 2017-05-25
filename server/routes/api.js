@@ -1,7 +1,7 @@
 'use strict';
 
-const trees = require('../controllers/trees');
-const interventions = require('../controllers/interventions');
+const trees = require('../controllers/api/trees');
+const interventions = require('../controllers/api/interventions');
 
 module.exports = function (router) {
 
