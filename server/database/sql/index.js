@@ -44,7 +44,9 @@ module.exports = {
         all: sql('trees/all.sql'),
         get: sql('trees/get.sql'),
         getInterventions: sql('trees/getInterventions.sql'),
-        postInterventions: sql('trees/postInterventions.sql')
+        postIntervention: sql('trees/postIntervention.sql'),
+        getIntervention: sql('trees/getIntervention.sql'),
+        updateIntervention: sql('trees/updateIntervention.sql')
     },
     interventions: {
         all: sql('interventions/all.sql'),
