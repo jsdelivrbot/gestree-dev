@@ -1,0 +1,7 @@
+<div class="container inter">
+    <div ng-repeat="intervention in interventions | filter: interFilter | orderBy: 'state'">
+        <div class="row">
+            <intervention-card intervention="intervention" style="min-width: 100%"></intervention-card>
+        </div>
+    </div>
+</div>

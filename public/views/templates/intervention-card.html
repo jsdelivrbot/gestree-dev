@@ -1,0 +1,47 @@
+<div class="col-12">
+    <div class="project" ng-class="{'project-success': intCardCtrl.intervention.state == 'ABERTA', 'project-danger': intCardCtrl.intervention.state == 'FECHADA'}">
+        <div class="shape">
+            <div class="shape-text">
+                {{intCardCtrl.intervention.state}}
+            </div>
+        </div>
+        <div class="project-content">
+            <h2 class="lead">
+                <span><b>PARQUE DAS PEDRAS SALGADAS</b> - Árvore {{intCardCtrl.intervention.id_tree}}</span>
+            </h2>
+            <div class="container">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="content-box">
+                            <div class="content-box-title">
+                                <span><i class="fa fa-info"></i> &nbsp; Detalhe</span>
+                            </div>
+                            <div style="padding: 0.1em 0.5em;">
+                                <div><b>Identificador de Intervenção:</b> {{intCardCtrl.intervention.id}}</div>
+                                <div><b>Tipo de Intervenção:</b> {{intCardCtrl.intervention.id_type}}</div>
+                                <div><b>Identificador da Árvore:</b> {{intCardCtrl.intervention.id_tree}}</div>
+                                <div><b>Prioridade:</b> <span>{{intCardCtrl.intervention.priority}}</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="content-box">
+                            <div class="content-box-title">
+                                <span><i class="fa fa-calendar"></i> &nbsp; Datas</span>
+                            </div>
+                            <div style="padding: 0.1em 0.5em;">
+                                <div><b>Data de Criação:</b> {{intCardCtrl.intervention.created_at | date:'dd-MM-yyyy HH:mm:ss'}}</div>
+                                <div><b>Data Agendada:</b> {{intCardCtrl.intervention.intervention_date | date:'dd-MM-yyyy HH:mm:ss'}}</div>
+                                <div><b>Data Finalização:</b> {{intCardCtrl.intervention.finished_at | date:'dd-MM-yyyy HH:mm:ss'}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align: right; color:wheat; margin-right: 1em;">
+                    <button type="button" class="btn btn-default btn-circle" data-tooltip="Editar"><i class="fa fa-pencil"></i></button>
+                    <button type="button" class="btn btn-default btn-circle" data-tooltip="Mais Informação"><i class="fa fa-plus"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

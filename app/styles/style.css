@@ -450,6 +450,11 @@ input[type=number] {
     padding: 0;
 }
 
+.padding-normal {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
 .navbar {
     -webkit-box-shadow: 0px 1px 15px #297D2E;
     -moz-box-shadow: 0px 1px 15px #297D2E;
@@ -493,6 +498,10 @@ input[type=number] {
 
 #menu-container .panel .my-icon.my-icon-basedoc {
     background-position: -73px 0;
+}
+
+#menu-container .panel .my-icon.my-icon-tree {
+    background-position: -96px 0;
 }
 
 #menu-container .panel a.active .my-icon {
@@ -822,6 +831,367 @@ span.fancytree-expanded span.fancytree-expander {
 
 
 /* JOKORD.Panel.Legends [End] */
+
+
+/* JOKORD.Panel.Interventions [Start] */
+
+#inter .input-filter {
+    padding: 0.5em;
+    font-size: 0.8em;
+}
+
+#inter .input-filter .title {
+    font-weight: bold;
+}
+
+#inter .input-filter-content {
+    min-width: 90%;
+    border-bottom: 1px #5cb85c solid;
+    padding: 0.5em;
+    width: 90%;
+}
+
+#inter .input-filter-content .input-group-addon {
+    background-color: #5cb85c;
+    color: #eee;
+}
+
+#inter .input-filter-content .form-control:focus {
+    color: #464a4c;
+    background-color: #fff;
+    border-color: #5cb85c;
+    outline: none;
+}
+
+#inter .input-filter-content .dropdown button {
+    color: #464a4c;
+    background-color: #5cb85c;
+    border-color: #464a4c;
+    min-width: 100%;
+    outline: none;
+}
+
+#inter .input-filter-content .dropdown-toggle::after {
+    position: absolute;
+    top: 45%;
+    right: 10%;
+}
+
+#inter .dropdown .dropdown-menu {
+    background-color: #f7f7f7;
+    color: #333;
+    margin-bottom: 0.1rem;
+    padding: 0.2rem 0;
+    overflow-y: auto;
+    max-height: 10em;
+    min-width: 12rem;
+    top: 75%;
+    left: 10%;
+    font-size: 0.75em;
+    font-weight: bold;
+}
+
+#inter .dropdown .dropdown-item:hover {
+    color: #A2C199;
+    text-decoration: none;
+    background-color: #f7f7f7;
+    cursor: pointer;
+}
+
+#inter .radio-filter {
+    padding: 0.5em;
+    font-size: 0.8em;
+}
+
+#inter .radio-filter .title {
+    font-weight: bold;
+}
+
+#inter .radio-filter-content {
+    min-width: 90%;
+    border-bottom: 1px #5cb85c solid;
+    padding: 0.3em;
+    width: 90%;
+}
+
+#inter .radio-filter-content-inline {
+    display: inline;
+    display: -webkit-inline-box;
+    min-width: 90%;
+    border-bottom: 1px #5cb85c solid;
+    padding: 0.3em;
+}
+
+#inter .date-filter {
+    padding: 0.5em;
+    font-size: 0.8em;
+}
+
+#inter .date-filter .title {
+    font-weight: bold;
+}
+
+#inter .date-filter .md-datepicker-input {
+    min-width: 200px;
+}
+
+#inter md-icon {
+    color: rgba(20, 125, 20, 0.65) !important;
+}
+
+.radio {
+    padding-left: 10px;
+}
+
+.radio label {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    padding-left: 2px;
+}
+
+.radio label::before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    width: 17px;
+    height: 17px;
+    left: 0;
+    margin-left: -20px;
+    border: 1px solid #cccccc;
+    border-radius: 50%;
+    background-color: #fff;
+    -webkit-transition: border 0.15s ease-in-out;
+    -o-transition: border 0.15s ease-in-out;
+    transition: border 0.15s ease-in-out;
+}
+
+.radio label::after {
+    display: inline-block;
+    position: absolute;
+    content: " ";
+    width: 11px;
+    height: 11px;
+    left: 3px;
+    top: 3px;
+    margin-left: -20px;
+    border-radius: 50%;
+    background-color: #555555;
+    -webkit-transform: scale(0, 0);
+    -ms-transform: scale(0, 0);
+    -o-transform: scale(0, 0);
+    transform: scale(0, 0);
+    -webkit-transition: -webkit-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+    -moz-transition: -moz-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+    -o-transition: -o-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+    transition: transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+}
+
+.radio input[type="radio"] {
+    opacity: 0;
+}
+
+.radio input[type="radio"]:focus+label::before {
+    outline: thin dotted;
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+}
+
+.radio input[type="radio"]:checked+label::after {
+    -webkit-transform: scale(1, 1);
+    -ms-transform: scale(1, 1);
+    -o-transform: scale(1, 1);
+    transform: scale(1, 1);
+}
+
+.radio-primary input[type="radio"]+label::after {
+    background-color: #297D2E;
+}
+
+.radio-primary input[type="radio"]:checked+label::before {
+    border-color: #297D2E;
+}
+
+.radio-primary input[type="radio"]:checked+label::after {
+    background-color: #297D2E;
+}
+
+.radio-warning input[type="radio"]+label::after {
+    background-color: #f0ad4e;
+}
+
+.radio-warning input[type="radio"]:checked+label::before {
+    border-color: #f0ad4e;
+}
+
+.radio-warning input[type="radio"]:checked+label::after {
+    background-color: #f0ad4e;
+}
+
+.radio-danger input[type="radio"]+label::after {
+    background-color: #d9534f;
+}
+
+.radio-danger input[type="radio"]:checked+label::before {
+    border-color: #d9534f;
+}
+
+.radio-danger input[type="radio"]:checked+label::after {
+    background-color: #d9534f;
+}
+
+
+/* JOKORD.Panel.Interventions [End] */
+
+
+/* JOKORD.Interventions.Cards [Start] */
+
+.shape {
+    border-style: solid;
+    border-width: 0 70px 40px 0;
+    float: right;
+    height: 0px;
+    width: 0px;
+    -ms-transform: rotate(360deg);
+    /* IE 9 */
+    -o-transform: rotate(360deg);
+    /* Opera 10.5 */
+    -webkit-transform: rotate(360deg);
+    /* Safari and Chrome */
+    transform: rotate(360deg);
+}
+
+.shape-text {
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+    position: relative;
+    right: -25px;
+    top: -2px;
+    white-space: nowrap;
+    -ms-transform: rotate(30deg);
+    /* IE 9 */
+    -o-transform: rotate(360deg);
+    /* Opera 10.5 */
+    -webkit-transform: rotate(30deg);
+    /* Safari and Chrome */
+    transform: rotate(30deg);
+}
+
+.project {
+    margin: 0 5px;
+    min-height: 150px;
+    height: auto;
+}
+
+.project {
+    background: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    margin: 5px 2px;
+    overflow: hidden;
+}
+
+.project-radius {
+    border-radius: 7px;
+}
+
+.project-default {
+    border-color: #999999;
+}
+
+.project-default .shape {
+    border-color: transparent #999999 transparent transparent;
+    border-color: rgba(255, 255, 255, 0) #999999 rgba(255, 255, 255, 0) rgba(255, 255, 255, 0);
+}
+
+.project-danger {
+    border-color: #d9534f;
+}
+
+.project-danger .shape {
+    border-color: transparent #d9534f transparent transparent;
+    border-color: rgba(255, 255, 255, 0) #d9534f rgba(255, 255, 255, 0) rgba(255, 255, 255, 0);
+}
+
+.project-success {
+    border-color: #5cb85c;
+}
+
+.project-success .shape {
+    border-color: transparent #5cb85c transparent transparent;
+    border-color: rgba(255, 255, 255, 0) #5cb85c rgba(255, 255, 255, 0) rgba(255, 255, 255, 0);
+}
+
+.project-content {
+    padding: 0 20px 10px;
+}
+
+.project .lead {
+    padding: 0.25em;
+    margin-right: 2em;
+}
+
+.project.project-success .lead {
+    border-bottom: 2px solid #5cb85c;
+}
+
+.project.project-danger .lead {
+    border-bottom: 2px solid #d9534f;
+}
+
+.project .content-box {
+    border-bottom-left-radius: 15px;
+    min-height: 8em;
+    margin: 0.5em 0.05em;
+    background: #efe;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+}
+
+.project.project-success .content-box {
+    border: 1px solid #5cb85c;
+}
+
+.project.project-danger .content-box {
+    border: 1px solid #d9534f;
+}
+
+.project .content-box .content-box-title {
+    color: white;
+}
+
+.project.project-success .content-box-title {
+    background: #5cb85c;
+}
+
+.project.project-danger .content-box-title {
+    background: #d9534f;
+}
+
+.project .content-box span {
+    padding: 0.2em 0.5em;
+}
+
+.project.project-success .btn-circle {
+    background: #5cb85c;
+    border: 0;
+}
+
+.project.project-success .btn-circle:hover {
+    background: #18481A;
+}
+
+.project.project-danger .btn-circle {
+    background: #d9534f;
+    border: 0;
+}
+
+.project.project-danger .btn-circle:hover {
+    background: darkred;
+}
+
+
+/* JOKORD.Interventions.Cards [End] */
 
 
 /* JOKORD.Panel.Print [Start] */

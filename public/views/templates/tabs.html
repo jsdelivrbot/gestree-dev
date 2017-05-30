@@ -1,9 +1,10 @@
 <div class="panel">
     <div class="tabbable-line">
         <ul id="lefttopmenutabs" role="tablist" class="nav nav-tabs">
-            <a data-toggle="tab" data-tooltip="Camadas" href="#layers" role="tab" class="nav-item nav-link tooltip-bl active"><i class="my-icon my-icon-camadas"></i></a>
-            <a data-toggle="tab" data-tooltip="Legenda" href="#legenda" role="tab" class="nav-item nav-link tooltip-bl"><i class="my-icon my-icon-legends"></i></a>
-            <a data-toggle="tab" data-tooltip="Impressão" href="#imprimir" role="tab" class="nav-item nav-link tooltip-bl"><i class="my-icon my-icon-imprimir"></i></a>
+            <a data-toggle="tab" data-tooltip="Camadas" href="#layers" role="tab" class="nav-item nav-link tooltip-bl active" ng-click="tc.showMap()"><i class="my-icon my-icon-camadas"></i></a>
+            <a data-toggle="tab" data-tooltip="Legenda" href="#legenda" role="tab" class="nav-item nav-link tooltip-bl" ng-click="tc.showMap()"><i class="my-icon my-icon-legends"></i></a>
+            <!--<a data-toggle="tab" data-tooltip="Impressão" href="#imprimir" role="tab" class="nav-item nav-link tooltip-bl"><i class="my-icon my-icon-imprimir"></i></a>-->
+            <a data-toggle="tab" data-tooltip="Intervenções" href="#inter" role="tab" class="nav-item nav-link tooltip-bl" ng-click="tc.hideMap()"><i class="my-icon my-icon-tree"></i></a>
             <button type="button" ng-click="tc.hideMenu()" class="btn btn-secondary btn-circle btn-hide">
                 <i class="fa fa-arrow-left"></i>
             </button>
@@ -39,7 +40,98 @@
                 </section>
             </div>
             <div id="legenda" role="tabpanel" class="tab-pane">
-                <legends-group></legends-group>              
+                <legends-group></legends-group>
+            </div>
+            <div id="inter" role="tabpanel" class="tab-pane">
+                <section ng-controller="TabInterventionsController as tbInterCtrl">
+                    <!-- 1.Nova Intervenção - Botão -->
+                    <!-- 2.Filtrar Intervenções -->
+                    <!-- 2.1 - Filtrar por parque - Radio -->
+                    <section class="radio-filter">
+                        <div class="title">Parque</div>
+                        <div class="radio-filter-content">
+                            <div class="radio radio-primary">
+                                <input type="radio" name="parque" id="parque1" value="pedras_salgadas" ng-model="filterData.parque">
+                                <label for="parque1">Pedras Salgadas - Spa & Nature Park</label>
+                            </div>
+                            <div class="radio radio-primary">
+                                <input type="radio" name="parque" id="parque2" value="vidago_palace" ng-model="filterData.parque">
+                                <label for="parque2">Palace Vidago Hotel</label>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- 2.2 - Filtrar por árvore - input -->
+                    <section class="input-filter">
+                        <div class="title">Árvore</div>
+                        <div class="input-filter-content">
+                            <div class="input-group input-group-sm" style="width: 50%">
+                                <span class="input-group-addon" id="basic-addon1"><i class="fa fa-tree"></i></span>
+                                <input type="number" class="form-control" ng-model="filterData.id_tree" placeholder="Identificador" aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                    </section>
+                    <!-- 2.3 - Filtrar por estado - Radio -->
+                    <section class="radio-filter">
+                        <div class="title">Estado</div>
+                        <div class="radio-filter-content-inline">
+                            <div class="radio radio-primary">
+                                <input type="radio" name="estado" id="estado_aberta" value="aberta" ng-model="filterData.state">
+                                <label for="estado_aberta">Aberta</label>
+                            </div>
+                            <div class="radio radio-danger">
+                                <input type="radio" name="estado" id="estado_fechada" value="fechada" ng-model="filterData.state">
+                                <label for="estado_fechada">Fechada</label>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- 2.4 - Filtrar por intervenção - Dropdown -->
+                    <section class="input-filter">
+                        <div class="title">Tipo de Intervenção</div>
+                        <div class="input-filter-content">
+                            <div class="dropdown">
+                                <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                {{tbInterCtrl.selInterType}} <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown-item" ng-repeat="type in tbInterCtrl.interTypes" ng-click="tbInterCtrl.setInterType(type)"><a>{{type}}</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- 2.5 - Filtrar por prioridade - Dropdown -->
+                    <section class="radio-filter">
+                        <div class="title">Prioridade</div>
+                        <div class="radio-filter-content-inline">
+                            <div class="radio radio-primary">
+                                <input type="radio" name="priority1" id="priority1" value="1" ng-model="filterData.priority">
+                                <label for="priority1">1</label>
+                            </div>
+                            <div class="radio radio-primary">
+                                <input type="radio" name="priority2" id="priority2" value="2" ng-model="filterData.priority">
+                                <label for="priority2">2</label>
+                            </div>
+                            <div class="radio radio-warning">
+                                <input type="radio" name="priority3" id="priority3" value="3" ng-model="filterData.priority">
+                                <label for="priority3">3</label>
+                            </div>
+                            <div class="radio radio-danger">
+                                <input type="radio" name="priority4" id="priority4" value="4" ng-model="filterData.priority">
+                                <label for="priority4">4</label>
+                            </div>
+                            <div class="radio radio-danger">
+                                <input type="radio" name="priority5" id="priority5" value="5" ng-model="filterData.priority">
+                                <label for="priority5">5</label>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- 2.6 - Filtrar por data - data -->
+                    <section class="date-filter">
+                        <div class="title">Datas</div>
+                        <div class="date-filter-content">
+                            <md-datepicker md-open-on-focus ng-model="tbInterCtrl.initDate" md-placeholder="Data de Início"></md-datepicker>
+                            <md-datepicker md-open-on-focus ng-model="tbInterCtrl.initDate" md-placeholder="Data de Finalização"></md-datepicker>
+                        </div>
+                    </section>
+                </section>
             </div>
             <!--<div id="imprimir" role="tabpanel" class="tab-pane" ng-controller="PagesController as pagesCtrl">
                 <section class="legends-container">

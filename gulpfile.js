@@ -29,7 +29,7 @@ var paths = {
         openlayerscss: './public/lib/openlayers/dist/ol-debug.css'
     },
     compileScripts: {
-        js: ['app/app.js', 'app/js/**/*.js'],
+        js: ['app/app.js', 'app/js/**/**/*.js'],
         css: 'app/styles/*.+(less|css)'
     },
     serverTests: [

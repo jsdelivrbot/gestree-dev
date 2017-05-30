@@ -5,11 +5,17 @@
         .module('MapModule')
         .controller('TabsController', TabsController);
 
-    TabsController.$inject = ['$scope'];
+    TabsController.$inject = ['$rootScope', '$scope'];
 
-    function TabsController($scope) {
+    function TabsController($rootScope, $scope) {
         var tc = this;
-        $scope.groups = [];
+
+        tc.showMap = function () {
+            $rootScope.mapVisibility = true;
+        };
+        tc.hideMap = function () {
+            $rootScope.mapVisibility = false;
+        };
         tc.expandTree = function () {
             $scope.tree.visit(function (node) {
                 node.setExpanded(true);
@@ -30,6 +36,11 @@
         }
         tc.help = function () {
             alert(" Em Desenvolvimento... ");
+        }
+        init();
+
+        function init() {
+            $rootScope.mapVisibility = false;
         }
     }
 })();
