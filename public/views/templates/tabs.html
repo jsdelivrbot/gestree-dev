@@ -1,13 +1,15 @@
 <div class="panel">
     <div class="tabbable-line">
         <ul id="lefttopmenutabs" role="tablist" class="nav nav-tabs">
-            <a data-toggle="tab" data-tooltip="Camadas" href="#layers" role="tab" class="nav-item nav-link tooltip-bl active" ng-click="tc.showMap()"><i class="my-icon my-icon-camadas"></i></a>
-            <a data-toggle="tab" data-tooltip="Legenda" href="#legenda" role="tab" class="nav-item nav-link tooltip-bl" ng-click="tc.showMap()"><i class="my-icon my-icon-legends"></i></a>
+            <a data-toggle="tab" data-tooltip="Camadas" ng-click="tc.setTab(1);tc.showMap()" href="#layers" role="tab" class="nav-item nav-link tooltip-bl active"><i class="my-icon my-icon-camadas"></i></a>
+            <a data-toggle="tab" data-tooltip="Legenda" ng-click="tc.setTab(2);tc.showMap()" href="#legenda" role="tab" class="nav-item nav-link tooltip-bl"><i class="my-icon my-icon-legends"></i></a>
             <!--<a data-toggle="tab" data-tooltip="Impressão" href="#imprimir" role="tab" class="nav-item nav-link tooltip-bl"><i class="my-icon my-icon-imprimir"></i></a>-->
-            <a data-toggle="tab" data-tooltip="Intervenções" href="#inter" role="tab" class="nav-item nav-link tooltip-bl" ng-click="tc.hideMap()"><i class="my-icon my-icon-tree"></i></a>
-            <button type="button" ng-click="tc.hideMenu()" class="btn btn-secondary btn-circle btn-hide">
-                <i class="fa fa-arrow-left"></i>
-            </button>
+            <a data-toggle="tab" data-tooltip="Intervenções" ng-click="tc.setTab(3);tc.hideMap();" href="#inter" role="tab" class="nav-item nav-link tooltip-bl"><i class="my-icon my-icon-tree"></i></a>
+            <span ng-show="tc.selectedTab!=3">
+                <button type="button" ng-click="tc.hideMenu()" class="btn btn-secondary btn-circle btn-hide">
+                    <i class="fa fa-arrow-left"></i>
+                </button>
+            </span>
         </ul>
         <div id="tabcontent" class="tab-content">
             <div id="layers" role="tabpanel" class="tab-pane active">
@@ -44,215 +46,107 @@
             </div>
             <div id="inter" role="tabpanel" class="tab-pane">
                 <section ng-controller="TabInterventionsController as tbInterCtrl">
-                    <!-- 1.Nova Intervenção - Botão -->
-                    <!-- 2.Filtrar Intervenções -->
-                    <!-- 2.1 - Filtrar por parque - Radio -->
-                    <section class="radio-filter">
-                        <div class="title">Parque</div>
-                        <div class="radio-filter-content">
-                            <div class="radio radio-primary">
-                                <input type="radio" name="parque" id="parque1" value="pedras_salgadas" ng-model="filterData.parque">
-                                <label for="parque1">Pedras Salgadas - Spa & Nature Park</label>
+                    <div class="clear-filter-button" style="height: 5vh; text-align: right;">
+                        <button type="button" ng-click="tbInterCtrl.resetFilter()" class="btn btn-sm btn-success">Limpar Filtros</button>
+                    </div>
+                    <div class="inter-container">
+                        <div class="title"><b>Filtos de Intervenção</b></div>
+                        <section class="radio-filter">
+                            <div class="title">Parque</div>
+                            <div class="radio-filter-content">
+                                <div class="radio radio-primary">
+                                    <input type="radio" name="parque" id="parque1" value="pedras_salgadas" ng-model="filterData.parque">
+                                    <label for="parque1">Pedras Salgadas - Spa & Nature Park</label>
+                                </div>
+                                <div class="radio radio-primary">
+                                    <input type="radio" name="parque" id="parque2" value="vidago_palace" ng-model="filterData.parque">
+                                    <label for="parque2">Palace Vidago Hotel</label>
+                                </div>
                             </div>
-                            <div class="radio radio-primary">
-                                <input type="radio" name="parque" id="parque2" value="vidago_palace" ng-model="filterData.parque">
-                                <label for="parque2">Palace Vidago Hotel</label>
+                        </section>
+                        <section class="input-filter">
+                            <div class="title">Árvore</div>
+                            <div class="input-filter-content">
+                                <div class="input-group input-group-sm" style="width: 50%">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-tree"></i></span>
+                                    <input type="number" class="form-control" ng-model="filterData.id_tree" placeholder="Identificador" aria-describedby="basic-addon1">
+                                </div>
                             </div>
-                        </div>
-                    </section>
-                    <!-- 2.2 - Filtrar por árvore - input -->
-                    <section class="input-filter">
-                        <div class="title">Árvore</div>
-                        <div class="input-filter-content">
-                            <div class="input-group input-group-sm" style="width: 50%">
-                                <span class="input-group-addon" id="basic-addon1"><i class="fa fa-tree"></i></span>
-                                <input type="number" class="form-control" ng-model="filterData.id_tree" placeholder="Identificador" aria-describedby="basic-addon1">
+                        </section>
+                        <section class="radio-filter">
+                            <div class="title">Estado</div>
+                            <div class="radio-filter-content-inline">
+                                <div class="radio radio-primary">
+                                    <input type="radio" name="estado" id="estado_aberta" value="aberta" ng-model="filterData.state">
+                                    <label for="estado_aberta">Aberta</label>
+                                </div>
+                                <div class="radio radio-danger">
+                                    <input type="radio" name="estado" id="estado_fechada" value="fechada" ng-model="filterData.state">
+                                    <label for="estado_fechada">Fechada</label>
+                                </div>
                             </div>
-                        </div>
-                    </section>
-                    <!-- 2.3 - Filtrar por estado - Radio -->
-                    <section class="radio-filter">
-                        <div class="title">Estado</div>
-                        <div class="radio-filter-content-inline">
-                            <div class="radio radio-primary">
-                                <input type="radio" name="estado" id="estado_aberta" value="aberta" ng-model="filterData.state">
-                                <label for="estado_aberta">Aberta</label>
-                            </div>
-                            <div class="radio radio-danger">
-                                <input type="radio" name="estado" id="estado_fechada" value="fechada" ng-model="filterData.state">
-                                <label for="estado_fechada">Fechada</label>
-                            </div>
-                        </div>
-                    </section>
-                    <!-- 2.4 - Filtrar por intervenção - Dropdown -->
-                    <section class="input-filter">
-                        <div class="title">Tipo de Intervenção</div>
-                        <div class="input-filter-content">
-                            <div class="dropdown">
-                                <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                        </section>
+                        <section class="input-filter">
+                            <div class="title">Tipo de Intervenção</div>
+                            <div class="input-filter-content">
+                                <div class="dropdown">
+                                    <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
                                 {{tbInterCtrl.selInterType}} <span class="caret"></span></button>
-                                <ul class="dropdown-menu">
-                                    <li class="dropdown-item" ng-repeat="type in tbInterCtrl.interTypes" ng-click="tbInterCtrl.setInterType(type)"><a>{{type}}</a></li>
-                                </ul>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-item" ng-repeat="type in tbInterCtrl.interTypes" ng-click="tbInterCtrl.setInterType(type)"><a>{{type}}</a></li>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
-                    </section>
-                    <!-- 2.5 - Filtrar por prioridade - Dropdown -->
-                    <section class="radio-filter">
-                        <div class="title">Prioridade</div>
-                        <div class="radio-filter-content-inline">
-                            <div class="radio radio-primary">
-                                <input type="radio" name="priority1" id="priority1" value="1" ng-model="filterData.priority">
-                                <label for="priority1">1</label>
+                        </section>
+                        <section class="radio-filter">
+                            <div class="title">Prioridade</div>
+                            <div class="radio-filter-content-inline">
+                                <div class="radio radio-primary">
+                                    <input type="radio" name="priority1" id="priority1" value="1" ng-model="filterData.priority">
+                                    <label for="priority1">1</label>
+                                </div>
+                                <div class="radio radio-primary">
+                                    <input type="radio" name="priority2" id="priority2" value="2" ng-model="filterData.priority">
+                                    <label for="priority2">2</label>
+                                </div>
+                                <div class="radio radio-warning">
+                                    <input type="radio" name="priority3" id="priority3" value="3" ng-model="filterData.priority">
+                                    <label for="priority3">3</label>
+                                </div>
+                                <div class="radio radio-danger">
+                                    <input type="radio" name="priority4" id="priority4" value="4" ng-model="filterData.priority">
+                                    <label for="priority4">4</label>
+                                </div>
+                                <div class="radio radio-danger">
+                                    <input type="radio" name="priority5" id="priority5" value="5" ng-model="filterData.priority">
+                                    <label for="priority5">5</label>
+                                </div>
                             </div>
-                            <div class="radio radio-primary">
-                                <input type="radio" name="priority2" id="priority2" value="2" ng-model="filterData.priority">
-                                <label for="priority2">2</label>
+                        </section>
+                        <section class="date-filter">
+                            <div class="title">Data de Criação</div>
+                            <div class="date-filter-content">
+                                <md-datepicker md-open-on-focus ng-model="filterDate.createdAtStart" md-placeholder="Data de Início"></md-datepicker>
+                                <md-datepicker md-min-date="filterDate.createdAtStart" md-open-on-focus ng-model="filterDate.createdAtEnd" md-placeholder="Data de Finalização"></md-datepicker>
                             </div>
-                            <div class="radio radio-warning">
-                                <input type="radio" name="priority3" id="priority3" value="3" ng-model="filterData.priority">
-                                <label for="priority3">3</label>
+                        </section>
+                        <section class="date-filter">
+                            <div class="title">Data Agendada</div>
+                            <div class="date-filter-content">
+                                <md-datepicker md-open-on-focus ng-model="filterDate.interventionStart" md-placeholder="Data de Início"></md-datepicker>
+                                <md-datepicker md-min-date="filterDate.interventionStart" md-open-on-focus ng-model="filterDate.interventionEnd" md-placeholder="Data de Finalização"></md-datepicker>
                             </div>
-                            <div class="radio radio-danger">
-                                <input type="radio" name="priority4" id="priority4" value="4" ng-model="filterData.priority">
-                                <label for="priority4">4</label>
+                        </section>
+                        <section class="date-filter">
+                            <div class="title">Data de Finalização</div>
+                            <div class="date-filter-content">
+                                <md-datepicker md-open-on-focus ng-model="filterDate.finishedAtStart" md-placeholder="Data de Início"></md-datepicker>
+                                <md-datepicker md-min-date="filterDate.finishedAtStart" md-open-on-focus ng-model="filterDate.finishedAtEnd" md-placeholder="Data de Finalização"></md-datepicker>
                             </div>
-                            <div class="radio radio-danger">
-                                <input type="radio" name="priority5" id="priority5" value="5" ng-model="filterData.priority">
-                                <label for="priority5">5</label>
-                            </div>
-                        </div>
-                    </section>
-                    <!-- 2.6 - Filtrar por data - data -->
-                    <section class="date-filter">
-                        <div class="title">Datas</div>
-                        <div class="date-filter-content">
-                            <md-datepicker md-open-on-focus ng-model="tbInterCtrl.initDate" md-placeholder="Data de Início"></md-datepicker>
-                            <md-datepicker md-open-on-focus ng-model="tbInterCtrl.initDate" md-placeholder="Data de Finalização"></md-datepicker>
-                        </div>
-                    </section>
+                        </section>
+                    </div>
                 </section>
             </div>
-            <!--<div id="imprimir" role="tabpanel" class="tab-pane" ng-controller="PagesController as pagesCtrl">
-                <section class="legends-container">
-                    <h5>Impressão de Plantas</h5>
-                    <section ng-show="pagesCtrl.activeTab(1)">
-                        <h6>1. Desenhar</h6>
-                        <section ng-controller="DrawingController as drawCtrl" class="print-content">
-                            <hr style="margin: 0.5em">
-                            <div class="subtitle">Defina no mapa a área da pretensão.</div>
-                            <div class="draw-info">{{drawCtrl.info}}</div>
-                            <hr style="margin: 0.5em">
-                            <div class="drawing-commands">
-                                <button data-tooltip="Ponto" class="btn btn-secondary btn-circle icon point tooltip-bottom" ng-click="drawCtrl.setDrawingMode('Point')"></button>
-                                <button data-tooltip="Linha" class="btn btn-secondary btn-circle icon line tooltip-bottom" ng-click="drawCtrl.setDrawingMode('LineString')"></button>
-                                <button data-tooltip="Polígono" class="btn btn-secondary btn-circle icon polygon tooltip-bottom" ng-click="drawCtrl.setDrawingMode('Polygon')"></button>
-                                <button data-tooltip="Limpar Desenhos" class="btn btn-secondary btn-circle icon remove tooltip-bottom" ng-click="drawCtrl.clearDraw()"></button>
-                            </div>
-                        </section>
-                        <div class="nav-buttons">
-                            <button class="btn btn-secondary" disabled>
-                                <i class="fa fa-arrow-left"></i> Anterior
-                            </button>
-                            <button ng-click="pagesCtrl.nextPage(true)" class="btn btn-secondary">
-                                Seguinte <i class="fa fa-arrow-right"></i>
-                            </button>
-                        </div>
-                    </section>
-                    <section ng-show="pagesCtrl.activeTab(2)">
-                        <h6>2. Dados da Requisição</h6>
-                        <section ng-controller="FormController as formCtrl">
-                            <form name="form" class="my-form" novalidate>
-                                <hr style="margin: 0.5em">
-                                <div class="row no-gutters form-line">
-                                    <label class="col-4" for="requerente">Requerente:</label>
-                                    <input type="text" class="col-7" id="requerente" ng-model="formCtrl.userData.requerente" placeholder="Nome do Requerente">
-                                </div>
-                                <div class="row no-gutters form-line">
-                                    <label class="col-4" for="proprietario">Proprietário:</label>
-                                    <input type="text" class="col-7" id="proprietario" ng-model="formCtrl.userData.proprietario" placeholder="Nome do Proprietário">
-                                </div>
-                                <div class="row no-gutters form-line" style="margin-bottom: 0.25em;">
-                                    <label class="col-4" for="nif">NIF:</label>
-                                    <input type="number" name="uNif" class="col-7" id="nif" ng-minlength="9" ng-maxlength="9" ng-model="formCtrl.userData.nif"
-                                        placeholder="Nro Identificação Fiscal">
-                                </div>
-                                <div class="row no-gutters form-line" ng-controller="FreguesiasController as frCtrl">
-                                    <label class="col-4" for="freguesia">Freguesia:</label>
-                                    <span class="col-7 dropdown">
-                                        <button id="freguesia" ng-class="{'fr-selected': frCtrl.isSelected()}" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            {{frCtrl.freguesia}}
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a class="dropdown-item" ng-repeat="freguesia in frCtrl.freguesias" ng-click="frCtrl.setFreguesia(freguesia)">{{freguesia.name}}</a>
-                                        </div>
-                                    </span>
-                                </div>
-                                <div class="row no-gutters form-line">
-                                    <label class="col-4" for="local">Local:</label>
-                                    <input type="text" class="col-7" id="local" ng-model="formCtrl.userData.local" placeholder="Nome do Local">
-                                </div>
-                                <div ng-show="form.uNif.$invalid" class="form-line form-error">NIF necessita de 9 algarismos.</div>
-                                <hr style="margin: 0.5em">
-                                <div class="nav-buttons clearfix">
-                                    <button type="button" ng-click="pagesCtrl.active = pagesCtrl.active - 1" class="btn btn-secondary ">
-                                        <i class="fa fa-arrow-left"></i> Anterior</button>
-                                    <button ng-click="pagesCtrl.nextPage(form.$valid)" class="btn btn-secondary ">Seguinte 
-                                        <i class="fa fa-arrow-right"></i></button>
-                                </div>
-                            </form>
-                        </section>
-                    </section>
-                    <section ng-show="pagesCtrl.activeTab(3)" ng-controller="LayoutSelectionController as layoutCtrl">
-                        <h6>3. Plantas disponíveis</h6>
-                        <form name="form" class="my-form" novalidate>
-                            <hr style="margin: 0.5em;">
-                            <div class="checkbox-container">
-                                <div class="checkbox" ng-repeat="layout in layoutCtrl.layouts">
-                                    <label style="display: block">
-                                    <input type="checkbox" ng-model="layout.selected" ng-change="layoutCtrl.change()" value="">
-                                    <span class="cr"><i class="cr-icon fa fa-check"></i></span>
-                                    <div class="checkbox-title">{{layout.name}}</div>
-                                    <div class="checkbox-info">(Escala 1:{{layout.escala}} - Tamanho {{layout.tamanho}})</div>
-                                    </label>
-                                </div>
-                            </div>
-                            <hr style="margin: 0.5em;">
-                        </form>
-                        <div class="nav-buttons">
-                            <button type="button" ng-click="pagesCtrl.active = pagesCtrl.active - 1" class="btn btn-secondary ">
-                                <i class="fa fa-arrow-left"></i> Anterior</button>
-                            <button ng-disabled="layoutCtrl.noSelect" ng-click="layoutCtrl.printLayouts();pagesCtrl.nextPage(true)" class="btn btn-secondary ">
-                                Seguinte <i class="fa fa-arrow-right"></i></button>
-                        </div>
-                    </section>
-                    <section ng-show="pagesCtrl.activeTab(4)" ng-controller="PrintResultController as prCtrl">
-                        <h6>4. Impressões </h6>
-                        <section class="print-content">
-                            <hr style="margin: 0.5em;">
-                            <div ng-show="prCtrl.printResults.length == 0">
-                                <div class="info">{{prCtrl.message1}}</div>
-                                <div class="info">{{prCtrl.message2}}</div>
-                            </div>
-                            <div ng-show="prCtrl.printResults.length > 0">
-                                <div class="draw-info">A(s) Planta(s) requesitada(s) estão disponíveis para download nos links abaixo.</div>
-                                <ul>
-                                    <li style="padding: 0.2em;" ng-repeat="printResult in prCtrl.printResults">
-                                        <i class="fa fa-file-pdf-o"></i>
-                                        <a class="print" ng-href="{{printResult.url}}">
-                                            <span> {{printResult.title}} </span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <hr style="margin: 0.5em;">
-                            <div class="nav-buttons clearfix">
-                                <button type="button" ng-click="prCtrl.newPrint()" class="btn btn-secondary "><i class="fa fa-print"></i> Nova Impressão</button>
-                            </div>
-                        </section>
-                    </section>
-                </section>
-            </div>-->
         </div>
     </div>
 </div>

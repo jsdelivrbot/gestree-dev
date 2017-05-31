@@ -9,13 +9,17 @@
 
     function TabsController($rootScope, $scope) {
         var tc = this;
-
         tc.showMap = function () {
             $rootScope.mapVisibility = true;
         };
         tc.hideMap = function () {
             $rootScope.mapVisibility = false;
         };
+
+        tc.setTab = function(tab){
+            tc.selectedTab = tab;
+        }
+        
         tc.expandTree = function () {
             $scope.tree.visit(function (node) {
                 node.setExpanded(true);
@@ -40,7 +44,7 @@
         init();
 
         function init() {
-            $rootScope.mapVisibility = false;
+            $rootScope.mapVisibility = true;
         }
     }
 })();

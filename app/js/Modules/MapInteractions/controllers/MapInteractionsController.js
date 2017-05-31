@@ -39,7 +39,7 @@
         $scope.$watch('itCtrl.menuIsHidden', function () {
             $timeout(function () {
                 MapService.map.updateSize();
-            }, 10);
+            }, 50);
         });
     }
 })();

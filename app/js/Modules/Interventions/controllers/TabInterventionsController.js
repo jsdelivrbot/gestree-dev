@@ -5,11 +5,12 @@
         .module('InterventionsModule')
         .controller('TabInterventionsController', TabInterventionsController);
 
-    TabInterventionsController.$inject = ["$scope", "InterventionsTypeFactory", "FilterService"];
+    TabInterventionsController.$inject = ["$scope", "InterventionsTypeFactory", "FilterDataService"];
 
-    function TabInterventionsController($scope, InterventionsTypeFactory, FilterService) {
+    function TabInterventionsController($scope, InterventionsTypeFactory, FilterDataService) {
         var tbInCtrl = this;
         $scope.filterData = {};
+        $scope.filterDate = {};
 
         tbInCtrl.setPriority = function (p) {
             $scope.filterData.priority = p;
@@ -22,6 +23,7 @@
 
         tbInCtrl.resetFilter = function () {
             $scope.filterData = {};
+            $scope.filterDate = {};
             tbInCtrl.selInterType = "--";
         }
 
@@ -32,9 +34,13 @@
                 tbInCtrl.interTypes = d;
                 tbInCtrl.selInterType = "--";
             });
-
+            
             $scope.$watch('filterData', function (newVal, oldVal) {
-                FilterService.setFilter(newVal);
+                FilterDataService.setFilter(newVal);
+            }, true);
+
+            $scope.$watch('filterDate', function(newVal, oldVal) {
+                FilterDataService.setFilterDate(newVal);
             }, true);
         }
     }
