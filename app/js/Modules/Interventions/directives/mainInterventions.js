@@ -16,7 +16,7 @@
             restrict: 'E',
             scope: {
             },
-            templateUrl: 'views/templates/interventions.html'
+            templateUrl: 'views/templates/interventions/interventions.html'
         };
         return directive;
 
@@ -29,6 +29,7 @@
                 .then(function (interventions) {
                     scope.allInterventions = interventions;
                     scope.interventions = interventions;
+                    _callFilter();
                 })
                 .catch(function (err) {
                     console.error(err);

@@ -28,7 +28,8 @@
     "angular-ui-select": "^0.19.8",
     "angular-sanitize": "^1.6.4",
     "angular-material": "^1.1.4",
-    "moment": "^2.18.1"
+    "moment": "^2.18.1",
+    "angular-route": "^1.6.4"
   },
   "overrides": {
     "bootstrap": {

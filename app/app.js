@@ -3,10 +3,12 @@
 
     angular.module('unicerApp', [
             'ngMaterial',
+            'ngMessages',
             'MapModule',
             'LegendsModule',
             'MapInteractionsModule',
             'InterventionsModule',
+            'ngRoute'
             /*'PrintingModule',
             'SearchLocationModule',
             'BaseDocumentalModule',
@@ -39,6 +41,40 @@
                 .primaryPalette('green')
                 .backgroundPalette('whiteGreen');
         }])
+        .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+            $routeProvider
+                .when('/interv', {
+                    template: '<main-interventions></main-interventions>',
+                    controller: '',
+                })
+                .when('/interv/:int_id/edit', {
+                    templateUrl: 'views/templates/interventions/edit.html',
+                    controller: 'EditInterventionController',
+                    controllerAs: 'editCtrl',
+                    resolve: {
+                        intervention: ['$route', 'InterventionsService', _getIntervention]
+                    }
+                })
+                .when('/interv/:int_id/close', {
+                    templateUrl: 'views/templates/interventions/close.html',
+                    controller: 'CloseInterventionController',
+                    controllerAs: 'closeCtrl',
+                    resolve: {
+                        intervention: ['$route', 'InterventionsService', _getIntervention]
+                    }
+                })
+                .when('/interv/:int_id/info', {
+                    templateUrl: 'views/templates/interventions/info.html',
+                    controller: 'MoreInfo',
+                    controllerAs: 'moreInfoCtrl',
+                    resolve: {
+                        intervention: ['$route', 'InterventionsService', _getIntervention]
+                    }
+                }).otherwise({
+                    redirectTo: '/'
+                });
+            $locationProvider.html5Mode(true);
+        }])
         .constant('CONFIG', {
             'ENVIRONMENT': 'Development',
             'URL_WMS': {
@@ -54,5 +90,9 @@
                 'Production': "http://gistree.espigueiro.pt:3001/geoserver"
             }
         });
+
+    function _getIntervention($route, InterventionsService) {
+        return InterventionsService.getIntervention($route.current.params.int_id);
+    }
 
 })();

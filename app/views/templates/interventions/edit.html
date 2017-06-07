@@ -1,0 +1,55 @@
+<div class="top-buttons">
+    <a ng-href="/interv" type="button" class="btn btn-sm btn-success">Voltar Atrás</a>
+</div>
+<div class="project project-success">
+    <div class="project-content">
+        <h2 class="lead">
+            <span><b>PARQUE DAS PEDRAS SALGADAS</b> - Árvore {{editCtrl.inter.id_tree}}</span>
+        </h2>
+        <div class="container">
+            <div class="row" style="margin-left:0px; margin-top:1em; width:100%">
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="content-box">
+                                <div class="content-box-title">
+                                    <span><i class="fa fa-info"></i> &nbsp; Detalhe</span>
+                                </div>
+                                <div style="padding: 0.1em 0.5em;">
+                                    <div><b>Identificador de Intervenção:</b> {{editCtrl.inter.id}}</div>
+                                    <div><b>Tipo de Intervenção:</b> {{editCtrl.inter.id_type}}</div>
+                                    <div><b>Prioridade:</b> <span>{{editCtrl.inter.priority}}</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="content-box">
+                                <div class="content-box-title">
+                                    <span><i class="fa fa-calendar"></i> &nbsp; Datas</span>
+                                </div>
+                                <div style="padding: 0.1em 0.5em;">
+                                    <div><b>Data de Criação:</b> {{editCtrl.inter.created_at | date:'dd-MM-yyyy HH:mm:ss'}}</div>
+                                    <div><b>Data Agendada:</b> {{editCtrl.inter.intervention_date | date:'dd-MM-yyyy HH:mm:ss'}}</div>
+                                    <div><b>Data Finalização:</b> {{editCtrl.inter.finished_at | date:'dd-MM-yyyy HH:mm:ss'}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="content-box">
+                                <div class="content-box-title">
+                                    <span><i class="fa fa-tree"></i> &nbsp; Árvore</span>
+                                </div>
+                                <div style="padding: 0.1em 0.5em;">
+                                    <div><b>Identificador da Árvore:</b> {{editCtrl.inter.id_tree}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div id="minimap" style="width:100%; height:100%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

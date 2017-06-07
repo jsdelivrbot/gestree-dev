@@ -18,9 +18,9 @@ html(lang='en' ng-app='unicerApp')
         .row.no-gutters.full_height
             #menu-container.col-3.full_height(ng-hide="menuIsHidden")
                 control-panel
-            #map-container.full_height.col-9(ng-class="{'col-12': menuIsHidden}" ng-show="mapVisibility")
+            #map-container.full_height.col-9(ng-class="{'col-12': menuIsHidden}" ng-show="mapVisibility")                
                 #map.map.full_height
                 map-interactions(menu-is-hidden="menuIsHidden")
             #interventions-container.full_height.col-9(ng-class="{'col-12': menuIsHidden}" ng-hide="mapVisibility" style="overflow-y:auto;")
-                main-interventions
+                div(ng-view="")                    
     include views/layouts/footer

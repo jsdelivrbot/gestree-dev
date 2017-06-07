@@ -48,8 +48,9 @@
                 </div>
             </div>
             <div style="text-align: right;">
-                <button type="button" class="btn btn-sm" ng-class="{'btn-success': intCardCtrl.intervention.state == 'ABERTA', 'btn-danger': intCardCtrl.intervention.state == 'FECHADA'}"><i class="fa fa-pencil"></i> Editar</button>
-                <button type="button" class="btn btn-sm" ng-class="{'btn-success': intCardCtrl.intervention.state == 'ABERTA', 'btn-danger': intCardCtrl.intervention.state == 'FECHADA'}"><i class="fa fa-plus"></i> Mais Informaçoes</button>
+                <a ng-href="/interv/{{intCardCtrl.intervention.id}}/edit" class="btn btn-sm" ng-class="{'btn-success': intCardCtrl.intervention.state == 'ABERTA', 'btn-danger': intCardCtrl.intervention.state == 'FECHADA'}"><i class="fa fa-pencil"></i> Editar</a>
+                <a ng-href="/interv/{{intCardCtrl.intervention.id}}/info"  class="btn btn-sm" ng-class="{'btn-success': intCardCtrl.intervention.state == 'ABERTA', 'btn-danger': intCardCtrl.intervention.state == 'FECHADA'}"><i class="fa fa-plus"></i> Mais Informaçoes</a>
+                <a ng-href="/interv/{{intCardCtrl.intervention.id}}/close" data-ng-if="intCardCtrl.intervention.state == 'ABERTA'" class="btn btn-sm btn-success" ng-click="intCardCtrl.closeIntervention()">Fechar Intervenção</a>
             </div>
         </div>
     </div>

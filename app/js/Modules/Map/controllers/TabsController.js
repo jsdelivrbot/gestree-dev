@@ -9,6 +9,7 @@
 
     function TabsController($rootScope, $scope) {
         var tc = this;
+
         tc.showMap = function () {
             $rootScope.mapVisibility = true;
         };

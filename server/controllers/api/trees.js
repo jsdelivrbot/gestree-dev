@@ -43,6 +43,7 @@ module.exports = {
         req.body.tid = req.params.tid;
         req.body.iid = req.params.iid;
         db.trees.updateIntervention(req.body).then(data => {
+            console.log("Updating Intervention");
             res.status(200).json(data);
         }).catch(err => {
             console.log(err);

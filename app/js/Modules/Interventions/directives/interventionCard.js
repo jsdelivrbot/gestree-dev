@@ -14,13 +14,23 @@
             scope: {
                 intervention: "="
             },
-            templateUrl: 'views/templates/intervention-card.html'
+            templateUrl: 'views/templates/interventions/intervention-card.html'
         };
         return directive;
 
     }
+
+    InterventionCardController.$inject = [];
+
     /* @ngInject */
     function InterventionCardController() {
-        //console.log(this);
+        var intCardCtrl = this;
+
+        intCardCtrl.closeIntervention = function () {
+            
+            //intCardCtrl.intervention.state = "FECHADA";
+        }
+
+
     }
 })();

@@ -840,7 +840,7 @@ span.fancytree-expanded span.fancytree-expander {
     overflow: auto;
 }
 
-#inter .inter-container > .title {
+#inter .inter-container>.title {
     font-size: 1.3em;
     color: #333;
     font-family: Courier New, Courier, monospace;
@@ -934,7 +934,7 @@ span.fancytree-expanded span.fancytree-expander {
     padding: 0.3em;
 }
 
-#inter .date-filter {
+#inter .date-filter, .date-filter {
     padding: 0.5em;
     font-size: 0.8em;
 }
@@ -943,11 +943,11 @@ span.fancytree-expanded span.fancytree-expander {
     font-weight: bold;
 }
 
-#inter .date-filter .md-datepicker-input {
+#inter .date-filter .md-datepicker-input, .md-datepicker-input {
     min-width: 200px;
 }
 
-#inter md-icon {
+#inter md-icon, md-icon {
     color: rgba(20, 125, 20, 0.65) !important;
 }
 
@@ -1203,6 +1203,18 @@ span.fancytree-expanded span.fancytree-expander {
 
 .project.project-danger .btn-circle:hover {
     background: darkred;
+}
+
+.top-buttons{
+    padding: 1em;
+}
+
+.center {
+    text-align: center;
+}
+
+#minimap {
+    border: 2px ridge #5cb85c; 
 }
 
 

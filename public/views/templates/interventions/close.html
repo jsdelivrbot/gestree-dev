@@ -1,0 +1,69 @@
+<div class="top-buttons">
+    <a ng-href="/interv" type="button" class="btn btn-sm btn-success">Voltar Atrás</a>
+</div>
+<div class="project project-success">
+    <div class="project-content">
+        <h2 class="lead">
+            <span><b>PARQUE DAS PEDRAS SALGADAS</b> - Árvore {{closeCtrl.inter.id_tree}}</span>
+        </h2>
+        <div class="container">
+            <div class="row" style="margin-left:0px; width:100%; margin-top: 1em;">
+                <div class="col-6">
+                    <div class="content-box">
+                        <div class="content-box-title">
+                            <span><i class="fa fa-info"></i> &nbsp; Detalhe</span>
+                        </div>
+                        <div style="padding: 0.1em 0.5em;">
+                            <div><b>Identificador de Intervenção:</b> {{closeCtrl.inter.id}}</div>
+                            <div><b>Tipo de Intervenção:</b> {{closeCtrl.inter.id_type}}</div>
+                            <div><b>Prioridade:</b> <span>{{closeCtrl.inter.priority}}</span></div>
+                        </div>
+                    </div>
+                    <div class="content-box">
+                        <div class="content-box-title">
+                            <span><i class="fa fa-calendar"></i> &nbsp; Datas</span>
+                        </div>
+                        <div style="padding: 0.1em 0.5em;">
+                            <div><b>Data de Criação:</b> {{closeCtrl.inter.created_at | date:'dd-MM-yyyy HH:mm:ss'}}</div>
+                            <div><b>Data Agendada:</b> {{closeCtrl.inter.intervention_date | date:'dd-MM-yyyy HH:mm:ss'}}</div>
+                            <div><b>Data Finalização:</b> {{closeCtrl.inter.finished_at | date:'dd-MM-yyyy HH:mm:ss'}}</div>
+                        </div>
+                    </div>
+                    <div class="content-box">
+                        <div class="content-box-title">
+                            <span><i class="fa fa-tree"></i> &nbsp; Árvore</span>
+                        </div>
+                        <div style="padding: 0.1em 0.5em;">
+                            <div><b>Identificador da Árvore:</b> {{closeCtrl.inter.id_tree}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="content-box">
+                        <div class="content-box-title">
+                            <span><i class="fa fa-times-circle"></i> &nbsp; Dados de Fecho de Intervenção</span>
+                        </div>
+                        <form name="interForm">
+                            <div style="padding: 0.1em 0.5em;">
+                                <section class="date-filter">
+                                    <div class="title">Data de Finalização</div>
+                                    <div class="date-filter-content">
+                                        <md-datepicker required name="date_finish" ng-model="closeCtrl.inter.date" md-open-on-focus md-placeholder="Data de Finalização"></md-datepicker>
+                                    </div>
+                                </section>
+                            </div>
+                            <div ng-messages="interForm.date_finish.$error" ng-if="interForm.$submitted" style="color:maroon" role="alert">
+                                <div class="center alert alert-danger" ng-message="required">É necessária a escolha de uma data de finalização.</div>
+                            </div>
+                            <div ng-if="closeCtrl.message" class="center alert alert-success">{{closeCtrl.message}}</div>
+                            <div class="center">
+                                <button type="submit" class="btn btn-sm btn-success" ng-click="closeCtrl.close(interForm)">Fechar Intervenção</button>
+                            </div>
+                            <br>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

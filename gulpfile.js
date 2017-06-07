@@ -39,7 +39,7 @@ var paths = {
         'server/controllers/*.js'
     ],
     templates: [
-        './app/views/templates/*'
+        './app/views/**'
     ],
     config: './server/config/database_config.js'
 };
@@ -55,7 +55,7 @@ gulp.task('jade:compile', function () {
 
 gulp.task('templates:copy', function () {
     gulp.src(paths.templates)
-        .pipe(gulp.dest('./public/views/templates'));
+        .pipe(gulp.dest('./public/views'));
 })
 
 //Concatinate js into index.js, minify and save in public/js.

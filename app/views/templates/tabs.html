@@ -1,10 +1,12 @@
 <div class="panel">
     <div class="tabbable-line">
         <ul id="lefttopmenutabs" role="tablist" class="nav nav-tabs">
-            <a data-toggle="tab" data-tooltip="Camadas" ng-click="tc.setTab(1);tc.showMap()" href="#layers" role="tab" class="nav-item nav-link tooltip-bl active"><i class="my-icon my-icon-camadas"></i></a>
-            <a data-toggle="tab" data-tooltip="Legenda" ng-click="tc.setTab(2);tc.showMap()" href="#legenda" role="tab" class="nav-item nav-link tooltip-bl"><i class="my-icon my-icon-legends"></i></a>
-            <!--<a data-toggle="tab" data-tooltip="Impressão" href="#imprimir" role="tab" class="nav-item nav-link tooltip-bl"><i class="my-icon my-icon-imprimir"></i></a>-->
-            <a data-toggle="tab" data-tooltip="Intervenções" ng-click="tc.setTab(3);tc.hideMap();" href="#inter" role="tab" class="nav-item nav-link tooltip-bl"><i class="my-icon my-icon-tree"></i></a>
+            <a data-toggle="tab" data-tooltip="Camadas" data-target="#layers" ng-click="tc.setTab(1);tc.showMap()" href="/layers" role="tab"
+                class="nav-item nav-link tooltip-bl active"><i class="my-icon my-icon-camadas"></i></a>
+            <a data-toggle="tab" data-tooltip="Legenda" data-target="#legenda" ng-click="tc.setTab(2);tc.showMap()" href="/legenda" role="tab"
+                class="nav-item nav-link tooltip-bl"><i class="my-icon my-icon-legends"></i></a>
+            <a data-toggle="tab" data-tooltip="Intervenções" data-target="#inter" ng-click="tc.setTab(3);tc.hideMap();" href="/interv"
+                role="tab" class="nav-item nav-link tooltip-bl"><i class="my-icon my-icon-tree"></i></a>
             <span ng-show="tc.selectedTab!=3">
                 <button type="button" ng-click="tc.hideMenu()" class="btn btn-secondary btn-circle btn-hide">
                     <i class="fa fa-arrow-left"></i>
@@ -69,7 +71,8 @@
                             <div class="input-filter-content">
                                 <div class="input-group input-group-sm" style="width: 50%">
                                     <span class="input-group-addon" id="basic-addon1"><i class="fa fa-tree"></i></span>
-                                    <input type="number" class="form-control" ng-model="filterData.id_tree" placeholder="Identificador" aria-describedby="basic-addon1">
+                                    <input type="text" ng-pattern="/^(\d)+$/" class="form-control" ng-model="filterData.id_tree" placeholder="Identificador"
+                                        aria-describedby="basic-addon1">
                                 </div>
                             </div>
                         </section>
