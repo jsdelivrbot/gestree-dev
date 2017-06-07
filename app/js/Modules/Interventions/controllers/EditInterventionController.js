@@ -18,6 +18,16 @@
             editCtrl.inter.id_type = type;
         }
 
+        editCtrl.save = function () {
+            editCtrl.error = '';
+            InterventionsService.updateIntervention(editCtrl.inter)
+                .then(function (data) {
+                    editCtrl.message = "A intervenção foi alterada com sucesso.";
+                }).catch(function (err) {
+                    editCtrl.error = "Ocorreu um erro ao tentar alterar a intervenção";
+                });
+        }
+
         activate();
 
         function activate() {

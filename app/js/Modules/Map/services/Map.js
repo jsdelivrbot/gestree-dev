@@ -99,8 +99,6 @@
     };
 
     MapInstance.prototype._addWFSLayer = function (layerData, style) {
-        console.log("Style");
-        console.log(style);
         if (this._checkLayer(layerData.key)) {
             var wfsLayer = new ol.layer.Vector({
                 source: new ol.source.Vector({

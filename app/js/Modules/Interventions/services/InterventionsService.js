@@ -57,7 +57,7 @@
         };
 
         function _closeIntervention(inter) {
-            return _updateIntervention(inter);
+           return _updateIntervention(inter);
         };
     }
 })();

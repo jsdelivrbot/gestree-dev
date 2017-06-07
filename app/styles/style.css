@@ -1207,8 +1207,6 @@ span.fancytree-expanded span.fancytree-expander {
 
 .inter-buttons{
     display: grid;
-    text-align: right;
-    padding: 1em;
 }
 
 .center {
