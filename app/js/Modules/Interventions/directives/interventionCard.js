@@ -20,17 +20,8 @@
 
     }
 
-    InterventionCardController.$inject = [];
-
     /* @ngInject */
     function InterventionCardController() {
         var intCardCtrl = this;
-
-        intCardCtrl.closeIntervention = function () {
-            
-            //intCardCtrl.intervention.state = "FECHADA";
-        }
-
-
     }
 })();

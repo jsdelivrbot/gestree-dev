@@ -17,12 +17,12 @@
             closeCtrl.inter.state = "FECHADA";
             InterventionsService.closeIntervention(closeCtrl.inter)
                 .then(function (data) {
-                    closeCtrl.message = "A intervenção foi fechada.";
+                    closeCtrl.message = "A intervenção foi fechada com sucesso.";
                     $timeout(function () {
                         $location.path('/interv');
                     }, 1000);
                 }).catch(function (err) {
-                    console.err("Intervention Error");
+                    closeCtrl.error = "Ocorreu um erro no fecho da intervenção.";
                 });
         };
     }

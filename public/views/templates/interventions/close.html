@@ -1,6 +1,3 @@
-<div class="top-buttons">
-    <a ng-href="/interv" type="button" class="btn btn-sm btn-success">Voltar Atrás</a>
-</div>
 <div class="project project-success">
     <div class="project-content">
         <h2 class="lead">
@@ -24,9 +21,9 @@
                             <span><i class="fa fa-calendar"></i> &nbsp; Datas</span>
                         </div>
                         <div style="padding: 0.1em 0.5em;">
-                            <div><b>Data de Criação:</b> {{closeCtrl.inter.created_at | date:'dd-MM-yyyy HH:mm:ss'}}</div>
-                            <div><b>Data Agendada:</b> {{closeCtrl.inter.intervention_date | date:'dd-MM-yyyy HH:mm:ss'}}</div>
-                            <div><b>Data Finalização:</b> {{closeCtrl.inter.finished_at | date:'dd-MM-yyyy HH:mm:ss'}}</div>
+                            <div><b>Data de Criação:</b> {{closeCtrl.inter.created_at | date:'dd-MM-yyyy'}}</div>
+                            <div><b>Data Agendada:</b> {{closeCtrl.inter.intervention_date | date:'dd-MM-yyyy'}}</div>
+                            <div><b>Data Finalização:</b> {{closeCtrl.inter.finished_at | date:'dd-MM-yyyy'}}</div>
                         </div>
                     </div>
                     <div class="content-box">
@@ -48,19 +45,23 @@
                                 <section class="date-filter">
                                     <div class="title">Data de Finalização</div>
                                     <div class="date-filter-content">
-                                        <md-datepicker required name="date_finish" ng-model="closeCtrl.inter.date" md-open-on-focus md-placeholder="Data de Finalização"></md-datepicker>
+                                        <md-datepicker required name="date_finish" ng-model="closeCtrl.inter.finished_at" md-open-on-focus md-placeholder="Data de Finalização"></md-datepicker>
                                     </div>
                                 </section>
                             </div>
                             <div ng-messages="interForm.date_finish.$error" ng-if="interForm.$submitted" style="color:maroon" role="alert">
                                 <div class="center alert alert-danger" ng-message="required">É necessária a escolha de uma data de finalização.</div>
                             </div>
+                            <div ng-if="closeCtrl.error" class="center alert alert-danger">{{closeCtrl.error}}</div>
                             <div ng-if="closeCtrl.message" class="center alert alert-success">{{closeCtrl.message}}</div>
                             <div class="center">
                                 <button type="submit" class="btn btn-sm btn-success" ng-click="closeCtrl.close(interForm)">Fechar Intervenção</button>
                             </div>
                             <br>
                         </form>
+                    </div>
+                    <div class="inter-buttons">
+                        <a ng-href="/interv" type="button" class="btn btn-sm btn-success"><i class="fa fa-arrow-left"></i> Voltar Atrás</a>
                     </div>
                 </div>
             </div>

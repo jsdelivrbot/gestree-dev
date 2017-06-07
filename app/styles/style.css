@@ -847,35 +847,35 @@ span.fancytree-expanded span.fancytree-expander {
     text-align: center;
 }
 
-#inter .input-filter {
+.input-filter, .in {
     padding: 0.5em;
     font-size: 0.8em;
 }
 
-#inter .input-filter .title {
+.input-filter .title {
     font-weight: bold;
 }
 
-#inter .input-filter-content {
+.input-filter-content {
     min-width: 90%;
     border-bottom: 1px #5cb85c solid;
     padding: 0.5em;
     width: 90%;
 }
 
-#inter .input-filter-content .input-group-addon {
+.input-filter-content .input-group-addon {
     background-color: #5cb85c;
     color: #eee;
 }
 
-#inter .input-filter-content .form-control:focus {
+.input-filter-content .form-control:focus {
     color: #464a4c;
     background-color: #fff;
     border-color: #5cb85c;
     outline: none;
 }
 
-#inter .input-filter-content .dropdown button {
+.input-filter-content .dropdown button {
     color: #464a4c;
     background-color: #5cb85c;
     border-color: #464a4c;
@@ -883,7 +883,7 @@ span.fancytree-expanded span.fancytree-expander {
     outline: none;
 }
 
-#inter .input-filter-content .dropdown-toggle::after {
+.input-filter-content .dropdown-toggle::after {
     position: absolute;
     top: 45%;
     right: 10%;
@@ -910,23 +910,23 @@ span.fancytree-expanded span.fancytree-expander {
     cursor: pointer;
 }
 
-#inter .radio-filter {
+.radio-filter {
     padding: 0.5em;
     font-size: 0.8em;
 }
 
-#inter .radio-filter .title {
+.radio-filter .title {
     font-weight: bold;
 }
 
-#inter .radio-filter-content {
+.radio-filter-content {
     min-width: 90%;
     border-bottom: 1px #5cb85c solid;
     padding: 0.3em;
     width: 90%;
 }
 
-#inter .radio-filter-content-inline {
+.radio-filter-content-inline {
     display: inline;
     display: -webkit-inline-box;
     min-width: 90%;
@@ -934,7 +934,7 @@ span.fancytree-expanded span.fancytree-expander {
     padding: 0.3em;
 }
 
-#inter .date-filter, .date-filter {
+.date-filter, .date-filter {
     padding: 0.5em;
     font-size: 0.8em;
 }
@@ -1092,8 +1092,8 @@ span.fancytree-expanded span.fancytree-expander {
 
 .project {
     font-size: 0.75em;
-    margin: 0 5px;
-    min-height: 150px;
+    margin: 0 2px;
+    min-height: 120px;
     height: auto;
 }
 
@@ -1101,7 +1101,7 @@ span.fancytree-expanded span.fancytree-expander {
     background: #fff;
     border: 1px solid #ddd;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    margin: 5px 2px;
+    margin: 2px 2px;
     overflow: hidden;
 }
 
@@ -1205,7 +1205,9 @@ span.fancytree-expanded span.fancytree-expander {
     background: darkred;
 }
 
-.top-buttons{
+.inter-buttons{
+    display: grid;
+    text-align: right;
     padding: 1em;
 }
 

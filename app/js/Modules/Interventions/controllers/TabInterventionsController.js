@@ -5,9 +5,9 @@
         .module('InterventionsModule')
         .controller('TabInterventionsController', TabInterventionsController);
 
-    TabInterventionsController.$inject = ["$scope", "InterventionsTypeFactory", "FilterDataService"];
+    TabInterventionsController.$inject = ["$scope", "InterventionTypesFactory", "FilterDataService"];
 
-    function TabInterventionsController($scope, InterventionsTypeFactory, FilterDataService) {
+    function TabInterventionsController($scope, InterventionTypesFactory, FilterDataService) {
         var tbInCtrl = this;
         $scope.filterData = {};
         $scope.filterDate = {};
@@ -30,7 +30,7 @@
         init();
 
         function init() {
-            InterventionsTypeFactory.get().then(function (d) {
+            InterventionTypesFactory.get().then(function (d) {
                 tbInCtrl.interTypes = d;
                 tbInCtrl.selInterType = "--";
             });

@@ -11,7 +11,7 @@ exports.up = (pgm) => {
         },
         'id_type': {
             'type': 'int',
-            'references': '"PSalgadas"."InterventionsType" (id)'
+            'references': '"PSalgadas"."InterventionTypes" (id)'
         },
         'id_tree': {
             'type': 'int',

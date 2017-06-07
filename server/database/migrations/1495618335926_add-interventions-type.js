@@ -1,7 +1,7 @@
 exports.up = (pgm) => {
     pgm.createTable({
         'schema': 'PSalgadas',
-        'name': 'InterventionsType'
+        'name': 'InterventionTypes'
     }, {
         'id': {
             'type': 'serial',
@@ -18,13 +18,13 @@ exports.up = (pgm) => {
             'type': 'varchar(250)'
         }
     });
-    pgm.sql('INSERT INTO "PSalgadas"."InterventionsType" ("typeName", "typeDescription") ' +
+    pgm.sql('INSERT INTO "PSalgadas"."InterventionTypes" ("typeName", "typeDescription") ' +
         'VALUES (\'Inter1\', \'Desc1\'), (\'Inter2\', \'Desc2\'), (\'Inter3\', \'Desc3\')');
 };
 
 exports.down = (pgm) => {
     pgm.dropTable({
         'schema': 'PSalgadas',
-        'name': 'InterventionsType'
+        'name': 'InterventionTypes'
     });
 };

@@ -11,6 +11,7 @@
         this.getAllInterventions = _getAllInterventions;
         this.getIntervention = _getIntervention;
         this.closeIntervention = _closeIntervention;
+        this.updateIntervention = _updateIntervention;
 
         function _getAllInterventions() {
             var deferred = $q.defer();
@@ -38,21 +39,25 @@
             return deferred.promise;
         };
 
-        function _closeIntervention(inter) {
+        function _updateIntervention(inter) {
             var deferred = $q.defer();
             $http({
                 method: 'PUT',
-                url: 'api/trees/'+inter.id_tree+'/interventions/'+inter.id,
+                url: 'api/interventions/' + inter.id,
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 data: inter
-            }).then(function successCallback(response){
+            }).then(function successCallback(response) {
                 deferred.resolve(response.data);
-            }, function errorCallback(err){
+            }, function errorCallback(err) {
                 deferred.reject(err);
             });
             return deferred.promise;
-        }
+        };
+
+        function _closeIntervention(inter) {
+            return _updateIntervention(inter);
+        };
     }
 })();

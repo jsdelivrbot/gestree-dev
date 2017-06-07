@@ -3,11 +3,11 @@
 
     angular
         .module('InterventionsModule')
-        .factory('InterventionsTypeFactory', InterventionsTypeFactory);
+        .factory('InterventionTypesFactory', InterventionTypesFactory);
 
-    InterventionsTypeFactory.$inject = ["$q", "$http"];
+    InterventionTypesFactory.$inject = ["$q", "$http"];
 
-    function InterventionsTypeFactory($q, $http) {
+    function InterventionTypesFactory($q, $http) {
         return {
             get: _get
         };

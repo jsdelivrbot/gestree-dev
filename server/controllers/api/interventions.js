@@ -18,10 +18,9 @@ module.exports = {
         }
     },
     get(req, res, next) {
-        db.interventions.get({
-            'iid': req.params.iid
-        }).then(data => {
-            res.status(200).json(data);
-        }).catch(err => next(err));
+        db.interventions.get({'iid': req.params.iid})
+            .then(data => {
+                res.status(200).json(data);
+            }).catch(err => next(err));
     }
 }

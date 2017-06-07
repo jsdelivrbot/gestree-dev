@@ -13,7 +13,6 @@
         var _tree = intervention.tree;
         var _coordinates = [_tree.geom.coordinates[0][0], _tree.geom.coordinates[0][1]];
         activate();
-
         function activate() {
             Map.setCurrentTarget("minimap");
             Map.setCenterAndZoom(_coordinates, 21, 'EPSG:27493');
@@ -27,6 +26,6 @@
             _layer.setStyle(function (feature) {
                 return feature.id_ == _tree.gid ? StylesFactory.treeHighlight() : StylesFactory.treeDefault();
             });
-        }
+        };
     }
 })();

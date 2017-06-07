@@ -52,7 +52,8 @@
                     controller: 'EditInterventionController',
                     controllerAs: 'editCtrl',
                     resolve: {
-                        intervention: ['$route', 'InterventionsService', _getIntervention]
+                        intervention: ['$route', 'InterventionsService', _getIntervention],
+                        interTypes: ['InterventionTypesFactory', _getInterventionTypes]
                     }
                 })
                 .when('/interv/:int_id/close', {
@@ -93,6 +94,10 @@
 
     function _getIntervention($route, InterventionsService) {
         return InterventionsService.getIntervention($route.current.params.int_id);
+    }
+
+    function _getInterventionTypes(InterventionTypesFactory) {
+        return InterventionTypesFactory.get();
     }
 
 })();
