@@ -3,11 +3,24 @@
 
     angular
         .module('InterventionsModule')
-        .controller('TabInterventionsController', TabInterventionsController);
+        .directive('interventionsTab', Interventions);
 
-    TabInterventionsController.$inject = ["$scope", "InterventionTypesFactory", "FilterDataService"];
+    function Interventions() {
+        var directive = {
+            bindToController: true,
+            controller: InterventionsTabController,
+            controllerAs: 'intTabCtrl',
+            restrict: 'E',
+            scope: {},
+            templateUrl: 'views/templates/control-panel/interventionsTab.html'
+        };
+        return directive;
 
-    function TabInterventionsController($scope, InterventionTypesFactory, FilterDataService) {
+    }
+    /* @ngInject */
+    InterventionsTabController.$inject = ["$scope", "InterventionTypesFactory", "FilterDataService"];
+
+    function InterventionsTabController($scope, InterventionTypesFactory, FilterDataService) {
         var tbInCtrl = this;
         $scope.filterData = {};
         $scope.filterDate = {};
@@ -34,12 +47,12 @@
                 tbInCtrl.interTypes = d;
                 tbInCtrl.selInterType = "--";
             });
-            
+
             $scope.$watch('filterData', function (newVal, oldVal) {
                 FilterDataService.setFilter(newVal);
             }, true);
 
-            $scope.$watch('filterDate', function(newVal, oldVal) {
+            $scope.$watch('filterDate', function (newVal, oldVal) {
                 FilterDataService.setFilterDate(newVal);
             }, true);
         }

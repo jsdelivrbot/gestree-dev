@@ -29,7 +29,7 @@ var paths = {
         openlayerscss: './public/lib/openlayers/dist/ol-debug.css'
     },
     compileScripts: {
-        js: ['app/app.js', 'app/js/**/**/*.js'],
+        js: ['app/app.js', 'app/config.js', 'app/js/**/**/*.js'],
         css: 'app/styles/*.+(less|css)'
     },
     serverTests: [
@@ -145,7 +145,7 @@ gulp.task('test:server:coverage', function () {
 });
 
 // Run migrations
-gulp.task('set-db-url', function() {
+gulp.task('set-db-url', function () {
     return process.env.DATABASE_URL = require(paths.config)[process.env.NODE_ENV || 'development'].url;
 });
 gulp.task('migrations:up:all', ['set-db-url'], function (cb) {

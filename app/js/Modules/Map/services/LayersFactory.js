@@ -58,7 +58,8 @@
                 }
             },
             addLayer: addLayer,
-            removeProtectedLayers: removeProtectedLayers
+            removeProtectedLayers: removeProtectedLayers,
+            url: '/layers'
         }
     };
 })();

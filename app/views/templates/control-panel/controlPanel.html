@@ -1,0 +1,28 @@
+<div class="panel">
+    <div class="tabbable-line">
+        <ul id="lefttopmenutabs" role="tablist" class="nav nav-tabs">
+            <a data-toggle="tab" data-tooltip="Camadas" data-target="#layers" ng-click="tc.setTab(1);cPanelCtrl.showMap()" href="/layers" role="tab"
+                class="nav-item nav-link tooltip-bl active"><i class="my-icon my-icon-camadas"></i></a>
+            <a data-toggle="tab" data-tooltip="Legenda" data-target="#legenda" ng-click="tc.setTab(2);cPanelCtrl.showMap()" href="/legenda" role="tab"
+                class="nav-item nav-link tooltip-bl"><i class="my-icon my-icon-legends"></i></a>
+            <a data-toggle="tab" data-tooltip="Intervenções" data-target="#inter" ng-click="tc.setTab(3);cPanelCtrl.hideMap();" href="/interv"
+                role="tab" class="nav-item nav-link tooltip-bl"><i class="my-icon my-icon-tree"></i></a>
+            <span ng-show="tc.selectedTab!=3">
+                <button type="button" ng-click="cPanelCtrl.hideMenu()" class="btn btn-secondary btn-circle btn-hide">
+                    <i class="fa fa-arrow-left"></i>
+                </button>
+            </span>
+        </ul>
+        <div id="tabcontent" class="tab-content">
+            <div id="layers" role="tabpanel" class="tab-pane active">
+                <layers-tab></layers-tab>
+            </div>
+            <div id="legenda" role="tabpanel" class="tab-pane">
+                <legends-tab></legends-tab>
+            </div>
+            <div id="inter" role="tabpanel" class="tab-pane">
+                <interventions-tab></interventions-tab>
+            </div>
+        </div>
+    </div>
+</div>

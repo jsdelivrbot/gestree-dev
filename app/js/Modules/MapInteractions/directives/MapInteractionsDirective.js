@@ -5,9 +5,9 @@
         .module('MapInteractionsModule')
         .directive('mapInteractions', MapInteractionsDirective);
 
-    MapInteractionsDirective.$inject = ['MapService'];
+    MapInteractionsDirective.$inject = ['Map'];
 
-    function MapInteractionsDirective(MapService) {
+    function MapInteractionsDirective(Map) {
         var directive = {
             bindToController: true,
             controller: 'MapInteractionsController',
@@ -22,7 +22,7 @@
         return directive;
 
         function link(scope, element, attrs) {
-            MapService.map.addControl(new ol.control.MousePosition({
+            Map.map.addControl(new ol.control.MousePosition({
                 coordinateFormat: function (coord) {
                     return ol.coordinate.format(coord, " {x} , {y} ", 4);
                 },
@@ -31,7 +31,7 @@
                 target: document.getElementById('coordinate4326'),
                 undefinedHTML: '&nbsp;'
             }));
-            MapService.map.addControl(new ol.control.MousePosition({
+            Map.map.addControl(new ol.control.MousePosition({
                 coordinateFormat: function (coord) {
                     return ol.coordinate.format(coord, " {x} , {y} ", 4);
                 },

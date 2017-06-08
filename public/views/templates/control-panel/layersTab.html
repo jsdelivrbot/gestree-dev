@@ -1,0 +1,27 @@
+<div class="tree-container">
+    <div id="tree" class="panel-body fancytree-plain fancytree-colorize-selected fancytree-fade-expander"></div>
+</div>
+<div class="bottom-tree-commands">
+    <button data-tooltip="Expandir" ng-click="layersCtrl.expandTree()" class="btn btn-secondary btn-circle">
+        <i class="fa fa-expand"></i>
+    </button>
+    <button data-tooltip="Colapsar" ng-click="layersCtrl.collapseTree()" class="btn btn-secondary btn-circle">
+        <i class="fa fa-compress"></i>
+    </button>
+    <button data-tooltip="Limpar" ng-click="layersCtrl.deselectAll()" class="btn btn-secondary btn-circle">
+        <i class="fa fa-minus-square"></i>
+    </button>
+    <button data-tooltip="Ajuda" ng-click="layersCtrl.help()" class="btn btn-secondary btn-circle">
+        <i class="fa fa-question"></i>
+    </button>
+</div>
+<section class="base-layer">
+    <span class="dropup">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{layersCtrl.baseLayer}}
+        </button>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="" ng-repeat="baseLayer in layersCtrl.baseLayers" ng-click="layersCtrl.setBaseLayer(baseLayer)">{{baseLayer.name}}</a>
+        </div>
+    </span>
+</section>

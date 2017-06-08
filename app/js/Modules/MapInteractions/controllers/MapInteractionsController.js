@@ -5,41 +5,44 @@
         .module('MapInteractionsModule')
         .controller('MapInteractionsController', MapInteractionsController);
 
-    MapInteractionsController.$inject = ['$scope', '$timeout', 'MapService', 'MapInteractionsService'];
+    MapInteractionsController.$inject = ['$rootScope', '$scope', '$timeout', 'MapInteractionsService', 'Map'];
 
-    function MapInteractionsController($scope, $timeout, MapService, MapInteractionsService) {
+    function MapInteractionsController($rootScope, $scope, $timeout, MapInteractionsService, Map) {
+        var MapInterCtrl = this;
+
         MapInteractionsService.setMapInteraction('DragPan');
-        this.search = false;
-        this.isActive = function (active) {
-            return this.active == active;
+
+        MapInterCtrl.search = false;
+        MapInterCtrl.isActive = function (active) {
+            return MapInterCtrl.active == active;
         }
-        this.setDefaultView = function (a) {
-            MapService.setDefaultView();
+        MapInterCtrl.setDefaultView = function (a) {
+            Map.setDefaultView();
         };
-        this.setInteraction = function (interaction) {
+        MapInterCtrl.setInteraction = function (interaction) {
             MapInteractionsService.setMapInteraction(interaction);
         };
-        this.showMenu = function () {
-            this.menuIsHidden = false;
+        MapInterCtrl.showMenu = function () {
+            $rootScope.menuIsHidden = false;
         };
-        this.showSearchBar = function(){
-            this.search = !this.search;
+        MapInterCtrl.showSearchBar = function () {
+            MapInterCtrl.search = !MapInterCtrl.search;
         }
-        this.isSearch = function(){
-            return !this.search;
+        MapInterCtrl.isSearch = function () {
+            return !MapInterCtrl.search;
         }
+        
+        $rootScope.$watch('menuIsHidden', function () {
+            $timeout(function () {
+                Map.map.updateSize();
+            }, 50);
+        });
+
         $scope.$watch(function () {
             return MapInteractionsService.getMapInteraction();
         }, function (active) {
             $scope.itCtrl.active = active;
-        });
-        $scope.$watch('itCtrl.active', function () {
             $scope.itCtrl.currentInteraction = MapInteractionsService.getText();
-        });
-        $scope.$watch('itCtrl.menuIsHidden', function () {
-            $timeout(function () {
-                MapService.map.updateSize();
-            }, 50);
         });
     }
 })();

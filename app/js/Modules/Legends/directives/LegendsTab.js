@@ -3,16 +3,16 @@
 
     angular
         .module('LegendsModule')
-        .directive('legendsGroup', LegendsGroup);
+        .directive('legendsTab', Legends);
 
-    function LegendsGroup() {
+    function Legends() {
         var directive = {
             bindToController: true,
             controller: LegendsController,
             controllerAs: 'lgCtrl',
             restrict: 'E',
             scope: {},
-            templateUrl: 'views/templates/legends.html'
+            templateUrl: 'views/templates/control-panel/legendsTab.html'
         };
         return directive;
     }

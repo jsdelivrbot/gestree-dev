@@ -5,9 +5,9 @@
         .module('InterventionsModule')
         .controller('EditInterventionController', EditInterventionController);
 
-    EditInterventionController.$inject = ['Map', 'StylesFactory', 'interTypes', 'intervention', 'InterventionsService'];
+    EditInterventionController.$inject = ['Minimap', 'StylesFactory', 'interTypes', 'intervention', 'InterventionsService'];
 
-    function EditInterventionController(Map, StylesFactory, interTypes, intervention, InterventionsService) {
+    function EditInterventionController(Minimap, StylesFactory, interTypes, intervention, InterventionsService) {
         var editCtrl = this;
         editCtrl.inter = intervention;
         editCtrl.interTypes = interTypes;
@@ -31,9 +31,9 @@
         activate();
 
         function activate() {
-            Map.setCurrentTarget("minimap");
-            Map.setCenterAndZoom(_coordinates, 21, 'EPSG:27493');
-            var _layer = Map.addLayer({
+            Minimap.setTarget("minimap");
+            Minimap.setCenterAndZoom(_coordinates, 21, 'EPSG:27493');
+            var _layer = Minimap.addLayer({
                 "workspace": "unicer",
                 "name": "arvores",
                 "type": "WFS",

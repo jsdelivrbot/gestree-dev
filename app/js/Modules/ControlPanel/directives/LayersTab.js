@@ -1,22 +1,21 @@
 (function () {
     'use strict';
+
     angular
-        .module('MapModule')
-        .directive('controlPanel', Directive);
+        .module('ControlPanelModule')
+        .directive('layersTab', LayersTab);
 
-    Directive.$inject = ['MapService', 'LayersFactory','LegendsService', '$timeout'];
+    LayersTab.$inject = ['Map', 'LayersFactory', 'LegendsService', '$timeout'];
 
-    function Directive(MapService, Layers, Legends, $timeout) {
+    function LayersTab(Map, Layers, Legends, $timeout) {
         var directive = {
             bindToController: true,
-            controller: 'TabsController',
-            controllerAs: 'tc',
+            controller: 'LayersController',
+            controllerAs: 'layersCtrl',
             link: link,
             restrict: 'E',
-            scope: {
-                menuIsHidden: "="
-            },
-            templateUrl: 'views/templates/tabs.html'
+            scope: {},
+            templateUrl: 'views/templates/control-panel/layersTab.html'
         };
         return directive;
 
@@ -28,7 +27,7 @@
                 clickFolderMode: 4,
                 selectMode: 3,
                 source: {
-                    url: '/layers',
+                    url: Layers.url,
                 },
                 toggleEffect: {
                     effect: "drop",
@@ -50,31 +49,31 @@
                             if (data.node.isSelected()) {
                                 children.forEach(function (el) {
                                     el.data.key = el.key;
-                                    MapService.addLayer(el.data);
+                                    Map.addLayer(el.data);
                                     Legends.addLayerLegend(el);
                                 });
                             } else {
                                 children.forEach(function (el) {
                                     el.data.key = el.key;
-                                    MapService.removeLayer(el.data);
+                                    Map.removeLayer(el.data);
                                     Legends.removeLayerLegend(el);
                                 });
                             }
                         } else {
                             if (data.node.isSelected()) {
                                 data.node.data.key = data.node.key;
-                                MapService.addLayer(data.node.data);
+                                Map.addLayer(data.node.data);
                                 Legends.addLayerLegend(data.node);
                             } else {
                                 data.node.data.key = data.node.key;
-                                MapService.removeLayer(data.node.data);
+                                Map.removeLayer(data.node.data);
                                 Legends.removeLayerLegend(data.node);
                             }
                         }
                     }, 1);
                 },
                 init: function (event, data) {
-                    var zoomLevel = MapService.map.getView().getZoom();
+                    var zoomLevel = Map.map.getView().getZoom();
                     if (zoomLevel === parseInt(zoomLevel, 10)) {
                         data.tree.visit(function (node) {
                             if (node.data.preselected) {
@@ -97,7 +96,7 @@
                 click: function (event, data) {
                     if (data.targetType === 'icon' && !data.node.isFolder()) {
                         var extent = ol.proj.transformExtent(data.node.data.extent, ol.proj.get('EPSG:27493'), 'EPSG:3857');
-                        MapService.map.getView().fit(extent, {
+                        Map.map.getView().fit(extent, {
                             duration: 1500
                         });
                     }

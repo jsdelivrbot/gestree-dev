@@ -4,11 +4,12 @@
     angular.module('unicerApp', [
             'ngMaterial',
             'ngMessages',
-            'MapModule',
+            'ngRoute',
             'LegendsModule',
-            'MapInteractionsModule',
+            'MapModule',
             'InterventionsModule',
-            'ngRoute'
+            'ControlPanelModule',
+            'MainModule',
             /*'PrintingModule',
             'SearchLocationModule',
             'BaseDocumentalModule',
@@ -30,12 +31,11 @@
                 'A200': '000000',
                 'A400': '000000',
                 'A700': '000000',
-                'contrastDefaultColor': 'light', // whether, by default, text (contrast)
-                // on this palette should be dark or light
-                'contrastDarkColors': ['50', '100', //hues which contrast should be 'dark' by default
+                'contrastDefaultColor': 'light',
+                'contrastDarkColors': ['50', '100', 
                     '200', '300', '400', 'A100'
                 ],
-                'contrastLightColors': undefined // could also specify this if default was 'dark'
+                'contrastLightColors': undefined
             });
             $mdThemingProvider.theme('default')
                 .primaryPalette('green')
@@ -44,8 +44,12 @@
         .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
             $routeProvider
                 .when('/interv', {
-                    template: '<main-interventions></main-interventions>',
-                    controller: '',
+                    templateUrl: 'views/templates/interventions/interventionsList.html',
+                    controller: 'InterventionsListController',
+                    controllerAs: 'intListCtrl',
+                    resolve: {
+                        Interventions: ['InterventionsService', _getInterventions]
+                    }
                 })
                 .when('/interv/:int_id/edit', {
                     templateUrl: 'views/templates/interventions/edit.html',
@@ -66,7 +70,7 @@
                 })
                 .when('/interv/:int_id/info', {
                     templateUrl: 'views/templates/interventions/info.html',
-                    controller: 'MoreInfo',
+                    controller: 'MoreInfoContoller',
                     controllerAs: 'moreInfoCtrl',
                     resolve: {
                         intervention: ['$route', 'InterventionsService', _getIntervention]
@@ -75,22 +79,11 @@
                     redirectTo: '/'
                 });
             $locationProvider.html5Mode(true);
-        }])
-        .constant('CONFIG', {
-            'ENVIRONMENT': 'Development',
-            'URL_WMS': {
-                'Development': "http://localhost:3000/geoserver/wms",
-                'Production': "http://gistree.espigueiro.pt:3001/geoserver"
-            },
-            'URL_WFS': {
-                'Development': "http://localhost:3000/geoserver/wfs",
-                'Production': "http://gistree.espigueiro.pt:3001/geoserver"
-            },
-            'URL_PRINT': {
-                'Development': "http://localhost:3000/geoserver/pdf",
-                'Production': "http://gistree.espigueiro.pt:3001/geoserver"
-            }
-        });
+        }]);
+
+    function _getInterventions(InterventionsService) {
+        return InterventionsService.getAllInterventions();
+    }
 
     function _getIntervention($route, InterventionsService) {
         return InterventionsService.getIntervention($route.current.params.int_id);

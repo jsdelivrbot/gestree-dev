@@ -18,7 +18,6 @@
             closeCtrl.inter.state = "FECHADA";
             InterventionsService.closeIntervention(closeCtrl.inter)
                 .then(function (data) {
-                    console.log("In Close");
                     closeCtrl.message = "A intervenção foi fechada com sucesso.";
                     $timeout(function () {
                         $location.path('/interv');

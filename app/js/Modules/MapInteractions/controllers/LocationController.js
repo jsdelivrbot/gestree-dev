@@ -5,9 +5,9 @@
         .module('MapInteractionsModule')
         .controller('LocationController', LocationController);
 
-    LocationController.$inject = ['LocationsService', 'MapService'];
+    LocationController.$inject = ['LocationsService', 'Map'];
 
-    function LocationController(LocationsService, MapService) {
+    function LocationController(LocationsService, Map) {
         var locCtrl = this;
         activate();
 
@@ -18,7 +18,7 @@
             locCtrl.location = {};
         }
         locCtrl.onSelectCallback = function (model) {
-            MapService.zoomToCoordinate(model.geometry.coordinates, 'EPSG:3857');
+            Map.zoomToCoordinate(model.geometry.coordinates, 'EPSG:3857');
         }
     }
 })();

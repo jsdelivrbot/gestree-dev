@@ -1214,7 +1214,9 @@ span.fancytree-expanded span.fancytree-expander {
 }
 
 #minimap {
-    border: 2px ridge #5cb85c; 
+    border: 2px ridge #5cb85c;
+    width:100%; 
+    height:270px; 
 }
 
 

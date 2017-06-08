@@ -5,26 +5,26 @@
         .module('MapInteractionsModule')
         .service('MapInteractionsService', MapInteractionsService)
 
-    MapInteractionsService.$inject = ['MapService', 'LayerQueryResultsService', '$http'];
+    MapInteractionsService.$inject = ['Map', 'LayerQueryResultsService', '$http'];
 
-    function MapInteractionsService(MapService, LayerQueryResultsService, $http) {
+    function MapInteractionsService(Map, LayerQueryResultsService, $http) {
         var data = {
             interaction: '',
             interactionText: ''
         };
-
+        var map = Map.getMapObject();
         this.setMapInteraction = function (interaction) {
-            MapService.map.getInteractions().pop();
+            map.getInteractions().pop();
             switch (interaction) {
                 case 'DragPan':
                     data.interactionText = 'Mover Mapa';
-                    MapService.map.addInteraction(new ol.interaction.DragPan());
+                    map.addInteraction(new ol.interaction.DragPan());
                     break;
                 case 'ZoomIn':
                     data.interactionText = 'Aproximar Mapa';
-                    MapService.map.addInteraction(new ol.interaction.Pointer({
+                    map.addInteraction(new ol.interaction.Pointer({
                         handleDownEvent: function (e) {
-                            var view = MapService.map.getView();
+                            var view = map.getView();
                             view.setCenter(e.coordinate);
                             view.setZoom(view.getZoom() + 1);
                         }
@@ -32,9 +32,9 @@
                     break;
                 case 'ZoomOut':
                     data.interactionText = 'Afastar Mapa';
-                    MapService.map.addInteraction(new ol.interaction.Pointer({
+                    map.addInteraction(new ol.interaction.Pointer({
                         handleDownEvent: function (e) {
-                            var view = MapService.map.getView();
+                            var view = map.getView();
                             view.setCenter(e.coordinate);
                             view.setZoom(view.getZoom() - 1);
                         }
@@ -42,14 +42,14 @@
                     break;
                 case 'ZoomBox':
                     data.interactionText = 'Fazer Zoom de Caixa';
-                    MapService.map.addInteraction(new ol.interaction.DragZoom({
+                    map.addInteraction(new ol.interaction.DragZoom({
                         condition: ol.events.condition.always,
                         className: 'drag_zoom_box'
                     }));
                     break;
                 case 'Identify':
                     data.interactionText = 'Identificar Camadas';
-                    MapService.map.addInteraction(new ol.interaction.Pointer({
+                    map.addInteraction(new ol.interaction.Pointer({
                         handleDownEvent: function (evt) {
                             LayerQueryResultsService.getLayersInfo(evt, evt.map.getView(), evt.map.getLayers().getArray());
                         }
