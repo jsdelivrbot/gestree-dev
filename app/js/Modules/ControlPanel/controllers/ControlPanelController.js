@@ -10,22 +10,44 @@
     function ControlPanel($rootScope, $scope) {
         var cPanelCtrl = this;
 
-        cPanelCtrl.showMap = function () {
-            $rootScope.mapVisibility = true;
+        cPanelCtrl.hidePanel = function () {
+            $scope.$emit("changePanelVisibility", false);
         };
 
-        cPanelCtrl.hideMap = function () {
-            $rootScope.mapVisibility = false;
+        cPanelCtrl.setActiveTab = function (id, mapVisibility) {
+            cPanelCtrl.active = id;
         };
 
-        cPanelCtrl.hideMenu = function () {
-            $rootScope.menuIsHidden = true;
+        cPanelCtrl.isActiveTab = function (id) {
+            return cPanelCtrl.active === id;
         };
 
         init();
-        
         function init() {
-            $rootScope.mapVisibility = true;
+            cPanelCtrl.active = 1;
+            cPanelCtrl.tabs = [{
+                    id: 1,
+                    name: "Camadas",
+                    tooltip: "Camadas",
+                    iconClass: "my-icon-camadas",
+                    location: "/"
+                },
+                {
+                    id: 2,
+                    name: "Legendas",
+                    tooltip: "Legendas",
+                    iconClass: "my-icon-legends",
+                    location: "/"
+                },
+                {
+                    id: 3,
+                    name: "Intervenções",
+                    tooltip: "Intervenções",
+                    iconClass: "my-icon-tree",
+                    location: "/interv"
+                }
+            ];
+
         }
     }
 })();

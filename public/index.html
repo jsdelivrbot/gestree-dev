@@ -30,13 +30,7 @@
         <div id="menu-container" ng-hide="menuIsHidden" class="col-3 full_height">
           <control-panel></control-panel>
         </div>
-        <div id="map-container" ng-class="{'col-12': menuIsHidden}" ng-show="mapVisibility" class="full_height col-9">               
-          <div id="map" class="map full_height"></div>
-          <map-interactions menu-is-hidden="menuIsHidden"></map-interactions>
-        </div>
-        <div id="interventions-container" ng-class="{'col-12': menuIsHidden}" ng-hide="mapVisibility" style="overflow-y:auto;" class="full_height col-9">
-          <div ng-view="">                   </div>
-        </div>
+        <div id="container" ng-view="" class="full_height col-9">                </div>
       </div>
     </div>
     <!-- bower:js-->

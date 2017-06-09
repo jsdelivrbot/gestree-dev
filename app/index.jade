@@ -9,11 +9,7 @@ html(lang='en' ng-app='unicerApp')
             img(src="/images/menu/logo.png" width="75" height="45")
     .container-fluid.no-padding.full_height
         .row.no-gutters.full_height
-            #menu-container.col-3.full_height(ng-hide="menuIsHidden")
+            #menu-container.col-3.full_height
                 control-panel
-            #map-container.full_height.col-9(ng-class="{'col-12': menuIsHidden}" ng-show="mapVisibility")                
-                #map.map.full_height
-                map-interactions(menu-is-hidden="menuIsHidden")
-            #interventions-container.full_height.col-9(ng-class="{'col-12': menuIsHidden}" ng-hide="mapVisibility" style="overflow-y:auto;")
-                div(ng-view="")                    
+            #container.full_height.col-9(ng-view="")                 
     include views/layouts/footer

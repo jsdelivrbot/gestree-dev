@@ -1,26 +1,23 @@
 <div class="panel">
     <div class="tabbable-line">
         <ul id="lefttopmenutabs" role="tablist" class="nav nav-tabs">
-            <a data-toggle="tab" data-tooltip="Camadas" data-target="#layers" ng-click="tc.setTab(1);cPanelCtrl.showMap()" href="/layers" role="tab"
-                class="nav-item nav-link tooltip-bl active"><i class="my-icon my-icon-camadas"></i></a>
-            <a data-toggle="tab" data-tooltip="Legenda" data-target="#legenda" ng-click="tc.setTab(2);cPanelCtrl.showMap()" href="/legenda" role="tab"
-                class="nav-item nav-link tooltip-bl"><i class="my-icon my-icon-legends"></i></a>
-            <a data-toggle="tab" data-tooltip="Intervenções" data-target="#inter" ng-click="tc.setTab(3);cPanelCtrl.hideMap();" href="/interv"
-                role="tab" class="nav-item nav-link tooltip-bl"><i class="my-icon my-icon-tree"></i></a>
-            <span ng-show="tc.selectedTab!=3">
-                <button type="button" ng-click="cPanelCtrl.hideMenu()" class="btn btn-secondary btn-circle btn-hide">
+            <a ng-href="{{tab.location}}" ng-repeat="tab in cPanelCtrl.tabs" data-toggle="tab" data-tooltip="{{tab.tooltip}}" ng-click="cPanelCtrl.setActiveTab(tab.id, tab.mapVisibility)" class="nav-item nav-link tooltip-bl" ng-class="{active: cPanelCtrl.isActiveTab({{tab.id}})}" >
+                <i class="my-icon {{tab.iconClass}}"></i>
+            </a>
+            <span>
+                <button type="button" ng-click="cPanelCtrl.hidePanel()" class="btn btn-secondary btn-circle btn-hide">
                     <i class="fa fa-arrow-left"></i>
                 </button>
             </span>
         </ul>
         <div id="tabcontent" class="tab-content">
-            <div id="layers" role="tabpanel" class="tab-pane active">
+            <div id="layers" role="tabpanel" class="tab-pane" ng-class="{active: cPanelCtrl.isActiveTab(1)}">
                 <layers-tab></layers-tab>
             </div>
-            <div id="legenda" role="tabpanel" class="tab-pane">
+            <div id="legenda" role="tabpanel" class="tab-pane" ng-class="{active: cPanelCtrl.isActiveTab(2)}">
                 <legends-tab></legends-tab>
             </div>
-            <div id="inter" role="tabpanel" class="tab-pane">
+            <div id="inter" role="tabpanel" class="tab-pane" ng-class="{active: cPanelCtrl.isActiveTab(3)}">
                 <interventions-tab></interventions-tab>
             </div>
         </div>

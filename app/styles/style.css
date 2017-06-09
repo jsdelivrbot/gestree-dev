@@ -847,7 +847,8 @@ span.fancytree-expanded span.fancytree-expander {
     text-align: center;
 }
 
-.input-filter, .in {
+.input-filter,
+.in {
     padding: 0.5em;
     font-size: 0.8em;
 }
@@ -934,7 +935,8 @@ span.fancytree-expanded span.fancytree-expander {
     padding: 0.3em;
 }
 
-.date-filter, .date-filter {
+.date-filter,
+.date-filter {
     padding: 0.5em;
     font-size: 0.8em;
 }
@@ -943,11 +945,13 @@ span.fancytree-expanded span.fancytree-expander {
     font-weight: bold;
 }
 
-#inter .date-filter .md-datepicker-input, .md-datepicker-input {
+#inter .date-filter .md-datepicker-input,
+.md-datepicker-input {
     min-width: 200px;
 }
 
-#inter md-icon, md-icon {
+#inter md-icon,
+md-icon {
     color: rgba(20, 125, 20, 0.65) !important;
 }
 
@@ -1054,6 +1058,10 @@ span.fancytree-expanded span.fancytree-expander {
 
 
 /* JOKORD.Panel.Interventions [End] */
+
+.interventions-list {
+    overflow-y: auto;
+}
 
 
 /* JOKORD.Interventions.Cards [Start] */
@@ -1205,7 +1213,7 @@ span.fancytree-expanded span.fancytree-expander {
     background: darkred;
 }
 
-.inter-buttons{
+.inter-buttons {
     display: grid;
 }
 
@@ -1215,8 +1223,8 @@ span.fancytree-expanded span.fancytree-expander {
 
 #minimap {
     border: 2px ridge #5cb85c;
-    width:100%; 
-    height:270px; 
+    width: 100%;
+    height: 270px;
 }
 
 
