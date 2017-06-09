@@ -10,7 +10,6 @@
             controller: 'ControlPanelController',
             controllerAs: 'cPanelCtrl',
             restrict: 'E',
-            scope: {},
             templateUrl: 'views/templates/control-panel/controlPanel.html'
         };
         return directive;

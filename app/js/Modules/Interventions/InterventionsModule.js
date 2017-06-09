@@ -28,5 +28,14 @@
             // You can also set when your calendar begins and ends.
             $mdDateLocaleProvider.firstRenderableDate = new Date(2000, 1, 1);
             $mdDateLocaleProvider.lastRenderableDate = new Date(2100, 12, 31);
+        }])
+        .run(['ControlPanelService', function (cPanelService) {
+            cPanelService.addTab({
+                id: 3,
+                name: "Intervenções",
+                tooltip: "Intervenções",
+                iconClass: "my-icon-tree",
+                location: "/interv"
+            });
         }]);
 })();

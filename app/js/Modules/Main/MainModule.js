@@ -2,13 +2,23 @@
     'use strict';
 
     angular
-        .module('MainModule', ['unicerApp.configs'])
+        .module('MainModule', [
+            'ngMaterial',
+            'ngMessages',
+            'ngRoute',
+            'ControlPanelModule'
+        ])
         .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
             $routeProvider
                 .when('/', {
                     templateUrl: 'views/templates/main.html',
-                    controller: ['Map', function (Map) {
+                    controller: ['Map', '$scope', '$timeout', function (Map, $scope, $timeout) {
                         Map.setTarget("map");
+                        $scope.$watch('cPanelVisibility', function () {
+                            $timeout(function () {
+                                Map.map.updateSize();
+                            }, 50);
+                        });
                     }]
                 })
                 .when('/interv', {

@@ -13,6 +13,7 @@
         editCtrl.interTypes = interTypes;
         var _tree = intervention.tree;
         var _coordinates = [_tree.geom.coordinates[0][0], _tree.geom.coordinates[0][1]];
+        var style = new StylesFactory();
 
         editCtrl.setInterType = function (type) {
             editCtrl.inter.id_type = type;
@@ -41,7 +42,7 @@
                 "opacity": 1
             });
             _layer.setStyle(function (feature) {
-                return feature.id_ == _tree.gid ? StylesFactory.treeHighlight() : StylesFactory.treeDefault();
+                return feature.id_ == _tree.gid ? style.treeHighlight() : style.treeDefault();
             });
         }
     }

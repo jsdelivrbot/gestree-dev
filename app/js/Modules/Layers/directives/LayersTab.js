@@ -2,12 +2,12 @@
     'use strict';
 
     angular
-        .module('ControlPanelModule')
+        .module('LayersModule')
         .directive('layersTab', LayersTab);
 
-    LayersTab.$inject = ['Map', 'LayersFactory', 'LegendsService', '$timeout'];
+    LayersTab.$inject = ['Map', 'LayersFactory', 'LegendsService', 'StylesFactory', '$timeout'];
 
-    function LayersTab(Map, Layers, Legends, $timeout) {
+    function LayersTab(Map, Layers, Legends, StylesFactory, $timeout) {
         var directive = {
             bindToController: true,
             controller: 'LayersController',
@@ -20,6 +20,7 @@
         return directive;
 
         function link(scope, element, attrs) {
+            var styles = new StylesFactory();
             var tree = element.find("#tree").fancytree({
                 extensions: ["edit", "glyph", "wide"],
                 checkbox: true,
@@ -49,7 +50,7 @@
                             if (data.node.isSelected()) {
                                 children.forEach(function (el) {
                                     el.data.key = el.key;
-                                    Map.addLayer(el.data);
+                                    Map.addLayer(el.data, styles[el.style]);
                                     Legends.addLayerLegend(el);
                                 });
                             } else {
@@ -62,7 +63,7 @@
                         } else {
                             if (data.node.isSelected()) {
                                 data.node.data.key = data.node.key;
-                                Map.addLayer(data.node.data);
+                                Map.addLayer(data.node.data, styles[data.node.data.style]);
                                 Legends.addLayerLegend(data.node);
                             } else {
                                 data.node.data.key = data.node.key;

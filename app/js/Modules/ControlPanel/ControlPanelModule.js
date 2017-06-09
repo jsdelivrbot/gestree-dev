@@ -1,5 +1,5 @@
-(function() {
+(function () {
     'use strict';
 
-    angular.module('ControlPanelModule', []);
+    angular.module('ControlPanelModule', ['LayersModule', 'LegendsModule', 'InterventionsModule']);
 })();

@@ -5,13 +5,13 @@
         .module('ControlPanelModule')
         .controller('ControlPanelController', ControlPanel);
 
-    ControlPanel.$inject = ['$rootScope', '$scope'];
+    ControlPanel.$inject = ['ControlPanelService', '$scope'];
 
-    function ControlPanel($rootScope, $scope) {
+    function ControlPanel(ControlPanelService, $scope) {
         var cPanelCtrl = this;
 
         cPanelCtrl.hidePanel = function () {
-            $scope.$emit("changePanelVisibility", false);
+            $scope.$emit("controlPanel:panelVisibility", false);
         };
 
         cPanelCtrl.setActiveTab = function (id, mapVisibility) {
@@ -23,31 +23,10 @@
         };
 
         init();
+
         function init() {
             cPanelCtrl.active = 1;
-            cPanelCtrl.tabs = [{
-                    id: 1,
-                    name: "Camadas",
-                    tooltip: "Camadas",
-                    iconClass: "my-icon-camadas",
-                    location: "/"
-                },
-                {
-                    id: 2,
-                    name: "Legendas",
-                    tooltip: "Legendas",
-                    iconClass: "my-icon-legends",
-                    location: "/"
-                },
-                {
-                    id: 3,
-                    name: "Intervenções",
-                    tooltip: "Intervenções",
-                    iconClass: "my-icon-tree",
-                    location: "/interv"
-                }
-            ];
-
+            cPanelCtrl.tabs = ControlPanelService.getTabs();
         }
     }
 })();

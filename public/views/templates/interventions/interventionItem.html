@@ -48,8 +48,8 @@
         </div>
         <div style="text-align: right;">
             <button ng-click="intItemCtrl.edit()" class="btn btn-sm" ng-class="{'btn-success': intItemCtrl.intervention.state == 'ABERTA', 'btn-danger': intItemCtrl.intervention.state == 'FECHADA'}"><i class="fa fa-pencil"></i> Editar</button>
-            <button ng-click="intItemCtrl.info()" class="btn btn-sm" ng-class="{'btn-success': intItemCtrl.intervention.state == 'ABERTA', 'btn-danger': intItemCtrl.intervention.state == 'FECHADA'}"><i class="fa fa-plus"></i> Mais Informaçoes</a>
-            <button ng-click="intItemCtrl.close()" class="btn btn-sm btn-success" data-ng-if="intItemCtrl.intervention.state == 'ABERTA'">Fechar Intervenção</a>
+            <button ng-click="intItemCtrl.info()" class="btn btn-sm" ng-class="{'btn-success': intItemCtrl.intervention.state == 'ABERTA', 'btn-danger': intItemCtrl.intervention.state == 'FECHADA'}"><i class="fa fa-plus"></i> Mais Informaçoes</button>
+            <button ng-click="intItemCtrl.close()" class="btn btn-sm btn-success" data-ng-if="intItemCtrl.intervention.state == 'ABERTA'">Fechar Intervenção</button>
         </div>
     </div>
 </div>

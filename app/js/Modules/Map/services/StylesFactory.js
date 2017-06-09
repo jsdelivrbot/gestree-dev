@@ -6,7 +6,7 @@
         .factory('StylesFactory', StylesFactory);
 
     function StylesFactory() {
-        return new Styles();
+        return Styles;
 
         function Styles() {
             this.treeDefault = function () {

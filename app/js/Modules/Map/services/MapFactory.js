@@ -103,19 +103,18 @@
                             });
                         },
                         strategy: ol.loadingstrategy.bbox,
-                    }),
-                    style: style
+                    })
                 });
                 this._layers[layerData.key] = wfsLayer;
                 if (layerData.style) {
-                    wfsLayer.setStyle(new ol.style.Style(layerData.style));
+                    wfsLayer.setStyle(style);
                     wfsLayer.setOpacity(layerData.opacity);
                 }
                 this.map.addLayer(wfsLayer);
                 this._layers[layerData.key].visible = true;
             } else {
                 if (!this._layers[layerData.key].visible) {
-                    this.map.addLayer(_layers[layerData.key]);
+                    this.map.addLayer(this._layers[layerData.key]);
                     this._layers[layerData.key].visible = true;
                 }
             }
@@ -143,7 +142,7 @@
                 this._layers[layerData.key].visible = true;
             } else {
                 if (!this._layers[layerData.key].visible) {
-                    this.map.getLayers().insertLayer(_layers[layerData.key]);
+                    this.map.getLayers().insertLayer(this._layers[layerData.key]);
                     this._layers[layerData.key].visible = true;
                 }
             }
@@ -170,7 +169,7 @@
                 this._layers[layerData.key].visible = true;
             } else {
                 if (!this._layers[layerData.key].visible) {
-                    this.map.getLayers().insertLayer(_layers[layerData.key]);
+                    this.map.getLayers().insertLayer(this._layers[layerData.key]);
                     this._layers[layerData.key].visible = true;
                 }
             }
@@ -179,6 +178,13 @@
         _Map_.prototype._checkLayer = function (layer_key) {
             return !this._layers.hasOwnProperty(layer_key);
         };
+
+        _Map_.prototype.removeLayer = function(layerData){
+            if (this._layers[layerData.key]) {
+                this.map.removeLayer(this._layers[layerData.key]);
+                this._layers[layerData.key].visible = false;
+            }
+        }
 
         function _calculateResolution(zoomLevel) {
             if (typeof zoomLevel == 'undefined') {

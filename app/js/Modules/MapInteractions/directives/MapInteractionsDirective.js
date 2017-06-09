@@ -14,10 +14,7 @@
             controllerAs: 'itCtrl',
             link: link,
             restrict: 'E',
-            scope: {
-                menuIsHidden: "="
-            },
-            templateUrl: 'views/templates/interactions.html'
+            templateUrl: 'views/templates/map-interactions/interactions.html'
         };
         return directive;
 

@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('ControlPanelModule')
+        .module('LayersModule')
         .controller('LayersController', LayersController);
 
     LayersController.$inject = ['Map', '$scope', '$rootScope'];

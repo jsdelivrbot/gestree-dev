@@ -1,14 +1,13 @@
 (function () {
     'use strict';
 
-    angular
-        .module('LegendsModule', [])
+    angular.module('LayersModule', [])
         .run(['ControlPanelService', function (cPanelService) {
             cPanelService.addTab({
-                id: 2,
-                name: "Legendas",
-                tooltip: "Legendas",
-                iconClass: "my-icon-legends",
+                id: 1,
+                name: "Camadas",
+                tooltip: "Camadas",
+                iconClass: "my-icon-camadas",
                 location: "/"
             });
         }]);

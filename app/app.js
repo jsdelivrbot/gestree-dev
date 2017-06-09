@@ -2,13 +2,6 @@
     'use strict';
 
     angular.module('unicerApp', [
-            'ngMaterial',
-            'ngMessages',
-            'ngRoute',
-            'LegendsModule',
-            'MapModule',
-            'InterventionsModule',
-            'ControlPanelModule',
             'MainModule',
             /*'PrintingModule',
             'SearchLocationModule',
@@ -41,17 +34,4 @@
                 .primaryPalette('green')
                 .backgroundPalette('whiteGreen');
         }]);
-
-    function _getInterventions(InterventionsService) {
-        return InterventionsService.getAllInterventions();
-    }
-
-    function _getIntervention($route, InterventionsService) {
-        return InterventionsService.getIntervention($route.current.params.int_id);
-    }
-
-    function _getInterventionTypes(InterventionTypesFactory) {
-        return InterventionTypesFactory.get();
-    }
-
 })();

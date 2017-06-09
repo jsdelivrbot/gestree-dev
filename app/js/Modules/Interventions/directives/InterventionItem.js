@@ -8,7 +8,7 @@
     function InterventionItem() {
         var directive = {
             bindToController: true,
-            controller: InterventionItemController,
+            controller: 'InterventionItemController',
             controllerAs: 'intItemCtrl',
             restrict: 'E',
             scope: {
@@ -19,21 +19,4 @@
         return directive;
     }
 
-    InterventionItemController.$inject = ['$scope', '$location']
-
-    /* @ngInject */
-    function InterventionItemController($scope, $location) {
-        var intItemCtrl = this;
-        intItemCtrl.edit = function () {
-            $location.path('/interv/' + intItemCtrl.intervention.id + '/edit');
-        };
-
-        intItemCtrl.info = function () {
-            $location.path('/interv/' + intItemCtrl.intervention.id + '/info');
-        };
-
-        intItemCtrl.close = function () {
-            $location.paht('/interv/' + intItemCtrl.intervention.id + '/close');
-        };
-    }
 })();
