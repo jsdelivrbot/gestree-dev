@@ -10,6 +10,11 @@
     function MainController($scope) {
         var mainCtrl = this;
         var eventPanelVisibility;
+
+        mainCtrl.showControlPanel = function(){
+            $scope.cPanelVisibility = true;
+        };
+
         $scope.$on("controlPanel:panelVisibility", function (e, visibility) {
             e.stopPropagation();
             eventPanelVisibility = $scope.cPanelVisibility = visibility;

@@ -1,11 +1,12 @@
 <div class="panel">
     <div class="tabbable-line">
         <ul id="lefttopmenutabs" role="tablist" class="nav nav-tabs">
-            <a ng-href="{{tab.location}}" ng-repeat="tab in cPanelCtrl.tabs" data-toggle="tab" data-tooltip="{{tab.tooltip}}" ng-click="cPanelCtrl.setActiveTab(tab.id, tab.mapVisibility)" class="nav-item nav-link tooltip-bl" ng-class="{active: cPanelCtrl.isActiveTab({{tab.id}})}" >
+            <a ng-href="{{tab.location}}" ng-repeat="tab in cPanelCtrl.tabs" data-toggle="tab" data-tooltip="{{tab.tooltip}}" ng-click="cPanelCtrl.setActiveTab(tab.id, tab.mapVisibility)"
+                class="nav-item nav-link tooltip-bl" ng-class="{active: cPanelCtrl.isActiveTab({{tab.id}})}">
                 <i class="my-icon {{tab.iconClass}}"></i>
             </a>
             <span>
-                <button type="button" ng-click="cPanelCtrl.hidePanel()" class="btn btn-secondary btn-circle btn-hide">
+                <button type="button" ng-click="cPanelCtrl.hideControlPanel()" class="btn btn-secondary btn-circle btn-hide">
                     <i class="fa fa-arrow-left"></i>
                 </button>
             </span>

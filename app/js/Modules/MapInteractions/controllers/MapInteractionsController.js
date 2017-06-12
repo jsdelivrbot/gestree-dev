@@ -19,9 +19,6 @@
         MapInterCtrl.setInteraction = function (interaction) {
             MapInteractionsService.setMapInteraction(interaction);
         };
-        MapInterCtrl.showControlPanel = function () {
-            $scope.$emit("controlPanel:panelVisibility", true);
-        };
         MapInterCtrl.showSearchBar = function () {
             MapInterCtrl.search = !MapInterCtrl.search;
         }

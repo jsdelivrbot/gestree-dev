@@ -26,7 +26,8 @@
   <body ng-cloak ng-controller="MainController as mainCtrl">
     <nav class="navbar navbar-toggleable-md fixed-top"><a href="#" class="navbar-brand"><img src="/images/menu/logo.png" width="75" height="45"></a></nav>
     <div class="container-fluid no-padding full_height">
-      <div class="row no-gutters full_height">
+      <div class="row no-gutters full_height"><span ng-hide="cPanelVisibility" class="btn-show">
+          <button ng-click="mainCtrl.showControlPanel()" class="btn btn-secondary btn-circle"><i class="fa fa-arrow-right"></i></button></span>
         <div id="menu-container" ng-show="cPanelVisibility" class="col-3 full_height">
           <control-panel></control-panel>
         </div>

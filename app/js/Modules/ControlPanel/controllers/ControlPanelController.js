@@ -10,7 +10,7 @@
     function ControlPanel(ControlPanelService, $scope) {
         var cPanelCtrl = this;
 
-        cPanelCtrl.hidePanel = function () {
+        cPanelCtrl.hideControlPanel = function () {
             $scope.$emit("controlPanel:panelVisibility", false);
         };
 
@@ -20,6 +20,10 @@
 
         cPanelCtrl.isActiveTab = function (id) {
             return cPanelCtrl.active === id;
+        };
+
+        cPanelCtrl.showControlPanel = function () {
+            $scope.$emit("controlPanel:panelVisibility", true);
         };
 
         init();

@@ -5,15 +5,17 @@
         .module('InterventionsModule')
         .controller('EditInterventionController', EditInterventionController);
 
-    EditInterventionController.$inject = ['Minimap', 'StylesFactory', 'interTypes', 'intervention', 'InterventionsService'];
+    EditInterventionController.$inject = ['Minimap', 'StylesFactory', 'interTypes', 'intervention', 'InterventionsService', '$scope', '$timeout'];
 
-    function EditInterventionController(Minimap, StylesFactory, interTypes, intervention, InterventionsService) {
+    function EditInterventionController(Minimap, StylesFactory, interTypes, intervention, InterventionsService, $scope, $timeout) {
         var editCtrl = this;
-        editCtrl.inter = intervention;
-        editCtrl.interTypes = interTypes;
         var _tree = intervention.tree;
         var _coordinates = [_tree.geom.coordinates[0][0], _tree.geom.coordinates[0][1]];
         var style = new StylesFactory();
+        var mapResize;
+        editCtrl.inter = intervention;
+        editCtrl.interTypes = interTypes;
+
 
         editCtrl.setInterType = function (type) {
             editCtrl.inter.id_type = type;
@@ -29,6 +31,10 @@
                 });
         }
 
+        $scope.$on('$destroy', function () {
+            $timeout.cancel(mapResize);
+        });
+
         activate();
 
         function activate() {
@@ -41,10 +47,12 @@
                 "extent": [43858.7242812507, 208452.333204688, 44110.6809999999, 209084.351648437],
                 "opacity": 1
             });
-            Minimap.updateSize();
             _layer.setStyle(function (feature) {
                 return feature.id_ == _tree.gid ? style.treeHighlight() : style.treeDefault();
             });
+            mapResize = $timeout(function () {
+                Minimap.updateSize();
+            }, 100);
         }
     }
 })();

@@ -10,13 +10,10 @@
     function LegendsService(Globals) {
         this.groups = [];
         this.addLayerLegend = function (layer) {
-            console.log("Adding Legend!");
             var style = layer.data.style || '';
             var index = _findGroupIndex(this.groups, layer.parent);
-            console.log("Group Index", index);
             if (index > -1) {
                 var layerIndex = _findIndex(this.groups[index].data, layer);
-                console.log("Layer Index", layerIndex);
                 if (layerIndex == -1) {
                     this.groups[index].data.push({
                         _key: layer.data.key,
@@ -56,7 +53,6 @@
 
         function _findIndex(array, data) {
             return array.findIndex(function (e) {
-                console.log("Element Key", e._key, "Data Key", this.data.key);
                 return e._key == this.data.key;
             }, data);
         }

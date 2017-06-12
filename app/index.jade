@@ -9,6 +9,9 @@ html(lang='en' ng-app='unicerApp')
             img(src="/images/menu/logo.png" width="75" height="45")
     .container-fluid.no-padding.full_height
         .row.no-gutters.full_height
+            span(ng-hide="cPanelVisibility" class="btn-show")
+                button.btn.btn-secondary.btn-circle(ng-click="mainCtrl.showControlPanel()")
+                    i.fa.fa-arrow-right
             #menu-container.col-3.full_height(ng-show="cPanelVisibility")
                 control-panel
             #container.full_height(ng-view="" ng-class="cPanelVisibility ? 'col-9' : 'col-12'")                 
