@@ -31,6 +31,10 @@
             this.map.setTarget(document.getElementById(target));
         };
 
+        _Map_.prototype.updateSize = function(){
+            this.map.updateSize();
+        };
+
         _Map_.prototype.setDefaultView = function (dv) {
             this.map.setView(this._defaultConfig._defaultView);
         };
@@ -114,8 +118,11 @@
                 this._layers[layerData.key].visible = true;
             } else {
                 if (!this._layers[layerData.key].visible) {
+                    this._layers[layerData.key].setStyle(style);
                     this.map.addLayer(this._layers[layerData.key]);
                     this._layers[layerData.key].visible = true;
+                } else{
+                    this._layers[layerData.key].setStyle(style);
                 }
             }
             return this._layers[layerData.key];

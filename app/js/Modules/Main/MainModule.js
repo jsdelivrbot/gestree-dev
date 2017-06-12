@@ -16,7 +16,7 @@
                         Map.setTarget("map");
                         $scope.$watch('cPanelVisibility', function () {
                             $timeout(function () {
-                                Map.map.updateSize();
+                                Map.updateSize();
                             }, 50);
                         });
                     }]

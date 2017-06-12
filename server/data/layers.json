@@ -2,18 +2,36 @@
         "title": "Arvores",
         "folder": true,
         "expanded": true,
-        "children": [{
-            "title": "Localização",
-            "data": {
-                "workspace": "unicer",
-                "name": "arvores",
-                "type": "WFS",
-                "extent": [43858.7242812507, 208452.333204688, 44110.6809999999, 209084.351648437],
-                "opacity": 1,
-                "queryable": true,
-                "style": "treeDefault"
+        "checkbox": false,
+        "radiogroup": true,
+        "children": [
+            {
+                "title": "Localização",
+                "data": {
+                    "key": "_tree",
+                    "workspace": "unicer",
+                    "name": "arvores",
+                    "type": "WFS",
+                    "extent": [43858.7242812507, 208452.333204688, 44110.6809999999, 209084.351648437],
+                    "opacity": 1,
+                    "queryable": true,
+                    "style": "treeDefault"
+                }
+            },
+            {
+                "title": "Intervenções",
+                "data": {
+                    "key": "_tree",
+                    "workspace": "unicer",
+                    "name": "arvores",
+                    "type": "WFS",
+                    "extent": [43858.7242812507, 208452.333204688, 44110.6809999999, 209084.351648437],
+                    "opacity": 1,
+                    "queryable": true,
+                    "style": "treeIntervention"
+                }
             }
-        }]
+        ]
     },
     {
         "title": "Enquadramento",

@@ -9,10 +9,14 @@
 
     function MainController($scope) {
         var mainCtrl = this;
-
+        var eventPanelVisibility;
         $scope.$on("controlPanel:panelVisibility", function (e, visibility) {
             e.stopPropagation();
-            $scope.cPanelVisibility = visibility;
+            eventPanelVisibility = $scope.cPanelVisibility = visibility;
+        });
+
+        $scope.$on("$destroy", function(e){
+            eventPanelVisibility();
         });
 
         init();

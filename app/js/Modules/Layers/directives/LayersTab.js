@@ -49,24 +49,24 @@
                             var children = data.node.children;
                             if (data.node.isSelected()) {
                                 children.forEach(function (el) {
-                                    el.data.key = el.key;
+                                    el.data.key = el.data.key || el.key;
                                     Map.addLayer(el.data, styles[el.style]);
                                     Legends.addLayerLegend(el);
                                 });
                             } else {
                                 children.forEach(function (el) {
-                                    el.data.key = el.key;
+                                    el.data.key = el.data.key || el.key;
                                     Map.removeLayer(el.data);
                                     Legends.removeLayerLegend(el);
                                 });
                             }
                         } else {
                             if (data.node.isSelected()) {
-                                data.node.data.key = data.node.key;
+                                data.node.data.key = data.node.data.key || data.node.key;
                                 Map.addLayer(data.node.data, styles[data.node.data.style]);
                                 Legends.addLayerLegend(data.node);
                             } else {
-                                data.node.data.key = data.node.key;
+                                data.node.data.key = data.node.data.key || data.node.key;
                                 Map.removeLayer(data.node.data);
                                 Legends.removeLayerLegend(data.node);
                             }
@@ -77,6 +77,9 @@
                     var zoomLevel = Map.map.getView().getZoom();
                     if (zoomLevel === parseInt(zoomLevel, 10)) {
                         data.tree.visit(function (node) {
+                            if (node.checkbox === false) {
+                                node.addClass("icon-padding");
+                            }
                             if (node.data.preselected) {
                                 node.setSelected(true);
                             }

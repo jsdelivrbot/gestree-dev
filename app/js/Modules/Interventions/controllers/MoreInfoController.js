@@ -26,6 +26,7 @@
                 "extent": [43858.7242812507, 208452.333204688, 44110.6809999999, 209084.351648437],
                 "opacity": 1
             });
+            Minimap.updateSize();
             _layer.setStyle(function (feature) {
                 return feature.id_ == _tree.gid ? style.treeHighlight() : style.treeDefault();
             });

@@ -748,6 +748,10 @@ span.fancytree-expanded span.fancytree-expander {
     background-color: #A2C199;
 }
 
+.icon-padding span.fancytree-icon {
+    margin-left: 2em !important;
+}
+
 
 /* JOKORD.Panel.FancyTree [End] */
 
