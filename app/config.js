@@ -5,16 +5,16 @@
         .constant('Globals', {
             'ENVIRONMENT': 'Development',
             'URL_WMS': {
-                'Development': "http://localhost:3002/geoserver/wms",
-                'Production': "/geoserver/wms"
+                'development': "http://localhost:3002/geoserver/wms",
+                'production': "/geoserver/wms"
             },
             'URL_WFS': {
-                'Development': "http://localhost:3002/geoserver/wfs",
-                'Production': "/geoserver/wfs"
+                'development': "http://localhost:3002/geoserver/wfs",
+                'production': "/geoserver/wfs"
             },
             'URL_PRINT': {
-                'Development': "http://localhost:3002/geoserver/pdf",
-                'Production': "/geoserver/pdf"
+                'development': "http://localhost:3002/geoserver/pdf",
+                'production': "/geoserver/pdf"
             }
         });
 })();
