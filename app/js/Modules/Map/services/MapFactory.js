@@ -83,7 +83,7 @@
                         loader: function (extent) {
                             // ADD CONFIG
                             //$.ajax(CONFIG.URL_WFS[CONFIG.ENVIRONMENT], {
-                            $.ajax('http://localhost:3000/geoserver/wfs', {
+                            $.ajax('http://localhost:3002/geoserver/wfs', {
                                 type: 'GET',
                                 data: {
                                     service: 'WFS',
