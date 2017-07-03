@@ -3,7 +3,7 @@
 
     angular.module('unicerApp.configs', [])
         .constant('Globals', {
-            'ENVIRONMENT': 'Production',
+            'ENVIRONMENT': 'production',
             'URL_WMS': {
                 'development': "http://localhost:3002/geoserver/wms",
                 'production': "/geoserver/wms"
