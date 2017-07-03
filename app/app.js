@@ -2,11 +2,7 @@
     'use strict';
 
     angular.module('unicerApp', [
-            'MainModule',
-            /*'PrintingModule',
-            'SearchLocationModule',
-            'BaseDocumentalModule',
-            'ngDialog'*/
+            'MainModule'
         ])
         .config(['$mdThemingProvider', function ($mdThemingProvider) {
             $mdThemingProvider.definePalette('whiteGreen', {
