@@ -4,7 +4,7 @@ module.exports = {
     dialect: 'postgres'
   },
   production: {
-    url: 'postgres://postgres:03e8d2a1e04e5133b5e5045ae05bd700@213.58.234.45:5433/UNICER',
+    url: 'postgres://postgres:03e8d2a1e04e5133b5e5045ae05bd700@172.16.0.2:5432/UNICER',
     dialect: 'postgres',
     logging: false,
     dialectOptions: {
