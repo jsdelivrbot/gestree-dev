@@ -12,7 +12,7 @@
                 new ol.layer.Image({
                     opacity: 1,
                     source: new ol.source.ImageWMS({
-                        url: 'http://localhost:3002/geoserver/wms',
+                        url: '/geoserver/wms',
                         params: {
                             'LAYERS': "unicer:limite"
                         },
@@ -22,7 +22,7 @@
                 new ol.layer.Tile({
                     opacity: 1,
                     source: new ol.source.TileWMS({
-                        url: 'http://localhost:3002/geoserver/wms',
+                        url: '/geoserver/wms',
                         params: {
                             'LAYERS': "unicer:base"
                         },
@@ -32,7 +32,7 @@
                 new ol.layer.Tile({
                     opacity: 1,
                     source: new ol.source.TileWMS({
-                        url: 'http://localhost:3002/geoserver/wms',
+                        url: '/geoserver/wms',
                         params: {
                             'LAYERS': "unicer:edificios"
                         },
