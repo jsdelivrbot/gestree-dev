@@ -39,7 +39,7 @@
         "expanded": true,
         "children": [{
             "title": "Edificios",
-            "preselected": true,
+            /*"preselected": true,*/
             "data": {
                 "workspace": "unicer",
                 "name": "edificios",
@@ -56,7 +56,7 @@
         "expanded": true,
         "children": [{
                 "title": "Camada de Base",
-                "preselected": true,
+                /*"preselected": true,*/
                 "data": {
                     "workspace": "unicer",
                     "name": "base",
@@ -68,7 +68,7 @@
             },
             {
                 "title": "Limite do Parque",
-                "preselected": true,
+                /*"preselected": true,*/
                 "data": {
                     "workspace": "unicer",
                     "name": "limite",
