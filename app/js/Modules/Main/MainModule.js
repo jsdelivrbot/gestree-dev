@@ -56,7 +56,7 @@
                 }).otherwise({
                     redirectTo: '/'
                 });
-            /*$locationProvider.html5Mode(false);*/
+            $locationProvider.html5Mode(false);
         }])
         .run(['Map', function (Map) {
             Map.setTarget("map");
