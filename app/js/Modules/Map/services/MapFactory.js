@@ -81,8 +81,6 @@
                 var wfsLayer = new ol.layer.Vector({
                     source: new ol.source.Vector({
                         loader: function (extent) {
-                            // ADD CONFIG
-                            //$.ajax(CONFIG.URL_WFS[CONFIG.ENVIRONMENT], {
                             $.ajax(Globals.URL_WFS[Globals.ENVIRONMENT], {
                                 type: 'GET',
                                 data: {

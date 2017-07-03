@@ -12,6 +12,8 @@
         var interFilter = {};
         var interDateFilter = {};
 
+        console.log("REACHED HERE!");
+
         $scope.$watch(function () {
             return FilterDataService.getFilter();
         }, function (newVal, oldVal) {
