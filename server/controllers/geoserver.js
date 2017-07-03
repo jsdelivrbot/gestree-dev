@@ -22,5 +22,14 @@ module.exports = {
             target: proxyConf[process.env["NODE_ENV"]].url_print,
             proxyTimeout: 20000
         });
+    },
+    print_create(req,res) {
+        console.log(req.url);
+        console.log(proxyConf[process.env["NODE_ENV"]].url_print_create);
+        apiProxy.web(req, res, {
+            target: proxyConf[process.env["NODE_ENV"]].url_print_create,
+            proxyTimeout: 20000,
+            ignorePath: true
+        });
     }
 };

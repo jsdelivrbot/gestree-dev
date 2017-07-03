@@ -1,0 +1,40 @@
+<div id="imprimir" role="tabpanel" class="tab-pane">
+    <section class="legends-container">
+        <h5>Imprimir intervenções</h5>
+        <section ng-hide="printCtrl.printResults">
+            <section class="radio-filter">
+                <div class="title">Escolha o intervalo de tempo:</div>
+                <div class="title">(Data Agendada)</div>
+                <div class="date-filter-content">
+                    <md-datepicker md-open-on-focus ng-model="printCtrl.filter.interventionStart" md-placeholder="Data de Início"></md-datepicker>
+                    <md-datepicker md-min-date="printCtrl.filter.interventionStart" md-open-on-focus ng-model="printCtrl.filter.interventionEnd"
+                        md-placeholder="Data de Finalização"></md-datepicker>
+                </div>
+            </section>
+            <section class="radio-filter">
+                <div class="title">Escolha o Parque:</div>
+                <div class="radio-filter-content">
+                    <div class="radio radio-primary">
+                        <input type="radio" name="parque" id="print_parque1" value="pedras_salgadas" ng-model="printCtrl.filter.parque">
+                        <label for="print_parque1">Pedras Salgadas - Spa & Nature Park</label>
+                    </div>
+                    <div class="radio radio-primary">
+                        <input type="radio" name="parque" id="print_parque2" value="vidago_palace" ng-model="printCtrl.filter.parque">
+                        <label for="print_parque2">Palace Vidago Hotel</label>
+                    </div>
+                </div>
+            </section>
+        </section>
+        <section ng-show="printCtrl.printResults">
+            {{printCtrl.printResults}}
+        </section>
+        <section class="bottom-tree-commands">
+            <button type="button" ng-click="printCtrl.reset()" class="btn btn-success">
+                    <i class="fa fa-arrow-plus"> Nova Impressão</i>
+            </button>
+            <button type="button" ng-click="printCtrl.print(printCtrl.filter)" class="btn btn-success">
+                    <i class="fa fa-arrow-print"> Imprimir</i>
+            </button>
+        </section>
+    </section>
+</div>

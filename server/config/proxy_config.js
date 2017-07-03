@@ -2,7 +2,8 @@ module.exports = {
     development: {
         url_wms: 'http://gistree.espigueiro.pt:8081/geoserver/wms/',
         url_wfs: 'http://gistree.espigueiro.pt:8081/geoserver/wfs/',
-        url_print: 'http://gistree.espigueiro.pt:8081/geoserver/pdf/'
+        url_print: 'http://gistree.espigueiro.pt:8081/geoserver/pdf/',
+        url_print_create: 'http://gistree.espigueiro.pt:8081/geoserver/pdf/create.json'
     },
     production: {
         url_wms: process.env.WMS_URL,
@@ -17,6 +18,7 @@ module.exports = {
     test: {
         url_wms: 'http://localhost:8081/geoserver/wms/',
         url_wfs: 'http://localhost:8081/geoserver/wfs/',
-        url_print: 'http://localhost:8081/geoserver/pdf/'
+        url_print: 'http://localhost:8081/geoserver/pdf',
+        url_print_create: 'http://gistree.espigueiro.pt:8081/geoserver/pdf/create.json'
     }
 };
