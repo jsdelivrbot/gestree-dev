@@ -10,7 +10,6 @@
     function PrintService($http, $q, Map) {
         var deferred = $q.defer();
 
-        console.log("Center", ol.proj.transform(Map.map.getView().getCenter(), 'EPSG:3857', ol.proj.get('EPSG:27493')));
         this.print = _print;
 
         function _print(print_options) {
