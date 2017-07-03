@@ -8,36 +8,6 @@
                 new ol.layer.Tile({
                     source: new ol.source.OSM({}),
                     queryable: false
-                }),
-                new ol.layer.Image({
-                    opacity: 1,
-                    source: new ol.source.ImageWMS({
-                        url: '/geoserver/wms',
-                        params: {
-                            'LAYERS': "unicer:limite"
-                        },
-                        extent: [43858.7242812507, 208452.333204688, 44110.6809999999, 209084.351648437],
-                    })
-                }),
-                new ol.layer.Tile({
-                    opacity: 1,
-                    source: new ol.source.TileWMS({
-                        url: '/geoserver/wms',
-                        params: {
-                            'LAYERS': "unicer:base"
-                        },
-                        extent: [43858.7242812507, 208452.333204688, 44110.6809999999, 209084.351648437],
-                    })
-                }),
-                new ol.layer.Tile({
-                    opacity: 1,
-                    source: new ol.source.TileWMS({
-                        url: '/geoserver/wms',
-                        params: {
-                            'LAYERS': "unicer:edificios"
-                        },
-                        extent: [43858.7242812507, 208452.333204688, 44110.6809999999, 209084.351648437],
-                    })
                 })
             ]);
             MapProvider.setInteractions([new ol.interaction.MouseWheelZoom(), new ol.interaction.DragPan()]);
