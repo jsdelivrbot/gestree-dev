@@ -16,8 +16,6 @@
         };
 
         printCtrl.print = function (filter) {
-            console.log("Filter", filter);
-            console.log("Printing");
             PrintService.print(filter).then(function (data) {
                 console.log("PrintService::Print()", data);
             }).catch(function (err) {
