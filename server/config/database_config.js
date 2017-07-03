@@ -4,7 +4,7 @@ module.exports = {
     dialect: 'postgres'
   },
   production: {
-    url: process.env.DATABASE_URL,
+    url: 'postgres://postgres:03e8d2a1e04e5133b5e5045ae05bd700@213.58.234.45:5433/UNICER',
     dialect: 'postgres',
     logging: false,
     dialectOptions: {
