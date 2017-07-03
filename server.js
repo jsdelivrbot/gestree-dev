@@ -37,9 +37,9 @@ app.get('/', function (req, res) {
     });
 });
 
-app.use('/*', function (req, res) {
+/*app.use('/*', function (req, res) {
     res.redirect('/');
-});
+});*/
 
 app.use(function (req, res, next) {
     var err = new Error('Not Found');
