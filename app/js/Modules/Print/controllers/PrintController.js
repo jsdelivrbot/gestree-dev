@@ -9,24 +9,64 @@
 
     function PrintController(PrintService, $timeout) {
         var printCtrl = this;
+        printCtrl.reqObject = {};
+        printCtrl.interFilters = false;
 
-        printCtrl.reset = function () {
-            printCtrl.filter = {};
-            printCtrl.printResults = undefined;
+        printCtrl.setParque = function (p) {
+            printCtrl.reqObject.parque = p;
         };
 
-        printCtrl.print = function (filter) {
-            PrintService.print(filter).then(function (data) {
-                console.log("PrintService::Print()", data);
-            }).catch(function (err) {
-                console.log("PrintService::Print()", err);
-            });
+        printCtrl.setContent = function(c){
+            printCtrl.interFilters = (c == 'Intervenções'); 
+            printCtrl.reqObject.content = c;
+        }
+
+        printCtrl.setSeason = function(s){
+            printCtrl.reqObject.season = s;
+        }
+
+        printCtrl.setYear = function(y){
+            printCtrl.reqObject.year = y;
+        }
+
+        printCtrl.setFormat = function(f) {
+            printCtrl.reqObject.format = f;
+        }
+
+        printCtrl.print = function(){
+            // TODO - Validar os Campos (Preenchimento Obrigatório)
         }
 
         activate();
 
         function activate() {
-            printCtrl.filter = {};
+            printCtrl.defaults = {
+                parques: [
+                    'Parque das Pedras',
+                    'Vidago Palace Hotel'
+                ],
+                contents: [
+                    'Árvores',
+                    'Intervenções'
+                ],
+                seasons: [
+                    'Primavera',
+                    'Verão',
+                    'Outono',
+                    'Inverno'
+                ],
+                years: [
+                    2017,
+                    2018,
+                    2019,
+                    2020,
+                    2021
+                ],
+                formats: [
+                    '.csv (Comma Separated Values)',
+                    '.pdf (Printable Document Format)'
+                ]
+            }
         }
     }
 })();

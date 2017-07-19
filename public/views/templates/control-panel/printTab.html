@@ -1,40 +1,109 @@
-<div id="imprimir" role="tabpanel" class="tab-pane">
-    <section class="legends-container">
-        <h5>Imprimir intervenções</h5>
-        <section ng-hide="printCtrl.printResults">
-            <section class="radio-filter">
-                <div class="title">Escolha o intervalo de tempo:</div>
-                <div class="title">(Data Agendada)</div>
-                <div class="date-filter-content">
-                    <md-datepicker md-open-on-focus ng-model="printCtrl.filter.interventionStart" md-placeholder="Data de Início"></md-datepicker>
-                    <md-datepicker md-min-date="printCtrl.filter.interventionStart" md-open-on-focus ng-model="printCtrl.filter.interventionEnd"
-                        md-placeholder="Data de Finalização"></md-datepicker>
-                </div>
-            </section>
-            <section class="radio-filter">
-                <div class="title">Escolha o Parque:</div>
-                <div class="radio-filter-content">
-                    <div class="radio radio-primary">
-                        <input type="radio" name="parque" id="print_parque1" value="pedras_salgadas" ng-model="printCtrl.filter.parque">
-                        <label for="print_parque1">Pedras Salgadas - Spa & Nature Park</label>
-                    </div>
-                    <div class="radio radio-primary">
-                        <input type="radio" name="parque" id="print_parque2" value="vidago_palace" ng-model="printCtrl.filter.parque">
-                        <label for="print_parque2">Palace Vidago Hotel</label>
-                    </div>
-                </div>
-            </section>
-        </section>
-        <section ng-show="printCtrl.printResults">
-            {{printCtrl.printResults}}
-        </section>
-        <section class="bottom-tree-commands">
-            <button type="button" ng-click="printCtrl.reset()" class="btn btn-success">
-                    <i class="fa fa-arrow-plus"> Nova Impressão</i>
-            </button>
-            <button type="button" ng-click="printCtrl.print(printCtrl.filter)" class="btn btn-success">
-                    <i class="fa fa-arrow-print"> Imprimir</i>
-            </button>
-        </section>
+<section class="print-container">
+    <h5>Filtros de Impressão</h5>
+
+    <!-- Parque (Dropdown) -->
+    <section class="input-filter">
+        <div class="title">Parque: </div>
+        <div class="input-filter-content">
+            <div class="dropdown">
+                <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                {{printCtrl.reqObject.parque || '--' }} <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-item" ng-repeat="parque in printCtrl.defaults.parques" ng-click="printCtrl.setParque(parque)"><a>{{parque}}</a></li>
+                </ul>
+            </div>
+        </div>
     </section>
-</div>
+
+    <!-- Conteúdo (Dropdown) -->
+    <section class="input-filter">
+        <div class="title">Conteúdo da Impressão: </div>
+        <div class="input-filter-content">
+            <div class="dropdown">
+                <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                {{printCtrl.reqObject.content || '--' }} <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-item" ng-repeat="content in printCtrl.defaults.contents" ng-click="printCtrl.setContent(content)"><a>{{content}}</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ? Se Tipo="Intervenções" (Dropdown) -->
+
+    <!-- Época de Intervenção (Dropdown) -->
+    <section class="input-filter-alt" ng-show="printCtrl.interFilters">
+        <div class="input-filter-inline">
+            <div class="title">Época Agendada: </div>
+            <div class="input-filter-content-alt">
+                <div class="dropdown">
+                    <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                {{printCtrl.reqObject.season || '--'}} <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item" ng-repeat="season in printCtrl.defaults.seasons" ng-click="printCtrl.setSeason(season)"><a>{{season}}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- Ano de Intervenção (Dropdown) -->
+        <div class="input-filter-inline">
+            <div class="title">Ano Agendado: </div>
+            <div class="input-filter-content-alt">
+                <div class="dropdown">
+                    <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                {{ printCtrl.reqObject.year || '--'}} <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item" ng-repeat="year in printCtrl.defaults.years" ng-click="printCtrl.setYear(year)"><a>{{year}}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Formato (Dropdown) -->
+    <section class="input-filter">
+        <div class="title">Formato: </div>
+        <div class="input-filter-content">
+            <div class="dropdown">
+                <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                {{printCtrl.reqObject.format || '--'}} <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-item" ng-repeat="format in printCtrl.defaults.formats" ng-click="printCtrl.setFormat(format)"><a>{{format}}</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Progress Spinner -->
+    <section style="text-align: center" ng-hide="true">
+        <hr>
+        <i class="fa fa-spinner fa-spin" style="font-size: 2.5em; color:rgb(92, 184, 92)"></i>
+        <hr>
+        <p>Processando o seu pedido de impressão.</p>
+        <p>Por favor, aguarde.</p>
+    </section>
+
+    <!-- Links de Impressão -->
+    <section ng-hide="true">
+        <div class="draw-info">O ficheiro requesitado está disponível para download no link abaixo.</div>
+        <ul>
+            <li style="padding: 0.2em;">
+                <i class="fa fa-file-pdf-o"></i>
+                <a class="print-link"><span> Ficheiro1.pdf </span></a>
+            </li>
+            <li style="padding: 0.2em;">
+                <i class="fa fa-file-excel-o"></i>
+                <a class="print-link"><span> Ficheiro1.csv </span></a>
+            </li>
+        </ul>
+    </section>
+
+    <!-- Imprimir (Button) -->
+    <section class="bottom-tree-commands">
+        <button ng-hide="true" type="button" class="btn btn-success">
+            <i class="fa fa-refresh"> Nova Impressão </i>
+        </button>
+        <button type="button" class="btn btn-success">
+            <i class="fa fa-print"> Imprimir </i>
+        </button>
+    </section>
+</section>

@@ -29,6 +29,9 @@ var conObj = require(path.join(__dirname, '../config', 'database_config'));
 // Load and initialize pg-promise:
 var pgp = require('pg-promise')(options);
 
+console.log(conObj);
+console.log(process.env.NODE_ENV);
+
 // Create the database instance:
 var db = pgp(conObj[process.env.NODE_ENV].url);
 // If you ever need to change the default pool size, here's an example:

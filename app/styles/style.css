@@ -492,7 +492,7 @@ input[type=number] {
     background-position: -23px 0;
 }
 
-#menu-container .panel .my-icon.my-icon-imprimir {
+#menu-container .panel .my-icon.my-icon-print {
     background-position: -50px 0;
 }
 
@@ -880,19 +880,29 @@ span.fancytree-expanded span.fancytree-expander {
     width: 90%;
 }
 
-.input-filter-content .input-group-addon {
+.input-filter-content-alt {
+    min-width: 55%;
+    border-bottom: 1px #5cb85c solid;
+    padding: 0.5em;
+    width: 55%;
+}
+
+.input-filter-content .input-group-addon,
+.input-filter-content-alt .input-group-addon {
     background-color: #5cb85c;
     color: #eee;
 }
 
-.input-filter-content .form-control:focus {
+.input-filter-content .form-control:focus,
+.input-filter-content-alt .form-control:focus {
     color: #464a4c;
     background-color: #fff;
     border-color: #5cb85c;
     outline: none;
 }
 
-.input-filter-content .dropdown button {
+.input-filter-content .dropdown button,
+.input-filter-content-alt .dropdown button {
     color: #464a4c;
     background-color: #5cb85c;
     border-color: #464a4c;
@@ -900,13 +910,27 @@ span.fancytree-expanded span.fancytree-expander {
     outline: none;
 }
 
-.input-filter-content .dropdown-toggle::after {
+.input-filter-content .dropdown-toggle::after,
+.input-filter-content-alt .dropdown-toggle::after {
     position: absolute;
     top: 45%;
-    right: 10%;
+    right: 5%;
 }
 
-#inter .dropdown .dropdown-menu {
+.input-filter-inline {
+    display: -webkit-flex;
+    display: flex;
+}
+
+.input-filter-inline .title {
+    font-size: .75em;
+    width: 35%;
+    line-height: 3.5em;
+    padding-left: 1em;
+}
+
+#inter .dropdown .dropdown-menu, 
+#print .dropdown .dropdown-menu {
     background-color: #f7f7f7;
     color: #333;
     margin-bottom: 0.1rem;
@@ -916,15 +940,40 @@ span.fancytree-expanded span.fancytree-expander {
     min-width: 12rem;
     top: 75%;
     left: 10%;
-    font-size: 0.75em;
+    font-size: 0.95em;
     font-weight: bold;
 }
 
-#inter .dropdown .dropdown-item:hover {
+#inter .dropdown .dropdown-item , 
+#print .dropdown .dropdown-item {
+    font-size: 1.1em;
+}
+
+#inter .dropdown .dropdown-item:hover , 
+#print .dropdown .dropdown-item:hover {
     color: #A2C199;
     text-decoration: none;
     background-color: #f7f7f7;
     cursor: pointer;
+    font-size: 1.25em;
+}
+
+#print a.print-link {
+    height: 17px;
+    border: 0;
+    width: calc(100% - 2px);
+    margin-left: 1px;
+    box-shadow: -8px 10px 0px -7px #ebebeb, 8px 10px 0px -7px #ebebeb;
+    -webkit-transition: box-shadow 0.3s;
+    transition: box-shadow 0.3s;
+}
+
+#print a.print-link:hover,
+#print a.print-link:focus {
+    cursor: pointer;
+    outline: none;
+    box-shadow: -4px 8px 0px -7px rgba(40.4%, 66.3%, 14.9%, 0.75), 4px 8px 0px -7px rgba(40.4%, 66.3%, 14.9%, 0.75);
+    text-decoration: none;
 }
 
 .radio-filter {
@@ -1249,8 +1298,8 @@ md-icon {
 
 /* JOKORD.Panel.Print [Start] */
 
-#imprimir h5,
-#imprimir h6 {
+#print h5,
+#print h6 {
     font-family: Courier New, Courier, monospace;
     font-weight: bold;
     font-size: 1.2em;
@@ -1259,23 +1308,23 @@ md-icon {
     color: #333333;
 }
 
-#imprimir h6 {
+#print h6 {
     margin-top: 0.3em;
     font-size: 1em;
     color: #18481A;
     margin-bottom: 1em;
 }
 
-#imprimir section.print-content {
+#print section.print-content {
     padding: 0 1em;
 }
 
-#imprimir hr {
+#print hr {
     border-top-color: #297D2E;
     border-top-color: rgba(40.4%, 66.3%, 14.9%, 0.75);
 }
 
-#imprimir .subtitle {
+#print .subtitle {
     margin-top: 1em;
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
@@ -1284,7 +1333,7 @@ md-icon {
     color: #297D2E;
 }
 
-#imprimir .draw-info {
+#print .draw-info {
     text-align: center;
     font-size: 0.7em;
     font-family: Arial, Helvetica, sans-serif;
@@ -1525,7 +1574,7 @@ md-icon {
     padding-left: 3em;
 }
 
-#imprimir a.print {
+#print a.print {
     height: 17px;
     border: 0;
     width: calc(100% - 2px);
@@ -1535,8 +1584,8 @@ md-icon {
     transition: box-shadow 0.3s;
 }
 
-#imprimir a.print:hover,
-#imprimir a.print:focus {
+#print a.print:hover,
+#print a.print:focus {
     outline: none;
     box-shadow: -4px 8px 0px -7px rgba(40.4%, 66.3%, 14.9%, 0.75), 4px 8px 0px -7px rgba(40.4%, 66.3%, 14.9%, 0.75);
     text-decoration: none;
