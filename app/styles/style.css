@@ -887,6 +887,11 @@ span.fancytree-expanded span.fancytree-expander {
     width: 55%;
 }
 
+.input-filter-content.error-required,
+.input-filter-content-alt.error-required {
+    border-bottom-color: darkred;
+}
+
 .input-filter-content .input-group-addon,
 .input-filter-content-alt .input-group-addon {
     background-color: #5cb85c;

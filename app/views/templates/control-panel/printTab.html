@@ -1,15 +1,16 @@
 <section class="print-container">
+
     <h5>Filtros de Impressão</h5>
 
     <!-- Parque (Dropdown) -->
     <section class="input-filter">
         <div class="title">Parque: </div>
-        <div class="input-filter-content">
+        <div class="input-filter-content" ng-class="{'error-required':printCtrl.errors.parque}">
             <div class="dropdown">
-                <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                                {{printCtrl.reqObject.parque || '--' }} <span class="caret"></span></button>
+                <button required class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                {{printCtrl.values.parque || '--' }} <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                    <li class="dropdown-item" ng-repeat="parque in printCtrl.defaults.parques" ng-click="printCtrl.setParque(parque)"><a>{{parque}}</a></li>
+                    <li class="dropdown-item" ng-repeat="parque in printCtrl.defaults.parques" ng-click="printCtrl.setParque(parque)"><a>{{parque.value}}</a></li>
                 </ul>
             </div>
         </div>
@@ -18,12 +19,12 @@
     <!-- Conteúdo (Dropdown) -->
     <section class="input-filter">
         <div class="title">Conteúdo da Impressão: </div>
-        <div class="input-filter-content">
+        <div class="input-filter-content" ng-class="{'error-required':printCtrl.errors.content}">
             <div class="dropdown">
                 <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                                {{printCtrl.reqObject.content || '--' }} <span class="caret"></span></button>
+                                {{printCtrl.values.content || '--' }} <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                    <li class="dropdown-item" ng-repeat="content in printCtrl.defaults.contents" ng-click="printCtrl.setContent(content)"><a>{{content}}</a></li>
+                    <li class="dropdown-item" ng-repeat="content in printCtrl.defaults.contents" ng-click="printCtrl.setContent(content)"><a>{{content.value}}</a></li>
                 </ul>
             </div>
         </div>
@@ -35,12 +36,12 @@
     <section class="input-filter-alt" ng-show="printCtrl.interFilters">
         <div class="input-filter-inline">
             <div class="title">Época Agendada: </div>
-            <div class="input-filter-content-alt">
+            <div class="input-filter-content-alt" ng-class="{'error-required':printCtrl.errors.season}">
                 <div class="dropdown">
                     <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                                {{printCtrl.reqObject.season || '--'}} <span class="caret"></span></button>
+                                {{printCtrl.values.season || '--'}} <span class="caret"></span></button>
                     <ul class="dropdown-menu">
-                        <li class="dropdown-item" ng-repeat="season in printCtrl.defaults.seasons" ng-click="printCtrl.setSeason(season)"><a>{{season}}</a></li>
+                        <li class="dropdown-item" ng-repeat="season in printCtrl.defaults.seasons" ng-click="printCtrl.setSeason(season)"><a>{{season.value}}</a></li>
                     </ul>
                 </div>
             </div>
@@ -48,30 +49,35 @@
         <!-- Ano de Intervenção (Dropdown) -->
         <div class="input-filter-inline">
             <div class="title">Ano Agendado: </div>
-            <div class="input-filter-content-alt">
+            <div class="input-filter-content-alt" ng-class="{'error-required':printCtrl.errors.year}">
                 <div class="dropdown">
                     <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                                {{ printCtrl.reqObject.year || '--'}} <span class="caret"></span></button>
+                                {{ printCtrl.values.year || '--'}} <span class="caret"></span></button>
                     <ul class="dropdown-menu">
-                        <li class="dropdown-item" ng-repeat="year in printCtrl.defaults.years" ng-click="printCtrl.setYear(year)"><a>{{year}}</a></li>
+                        <li class="dropdown-item" ng-repeat="year in printCtrl.defaults.years" ng-click="printCtrl.setYear(year)"><a>{{year.value}}</a></li>
                     </ul>
                 </div>
             </div>
         </div>
     </section>
+
     <!-- Formato (Dropdown) -->
     <section class="input-filter">
         <div class="title">Formato: </div>
-        <div class="input-filter-content">
+        <div class="input-filter-content" ng-class="{'error-required':printCtrl.errors.format}">
             <div class="dropdown">
                 <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                                {{printCtrl.reqObject.format || '--'}} <span class="caret"></span></button>
+                                {{printCtrl.values.format || '--'}} <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                    <li class="dropdown-item" ng-repeat="format in printCtrl.defaults.formats" ng-click="printCtrl.setFormat(format)"><a>{{format}}</a></li>
+                    <li class="dropdown-item" ng-repeat="format in printCtrl.defaults.formats" ng-click="printCtrl.setFormat(format)"><a>{{format.value}}</a></li>
                 </ul>
             </div>
         </div>
     </section>
+
+    <div ng-if="printCtrl.errors.message" style="color:maroon" role="alert">
+        <div class="center alert alert-danger">{{printCtrl.errors.message}}</div>
+    </div>
 
     <!-- Progress Spinner -->
     <section style="text-align: center" ng-hide="true">
@@ -82,27 +88,12 @@
         <p>Por favor, aguarde.</p>
     </section>
 
-    <!-- Links de Impressão -->
-    <section ng-hide="true">
-        <div class="draw-info">O ficheiro requesitado está disponível para download no link abaixo.</div>
-        <ul>
-            <li style="padding: 0.2em;">
-                <i class="fa fa-file-pdf-o"></i>
-                <a class="print-link"><span> Ficheiro1.pdf </span></a>
-            </li>
-            <li style="padding: 0.2em;">
-                <i class="fa fa-file-excel-o"></i>
-                <a class="print-link"><span> Ficheiro1.csv </span></a>
-            </li>
-        </ul>
-    </section>
-
     <!-- Imprimir (Button) -->
     <section class="bottom-tree-commands">
         <button ng-hide="true" type="button" class="btn btn-success">
             <i class="fa fa-refresh"> Nova Impressão </i>
         </button>
-        <button type="button" class="btn btn-success">
+        <button type="button" class="btn btn-success" ng-click="printCtrl.print()">
             <i class="fa fa-print"> Imprimir </i>
         </button>
     </section>
