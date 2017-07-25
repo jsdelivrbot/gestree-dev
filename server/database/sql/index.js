@@ -52,6 +52,8 @@ module.exports = {
         all: sql('interventions/all.sql'),
         allWithState: sql('interventions/allWithState.sql'),
         get: sql('interventions/get.sql'),
-        put: sql('interventions/put.sql')
+        put: sql('interventions/put.sql'),
+        csv: sql('interventions/csv.sql'),
+        filter: sql('interventions/filter.sql')
     }
 };

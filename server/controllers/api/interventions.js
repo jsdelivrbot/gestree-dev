@@ -3,7 +3,6 @@
 let db = require('../../database').db;
 
 module.exports = {
-    // GET All the trees
     all(req, res, next) {
         if (req.query.state) {
             db.interventions.allWithState({
@@ -30,5 +29,16 @@ module.exports = {
             .then(data => {
                 res.status(200).json(data);
             }).catch(err => next(err));
+    },
+    filter(req, res, next) {
+        db.interventions.filter({
+                season: req.query.season,
+                year: req.query.year
+            })
+            .then(data => {
+                res.status(200).json(data);
+            }).catch(err => {
+                next(err)
+            });
     }
 }

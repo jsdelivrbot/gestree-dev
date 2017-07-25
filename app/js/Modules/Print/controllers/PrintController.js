@@ -5,50 +5,87 @@
         .module('PrintModule')
         .controller('PrintController', PrintController);
 
-    PrintController.$inject = ['RequestObjectFactory', 'PrintService', '$timeout'];
+    PrintController.$inject = [
+        'PDFRequestObjectFactory',
+        'ValidatorService',
+        'PrintPdfService'
+    ];
 
-    function PrintController(RequestObject, PrintService, $timeout) {
+    function PrintController(RequestObjectFactory, ValidatorService, PrintPdfService) {
         var printCtrl = this;
-        var RequestObjectFactory = new RequestObject();
+        var RequestObjectFactory = new RequestObjectFactory();
         var requestType;
         printCtrl.values = {};
         printCtrl.interFilters = false;
 
         printCtrl.setParque = function (p) {
-            printCtrl.values.parque = p.value;
+            printCtrl.values.parque = p;
             RequestObjectFactory.setParque(p);
         };
 
         printCtrl.setContent = function (c) {
             printCtrl.interFilters = (c.key == 'inter');
-            printCtrl.values.content = c.value;
+            printCtrl.values.content = c;
             RequestObjectFactory.setContentType(c);
         }
 
         printCtrl.setSeason = function (s) {
-            printCtrl.values.season = s.value;
+            printCtrl.values.season = s;
             RequestObjectFactory.setSeason(s);
         }
 
         printCtrl.setYear = function (y) {
-            printCtrl.values.year = y.value;
+            printCtrl.values.year = y;
             RequestObjectFactory.setYear(y);
         }
 
         printCtrl.setFormat = function (f) {
-            printCtrl.values.format = f.value;
-            RequestObjectFactory.setFormat(f);
+            printCtrl.values.format = f;
         }
 
         printCtrl.print = function (form) {
-            // TODO - Validar os Campos (Preenchimento Obrigatório)
-            validadeFields(printCtrl.values, function (isValid, requiredFields) {
+            ValidatorService.validateFields(printCtrl.values, function (isValid, requiredFields) {
+                var data, filename, values;
+                values = printCtrl.values;
                 printCtrl.errors = {};
+                printCtrl.file = {
+                    ext: values.format.key,
+                    name: values.content.value,
+                    close: function () {
+                        this.hasFile = false;
+                    }
+                };
                 if (isValid) {
-                    if (RequestObjectFactory.getFormat() === 'csv') {
-                        console.log(RequestObjectFactory.getRequestObject());
+                    printCtrl.isPrinting = true;
+                    if (values.format.key === 'csv') {
+                        if (values.content.key === 'inter') {
+                            printCtrl.file.name = values.content.value + "_" + values.parque.key + "_" + values.season.value + "_" + values.year.value;
+                            printCtrl.file.params = {
+                                parque: values.parque.key,
+                                season: values.season.value,
+                                year: values.year.value
+                            }
+                        } else {
+                            printCtrl.file.name = values.content.value + "_" + values.parque.key;
+                            printCtrl.file.params = {
+                                parque: values.parque.key
+                            }
+                        }
+                        printCtrl.isPrinting = false;
+                        printCtrl.file.url = "/csv/" + values.content.key;
+                        printCtrl.file.hasFile = true;
                     } else {
-                        console.log(RequestObjectFactory.getRequestObject());
+                        RequestObjectFactory.getRequestObject().then(function (data) {
+                            console.log(data);
+                            
+                            /*PrintPdfService.print(JSON.stringify(data), function (err, url) {
+                                if (err) console.log("There was an Error");
+                                printCtrl.isPrinting = false;
+                                printCtrl.file.name = values.content.value + "_" + values.parque.key + "_" + values.season.value + "_" + values.year.value;
+                                printCtrl.file.url = url;
+                                printCtrl.file.hasFile = true;
+                            });*/
+                        });
                     }
                 } else {
                     requiredFields.forEach(function (v) {
@@ -70,7 +107,7 @@
                     value: 'Vidago Palace Hotel'
                 }],
                 contents: [{
-                        key: 'arvores',
+                        key: 'trees',
                         value: "Árvores"
                     },
                     {
@@ -121,135 +158,8 @@
                 }, {
                     key: "pdf",
                     value: ".pdf (Printable Document Format)"
-
                 }]
-            }
-        }
-        sandbox();
-
-        function sandbox() {
-            var arvoresObjects = [{
-                    id: 1,
-                    zone: 2,
-                    cientific: "Pinus",
-                    comon: "Pinheiro"
-                },
-                {
-                    id: 1,
-                    cientific: "Pinus",
-                    comon: "Pinheiro",
-                    zone: 4,
-                },
-                {
-                    id: 1,
-                    cientific: "Pinus",
-                    comon: "Pinheiro",
-                    zone: 2
-                }
-            ];
-            console.log(getArvoresDataSource(arvoresObjects));
-            var interventionsObjects = [{
-                    id: 1,
-                    id_type: 1,
-                    id_tree: "Zona1.Arv1",
-                    created_at: "2017-05-24T12:57:11.099Z",
-                    intervention_date: "2017-05-24T12:57:11.099Z",
-                    finished_at: "2017-07-04T22:00:00.000Z",
-                    priority: 4,
-                    state: "FECHADA",
-                    season: "Primavera",
-                    year: 2018,
-                    parque: "pedras_salgadas"
-                },
-                {
-                    id: 1,
-                    id_type: 1,
-                    id_tree: "Zona1.Arv2",
-                    created_at: "2017-05-24T12:57:11.099Z",
-                    intervention_date: "2017-05-24T12:57:11.099Z",
-                    finished_at: "2017-07-04T22:00:00.000Z",
-                    priority: 4,
-                    state: "FECHADA",
-                    season: "Primavera",
-                    year: 2018,
-                    parque: "pedras_salgadas"
-                },
-                {
-                    id: 1,
-                    id_type: "Zona2.Arv1",
-                    id_tree: 1,
-                    created_at: "2017-05-24T12:57:11.099Z",
-                    intervention_date: "2017-05-24T12:57:11.099Z",
-                    finished_at: "2017-07-04T22:00:00.000Z",
-                    priority: 4,
-                    state: "FECHADA",
-                    season: "Primavera",
-                    year: 2018,
-                    parque: "pedras_salgadas"
-                }
-            ];
-
-            var columns = [];
-            for (var prop in interventionsObjects[0]) {
-                if (interventionsObjects[0].hasOwnProperty(prop)) {
-                    columns.push(prop);
-                }
-            }
-            for (var i = 0; i < interventionsObjects.length; i++) {
-                if (!(interventionsObjects[i] instanceof Array)) {
-                    interventionsObjects[i] = columns.map(function (key) {
-                        if (interventionsObjects[i].hasOwnProperty(key)) {
-                            return interventionsObjects[i][key];
-                        } else {
-                            return null;
-                        }
-                    })
-                }
-            }
-            console.log(interventionsObjects);
-            
-        }
-    }
-
-    function validadeFields(validationObj, callback) {
-        var arrayInvalid = [];
-        if (!validationObj.hasOwnProperty('parque')) arrayInvalid.push('parque');
-        if (!validationObj.hasOwnProperty('format')) arrayInvalid.push('format');
-        if (!validationObj.hasOwnProperty('content')) {
-            arrayInvalid.push('content');
-        } else {
-            if (validationObj['content'] === 'Intervenções') {
-                if (!validationObj.hasOwnProperty('season')) arrayInvalid.push('season');
-                if (!validationObj.hasOwnProperty('year')) arrayInvalid.push('year');
-            }
-        }
-        callback(arrayInvalid.length == 0, arrayInvalid);
-    }
-
-    function getArvoresDataSource(arvores) {
-        var columns = [];
-        for (var prop in arvores[0]) {
-            if (arvores[0].hasOwnProperty(prop)) {
-                columns.push(prop);
-            }
-        }
-        for (var i = 0; i < arvores.length; i++) {
-            if (!(arvores[i] instanceof Array)) {
-                arvores[i] = columns.map(function (key) {
-                    if (arvores[i].hasOwnProperty(key)) {
-                        return arvores[i][key];
-                    } else {
-                        return null;
-                    }
-                })
-            }
-        }
-        return {
-            title: "Árvores",
-            table: {
-                columns: columns,
-                data: arvores
-            }
+            };
         }
     }
 

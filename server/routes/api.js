@@ -15,6 +15,8 @@ module.exports = function (router) {
     router.get('/interventions', interventions.all);
     router.get('/interventions/:iid', interventions.get);
     router.put('/interventions/:iid', interventions.put);
+    
+    router.get('/filter/interventions', interventions.filter);
 
     return router;
 

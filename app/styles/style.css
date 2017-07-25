@@ -981,6 +981,14 @@ span.fancytree-expanded span.fancytree-expander {
     text-decoration: none;
 }
 
+.print_result_icon {
+    font-size: 2em;
+}
+
+.print_result_text {
+    font-size: 0.9em;
+}
+
 .radio-filter {
     padding: 0.5em;
     font-size: 0.8em;

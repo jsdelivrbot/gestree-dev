@@ -1,91 +1,99 @@
 <section class="print-container">
 
-    <h5>Filtros de Impressão</h5>
-
-    <!-- Parque (Dropdown) -->
-    <section class="input-filter">
-        <div class="title">Parque: </div>
-        <div class="input-filter-content" ng-class="{'error-required':printCtrl.errors.parque}">
-            <div class="dropdown">
-                <button required class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                                {{printCtrl.values.parque || '--' }} <span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                    <li class="dropdown-item" ng-repeat="parque in printCtrl.defaults.parques" ng-click="printCtrl.setParque(parque)"><a>{{parque.value}}</a></li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- Conteúdo (Dropdown) -->
-    <section class="input-filter">
-        <div class="title">Conteúdo da Impressão: </div>
-        <div class="input-filter-content" ng-class="{'error-required':printCtrl.errors.content}">
-            <div class="dropdown">
-                <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                                {{printCtrl.values.content || '--' }} <span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                    <li class="dropdown-item" ng-repeat="content in printCtrl.defaults.contents" ng-click="printCtrl.setContent(content)"><a>{{content.value}}</a></li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- ? Se Tipo="Intervenções" (Dropdown) -->
-
-    <!-- Época de Intervenção (Dropdown) -->
-    <section class="input-filter-alt" ng-show="printCtrl.interFilters">
-        <div class="input-filter-inline">
-            <div class="title">Época Agendada: </div>
-            <div class="input-filter-content-alt" ng-class="{'error-required':printCtrl.errors.season}">
+    <section ng-hide="printCtrl.isPrinting || printCtrl.file.hasFile">
+        <h5>Filtros de Impressão</h5>
+        <!-- Parque (Dropdown) -->
+        <section class="input-filter">
+            <div class="title">Parque: </div>
+            <div class="input-filter-content" ng-class="{'error-required':printCtrl.errors.parque}">
                 <div class="dropdown">
-                    <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                                {{printCtrl.values.season || '--'}} <span class="caret"></span></button>
+                    <button required class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                {{printCtrl.values.parque.value || '--' }} <span class="caret"></span></button>
                     <ul class="dropdown-menu">
-                        <li class="dropdown-item" ng-repeat="season in printCtrl.defaults.seasons" ng-click="printCtrl.setSeason(season)"><a>{{season.value}}</a></li>
+                        <li class="dropdown-item" ng-repeat="parque in printCtrl.defaults.parques" ng-click="printCtrl.setParque(parque)"><a>{{parque.value}}</a></li>
                     </ul>
                 </div>
             </div>
-        </div>
-        <!-- Ano de Intervenção (Dropdown) -->
-        <div class="input-filter-inline">
-            <div class="title">Ano Agendado: </div>
-            <div class="input-filter-content-alt" ng-class="{'error-required':printCtrl.errors.year}">
+        </section>
+
+        <!-- Conteúdo (Dropdown) -->
+        <section class="input-filter">
+            <div class="title">Conteúdo da Impressão: </div>
+            <div class="input-filter-content" ng-class="{'error-required':printCtrl.errors.content}">
                 <div class="dropdown">
                     <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                                {{ printCtrl.values.year || '--'}} <span class="caret"></span></button>
+                                {{printCtrl.values.content.value || '--' }} <span class="caret"></span></button>
                     <ul class="dropdown-menu">
-                        <li class="dropdown-item" ng-repeat="year in printCtrl.defaults.years" ng-click="printCtrl.setYear(year)"><a>{{year.value}}</a></li>
+                        <li class="dropdown-item" ng-repeat="content in printCtrl.defaults.contents" ng-click="printCtrl.setContent(content)"><a>{{content.value}}</a></li>
                     </ul>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Formato (Dropdown) -->
-    <section class="input-filter">
-        <div class="title">Formato: </div>
-        <div class="input-filter-content" ng-class="{'error-required':printCtrl.errors.format}">
-            <div class="dropdown">
-                <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                                {{printCtrl.values.format || '--'}} <span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                    <li class="dropdown-item" ng-repeat="format in printCtrl.defaults.formats" ng-click="printCtrl.setFormat(format)"><a>{{format.value}}</a></li>
-                </ul>
+        <!-- ? Se Tipo="Intervenções" (Dropdown) -->
+
+        <!-- Época de Intervenção (Dropdown) -->
+        <section class="input-filter-alt" ng-show="printCtrl.interFilters">
+            <div class="input-filter-inline">
+                <div class="title">Época Agendada: </div>
+                <div class="input-filter-content-alt" ng-class="{'error-required':printCtrl.errors.season}">
+                    <div class="dropdown">
+                        <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                {{printCtrl.values.season.value || '--'}} <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item" ng-repeat="season in printCtrl.defaults.seasons" ng-click="printCtrl.setSeason(season)"><a>{{season.value}}</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-        </div>
-    </section>
+            <!-- Ano de Intervenção (Dropdown) -->
+            <div class="input-filter-inline">
+                <div class="title">Ano Agendado: </div>
+                <div class="input-filter-content-alt" ng-class="{'error-required':printCtrl.errors.year}">
+                    <div class="dropdown">
+                        <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                {{ printCtrl.values.year.value || '--'}} <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item" ng-repeat="year in printCtrl.defaults.years" ng-click="printCtrl.setYear(year)"><a>{{year.value}}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
 
+        <!-- Formato (Dropdown) -->
+        <section class="input-filter">
+            <div class="title">Formato: </div>
+            <div class="input-filter-content" ng-class="{'error-required':printCtrl.errors.format}">
+                <div class="dropdown">
+                    <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                {{printCtrl.values.format.value || '--'}} <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item" ng-repeat="format in printCtrl.defaults.formats" ng-click="printCtrl.setFormat(format)"><a>{{format.value}}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </section>
     <div ng-if="printCtrl.errors.message" style="color:maroon" role="alert">
         <div class="center alert alert-danger">{{printCtrl.errors.message}}</div>
     </div>
 
     <!-- Progress Spinner -->
-    <section style="text-align: center" ng-hide="true">
+    <section style="text-align: center" ng-show="printCtrl.isPrinting">
         <hr>
         <i class="fa fa-spinner fa-spin" style="font-size: 2.5em; color:rgb(92, 184, 92)"></i>
         <hr>
         <p>Processando o seu pedido de impressão.</p>
         <p>Por favor, aguarde.</p>
+    </section>
+
+    <section ng-show="printCtrl.file.hasFile">
+        <h5>Resultados de Impressão</h5>
+        <div class="center alert alert-success">
+            <print-result on-click="printCtrl.file.close()" params="printCtrl.file.params" url="{{printCtrl.file.url}}" icon="{{printCtrl.file.icon}}" name="{{printCtrl.file.name}}"
+                ext="{{printCtrl.file.ext}}"></print-result>
+        </div>
     </section>
 
     <!-- Imprimir (Button) -->

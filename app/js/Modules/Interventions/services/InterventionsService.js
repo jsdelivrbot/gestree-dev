@@ -12,6 +12,7 @@
         this.getIntervention = _getIntervention;
         this.closeIntervention = _closeIntervention;
         this.updateIntervention = _updateIntervention;
+        this.getInterventionsWithFilter = _getInterventionsWithFilter;
 
         function _getAllInterventions() {
             var deferred = $q.defer();
@@ -57,7 +58,24 @@
         };
 
         function _closeIntervention(inter) {
-           return _updateIntervention(inter);
+            return _updateIntervention(inter);
         };
+
+        function _getInterventionsWithFilter(filter) {
+            var deferred = $q.defer();
+            $http({
+                method: 'GET',
+                url: 'api/filter/interventions',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                params: filter
+            }).then(function successCallback(response) {
+                deferred.resolve(response.data);
+            }, function errorCallback(err) {
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        }
     }
 })();
