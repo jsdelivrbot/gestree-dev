@@ -8,11 +8,11 @@ angular
   ])
   .constant('GlobalURLs', {
     // DEV
-    //host: "http://gistree.espigueiro.pt:8081",
+    host: "http://gistree.espigueiro.pt:8081",
     //print: "http://gistree.espigueiro.pt:8081/print-servlet-3.8.0/print/gestree/report.pdf"
     // PROD
-    host: "localhost:8081",
-    print: "localhost:8081/print-servlet-3.8.0/print/gestree/report.pdf"
+    //host: "http://localhost:8081",
+    print: "http://localhost:8081/print-servlet-3.8.0/print/gestree/report.pdf"
   });
 angular
   .module('unicerApp')
@@ -169,6 +169,143 @@ angular
   }])
 angular
   .module('unicerApp')
+  .controller('BaseLayerController', BaseLayerController);
+
+BaseLayerController.$inject = ['$scope'];
+
+function BaseLayerController($scope) {
+
+  $scope.baseLayers = [
+    {
+      name: "Open Street Map",
+      layerDef: new ol.layer.Tile({
+        source: new ol.source.OSM({})
+      })
+    },
+    {
+      name: "Camada em Branco",
+      layerDef: new ol.layer.Tile({})
+    }
+  ];
+  $scope.baseLayer = "Mapa de Base";
+
+  $scope.setBaseLayer = function (layer) {
+    $scope.baseLayer = layer.name;
+    Map.setBaseLayer(layer.layerDef);
+  };
+  
+}
+angular
+  .module('unicerApp')
+  .controller('InterventionListController', InterventionListController);
+
+InterventionListController.$inject = [
+  '$scope',
+  'Interventions',
+  'SortingService',
+  'FilterSharedData',
+  '$filter'
+];
+
+function InterventionListController($scope, Interventions, SortingService, FilterSharedData, $filter) {
+
+  $scope.sort = SortingService.orderBySeasonYear;
+
+  $scope.$watch(FilterSharedData.getFilter, _handleFilterUpdate, true);
+  function _handleFilterUpdate(newVal, oldVal, scope) {
+    scope.interventions = $filter('interventions-filter')(Interventions, newVal);
+  }
+
+};
+angular
+  .module('unicerApp')
+  .controller('LayerIdentifierController', LayerIdentifierController);
+
+LayerIdentifierController.$inject = ['$scope', 'LayerQueryResultsService'];
+
+function LayerIdentifierController($scope, LayerRes) {
+  var lrCtrl = this;
+  activate();
+
+  lrCtrl.title = "Resultados da Pesquisa";
+  $scope.$watchCollection(function () {
+    return LayerRes.getResults();
+  }, function (res) {
+    lrCtrl.results = res;
+  });
+
+  lrCtrl.hasResults = function () {
+    return lrCtrl.results.length > 0;
+  };
+
+  function activate() {
+    lrCtrl.results = [];
+  };
+}
+angular
+  .module('unicerApp')
+  .controller('MapController', MapController);
+
+MapController.$inject = ['MapService', 'DirtyDataManager'];
+
+function MapController(MapService, DirtyDataManager) {
+  MapService.init();
+  MapService.drawMap();
+  if (DirtyDataManager.isLayerDirty()) {
+    MapService.reloadLayers();
+    DirtyDataManager.cleanLayer();
+  };
+}  
+angular
+  .module('unicerApp')
+  .controller('ParkSelectorController', ParkSelectorController);
+
+ParkSelectorController.$inject = ['ParksHttp', 'Map'];
+
+function ParkSelectorController(ParksHttp, Map) {
+  var locCtrl = this;
+  activate();
+
+  function activate() {
+    ParksHttp.getParks().then(function (loc) {
+      locCtrl.locations = loc.features;
+    });
+    locCtrl.location = {};
+  }
+  locCtrl.onSelectCallback = function (model) {
+    Map.zoomToCoordinate(model.geometry.coordinates, 'EPSG:3857');
+  }
+}
+angular
+  .module('unicerApp')
+  .controller('TreeInterventionsController', TreeInterventionsController);
+
+TreeInterventionsController.$inject = [
+  '$scope',
+  'SideNavService',
+  'TreeInterventions',
+  'SortingService',
+  'FilterSharedData',
+  '$filter',
+];
+
+function TreeInterventionsController($scope, SideNavService, TreeInterventions, SortingService, FilterSharedData, $filter) {
+  SideNavService.setActiveTab(3);
+
+  $scope.sort = SortingService.orderBySeasonYear;
+  $scope.back = function(e){
+    e.preventDefault();
+    SideNavService.setActiveTab(1);
+    window.history.back();
+  }
+
+  $scope.$watch(FilterSharedData.getFilter, _handleFilterUpdate, true);
+  function _handleFilterUpdate(newVal, oldVal, scope) {
+    scope.interventions = $filter('interventions-filter')(TreeInterventions, newVal);
+  }
+}
+angular
+  .module('unicerApp')
   .directive('interventionItem', InterventionItem);
 
 function InterventionItem() {
@@ -319,143 +456,6 @@ function TreeDetails() {
 };  
 angular
   .module('unicerApp')
-  .controller('BaseLayerController', BaseLayerController);
-
-BaseLayerController.$inject = ['$scope'];
-
-function BaseLayerController($scope) {
-
-  $scope.baseLayers = [
-    {
-      name: "Open Street Map",
-      layerDef: new ol.layer.Tile({
-        source: new ol.source.OSM({})
-      })
-    },
-    {
-      name: "Camada em Branco",
-      layerDef: new ol.layer.Tile({})
-    }
-  ];
-  $scope.baseLayer = "Mapa de Base";
-
-  $scope.setBaseLayer = function (layer) {
-    $scope.baseLayer = layer.name;
-    Map.setBaseLayer(layer.layerDef);
-  };
-  
-}
-angular
-  .module('unicerApp')
-  .controller('InterventionListController', InterventionListController);
-
-InterventionListController.$inject = [
-  '$scope',
-  'Interventions',
-  'SortingService',
-  'FilterSharedData',
-  '$filter'
-];
-
-function InterventionListController($scope, Interventions, SortingService, FilterSharedData, $filter) {
-
-  $scope.sort = SortingService.orderBySeasonYear;
-
-  $scope.$watch(FilterSharedData.getFilter, _handleFilterUpdate, true);
-  function _handleFilterUpdate(newVal, oldVal, scope) {
-    scope.interventions = $filter('interventions-filter')(Interventions, newVal);
-  }
-
-};
-angular
-  .module('unicerApp')
-  .controller('LayerIdentifierController', LayerIdentifierController);
-
-LayerIdentifierController.$inject = ['$scope', 'LayerQueryResultsService'];
-
-function LayerIdentifierController($scope, LayerRes) {
-  var lrCtrl = this;
-  activate();
-
-  lrCtrl.title = "Resultados da Pesquisa";
-  $scope.$watchCollection(function () {
-    return LayerRes.getResults();
-  }, function (res) {
-    lrCtrl.results = res;
-  });
-
-  lrCtrl.hasResults = function () {
-    return lrCtrl.results.length > 0;
-  };
-
-  function activate() {
-    lrCtrl.results = [];
-  };
-}
-angular
-  .module('unicerApp')
-  .controller('MapController', MapController);
-
-MapController.$inject = ['MapService', 'DirtyDataManager'];
-
-function MapController(MapService, DirtyDataManager) {
-  MapService.init();
-  MapService.drawMap();
-  if (DirtyDataManager.isLayerDirty()) {
-    MapService.reloadLayers();
-    DirtyDataManager.cleanLayer();
-  };
-}  
-angular
-  .module('unicerApp')
-  .controller('ParkSelectorController', ParkSelectorController);
-
-ParkSelectorController.$inject = ['ParksHttp', 'Map'];
-
-function ParkSelectorController(ParksHttp, Map) {
-  var locCtrl = this;
-  activate();
-
-  function activate() {
-    ParksHttp.getParks().then(function (loc) {
-      locCtrl.locations = loc.features;
-    });
-    locCtrl.location = {};
-  }
-  locCtrl.onSelectCallback = function (model) {
-    Map.zoomToCoordinate(model.geometry.coordinates, 'EPSG:3857');
-  }
-}
-angular
-  .module('unicerApp')
-  .controller('TreeInterventionsController', TreeInterventionsController);
-
-TreeInterventionsController.$inject = [
-  '$scope',
-  'SideNavService',
-  'TreeInterventions',
-  'SortingService',
-  'FilterSharedData',
-  '$filter',
-];
-
-function TreeInterventionsController($scope, SideNavService, TreeInterventions, SortingService, FilterSharedData, $filter) {
-  SideNavService.setActiveTab(3);
-
-  $scope.sort = SortingService.orderBySeasonYear;
-  $scope.back = function(e){
-    e.preventDefault();
-    SideNavService.setActiveTab(1);
-    window.history.back();
-  }
-
-  $scope.$watch(FilterSharedData.getFilter, _handleFilterUpdate, true);
-  function _handleFilterUpdate(newVal, oldVal, scope) {
-    scope.interventions = $filter('interventions-filter')(TreeInterventions, newVal);
-  }
-}
-angular
-  .module('unicerApp')
   .filter('capitalize', Capitalize);
 
 function Capitalize() {
@@ -569,6 +569,226 @@ function LegendsService() {
   }
 }
 
+angular
+  .module('unicerApp')
+  .controller('InterventionAddController', InterventionAddController);
+
+InterventionAddController.$inject = [
+  '$scope',
+  '$routeParams',
+  '$timeout',
+  'InterventionsHttp',
+  'Defaults',
+  'SideNavService'
+];
+
+function InterventionAddController($scope, $routeParams, $timeout, InterventionsHttp, Defaults, SideNavService) {
+  SideNavService.hide();
+
+  $scope.defaults = Defaults;
+  $scope.intervention = {
+    periodicity: '-',
+    comments: null,
+    team: '-'
+  };
+  if ($routeParams.idTree) {
+    $scope.intervention.id_tree = parseInt($routeParams.idTree);
+    $scope.disableID = true;
+  }
+
+  $scope.back = _goBack;
+  
+  $scope.send = function () {
+    var _self = this;
+    if (!_dataIsInvalid()) {
+      return;
+    }
+    InterventionsHttp.add(this.intervention)
+      .then(function (res) {
+        _self.message = "Intervenção adicionada com sucesso.";
+        $timeout(function () {
+          _goBack();
+        }, 1000);
+      }).catch(function (err) {
+        _self.error = "Ocorreu um erro ao adicionar a intervenção.";
+      });
+  }
+
+  bindSetters()
+  function bindSetters() {
+    $scope.setType = setValue.bind("type");
+    $scope.setTeam = setValue.bind("team");
+    $scope.setSeason = setValue.bind("season");
+    $scope.setYear = setValue.bind("year");
+    $scope.setPeriodicity = setValue.bind("periodicity");
+    function setValue(val) {
+      $scope.intervention[this] = val;
+    }
+  }
+  function _dataIsInvalid() {
+    var errors = { size: 0 };
+    var requiredFields = ['id_tree', 'type', 'priority', 'season', 'year'];
+    requiredFields.map(function (field, index) {
+      if (!$scope.intervention.hasOwnProperty(field)) {
+        errors[field] = true;
+        errors.size++;
+      }
+    });
+    if (errors.size > 0) {
+      errors.message = "* Falta Preencher Campos Obrigatórios";
+    }
+    $scope.errors = errors;
+    return errors.size === 0;
+  }
+  function _goBack(){
+    SideNavService.show();
+    window.history.back();
+  }
+
+}
+angular
+  .module('unicerApp')
+  .controller('InterventionCloseController', InterventionCloseController);
+
+InterventionCloseController.$inject = [
+  '$scope',
+  'Intervention',
+  'InterventionsHttp',
+  '$timeout',
+  'SideNavService'
+];
+
+function InterventionCloseController($scope, Intervention, InterventionsHttp, $timeout, SideNavService) {
+  $scope.intervention = Intervention;
+  SideNavService.hide();
+
+  $scope.back = function () {
+    SideNavService.show();
+    window.history.back();
+  }
+  $scope.close = function (form) {
+    var _self = this;
+    _self.error = '';
+    if (form.$invalid) {
+      return;
+    }
+    _self.intervention.state = "FECHADA";
+    InterventionsHttp.close(_self.intervention)
+      .then(function (data) {
+        _self.message = "A intervenção foi fechada com sucesso.";
+        $timeout(function () {
+          window.history.back();
+        }, 1000);
+      }).catch(function (err) {
+        _self.error = "Ocorreu um erro no fecho da intervenção.";
+      });
+  };
+}
+angular
+  .module('unicerApp')
+  .controller('InterventionInfoController', InterventionInfoController);
+
+InterventionInfoController.$inject = [
+  '$scope',
+  'Intervention',
+  'SideNavService'
+];
+
+function InterventionInfoController($scope, Intervention, SideNavService) {
+  SideNavService.hide();
+  $scope.intervention = Intervention;
+  $scope.back = function () {
+    SideNavService.show();
+    window.history.back();
+  }
+}
+angular
+  .module('unicerApp')
+  .controller('InterventionUpdateController', InterventionUpdateController);
+
+InterventionUpdateController.$inject = [
+  '$scope',
+  'Intervention',
+  'Defaults',
+  'InterventionsHttp',
+  'SideNavService'
+];
+
+function InterventionUpdateController($scope, Intervention, Defaults, InterventionsHttp, SideNavService) {
+  SideNavService.hide();
+
+  var _initalID = Intervention.id;
+  var interTypes = Defaults.types;
+
+  $scope.intervention = Intervention;
+  $scope.defaults = Defaults;
+
+  bindSetters();
+  setInterventionType();
+
+  $scope.save = function () {
+    $scope.intervention.id = _initalID;
+    $scope.error = '';
+    InterventionsHttp.update($scope.intervention)
+      .then(function (data) {
+        $scope.message = "A intervenção foi alterada com sucesso.";
+      }).catch(function (err) {
+        $scope.error = "Ocorreu um erro ao tentar alterar a intervenção";
+      });
+  }
+  $scope.back = function () {
+    SideNavService.show();
+    window.history.back();
+  }
+
+  function bindSetters() {
+    $scope.setType = setValue.bind("type");
+    $scope.setTeam = setValue.bind("team");
+    $scope.setSeason = setValue.bind("season");
+    $scope.setYear = setValue.bind("year");
+    $scope.setPeriodicity = setValue.bind("periodicity");
+
+    function setValue(val) {
+      $scope.intervention[this] = val;
+    }
+  }
+  function setInterventionType(){
+    $scope.intervention.type = interTypes.find(function(type){
+      return type.id === Intervention.id_type;
+    });
+  }
+
+}
+angular
+  .module('unicerApp')
+  .directive('printResult', PrintResult);
+
+function PrintResult() {
+  var directive = {
+    restrict: 'E',
+    scope: {
+      icon: '@',
+      url: '@',
+      name: '@',
+      params: '<',
+      click: "&onClick"
+    },
+    template: "<a target='_blank' ng-href='{{url}}{{urlParams}}' ng-click='click()'> " +
+    " <i class='print_result_icon fa {{icon || \"fa-file-o\"}}'></i>" +
+    " <div class='print_result_text'>&nbsp;{{name}}<div>" +
+    "<a/>",
+    link: function (scope, element, attrs) {
+      scope.$watch('params', function () {
+        if (scope.params != undefined) {
+          scope.urlParams = '?' + Object.keys(scope.params).map(function (k) {
+            return encodeURIComponent(k) + '=' + encodeURIComponent(scope.params[k])
+          }).join('&');
+        }
+      });
+    },
+  };
+  return directive;
+}
 angular
   .module('unicerApp')
   .directive('interventionsTab', InterventionsTab);
@@ -976,226 +1196,6 @@ function PrintTab() {
 }
 angular
   .module('unicerApp')
-  .directive('printResult', PrintResult);
-
-function PrintResult() {
-  var directive = {
-    restrict: 'E',
-    scope: {
-      icon: '@',
-      url: '@',
-      name: '@',
-      params: '<',
-      click: "&onClick"
-    },
-    template: "<a target='_blank' ng-href='{{url}}{{urlParams}}' ng-click='click()'> " +
-    " <i class='print_result_icon fa {{icon || \"fa-file-o\"}}'></i>" +
-    " <div class='print_result_text'>&nbsp;{{name}}<div>" +
-    "<a/>",
-    link: function (scope, element, attrs) {
-      scope.$watch('params', function () {
-        if (scope.params != undefined) {
-          scope.urlParams = '?' + Object.keys(scope.params).map(function (k) {
-            return encodeURIComponent(k) + '=' + encodeURIComponent(scope.params[k])
-          }).join('&');
-        }
-      });
-    },
-  };
-  return directive;
-}
-angular
-  .module('unicerApp')
-  .controller('InterventionAddController', InterventionAddController);
-
-InterventionAddController.$inject = [
-  '$scope',
-  '$routeParams',
-  '$timeout',
-  'InterventionsHttp',
-  'Defaults',
-  'SideNavService'
-];
-
-function InterventionAddController($scope, $routeParams, $timeout, InterventionsHttp, Defaults, SideNavService) {
-  SideNavService.hide();
-
-  $scope.defaults = Defaults;
-  $scope.intervention = {
-    periodicity: '-',
-    comments: null,
-    team: '-'
-  };
-  if ($routeParams.idTree) {
-    $scope.intervention.id_tree = parseInt($routeParams.idTree);
-    $scope.disableID = true;
-  }
-
-  $scope.back = _goBack;
-  
-  $scope.send = function () {
-    var _self = this;
-    if (!_dataIsInvalid()) {
-      return;
-    }
-    InterventionsHttp.add(this.intervention)
-      .then(function (res) {
-        _self.message = "Intervenção adicionada com sucesso.";
-        $timeout(function () {
-          _goBack();
-        }, 1000);
-      }).catch(function (err) {
-        _self.error = "Ocorreu um erro ao adicionar a intervenção.";
-      });
-  }
-
-  bindSetters()
-  function bindSetters() {
-    $scope.setType = setValue.bind("type");
-    $scope.setTeam = setValue.bind("team");
-    $scope.setSeason = setValue.bind("season");
-    $scope.setYear = setValue.bind("year");
-    $scope.setPeriodicity = setValue.bind("periodicity");
-    function setValue(val) {
-      $scope.intervention[this] = val;
-    }
-  }
-  function _dataIsInvalid() {
-    var errors = { size: 0 };
-    var requiredFields = ['id_tree', 'type', 'priority', 'season', 'year'];
-    requiredFields.map(function (field, index) {
-      if (!$scope.intervention.hasOwnProperty(field)) {
-        errors[field] = true;
-        errors.size++;
-      }
-    });
-    if (errors.size > 0) {
-      errors.message = "* Falta Preencher Campos Obrigatórios";
-    }
-    $scope.errors = errors;
-    return errors.size === 0;
-  }
-  function _goBack(){
-    SideNavService.show();
-    window.history.back();
-  }
-
-}
-angular
-  .module('unicerApp')
-  .controller('InterventionCloseController', InterventionCloseController);
-
-InterventionCloseController.$inject = [
-  '$scope',
-  'Intervention',
-  'InterventionsHttp',
-  '$timeout',
-  'SideNavService'
-];
-
-function InterventionCloseController($scope, Intervention, InterventionsHttp, $timeout, SideNavService) {
-  $scope.intervention = Intervention;
-  SideNavService.hide();
-
-  $scope.back = function () {
-    SideNavService.show();
-    window.history.back();
-  }
-  $scope.close = function (form) {
-    var _self = this;
-    _self.error = '';
-    if (form.$invalid) {
-      return;
-    }
-    _self.intervention.state = "FECHADA";
-    InterventionsHttp.close(_self.intervention)
-      .then(function (data) {
-        _self.message = "A intervenção foi fechada com sucesso.";
-        $timeout(function () {
-          window.history.back();
-        }, 1000);
-      }).catch(function (err) {
-        _self.error = "Ocorreu um erro no fecho da intervenção.";
-      });
-  };
-}
-angular
-  .module('unicerApp')
-  .controller('InterventionInfoController', InterventionInfoController);
-
-InterventionInfoController.$inject = [
-  '$scope',
-  'Intervention',
-  'SideNavService'
-];
-
-function InterventionInfoController($scope, Intervention, SideNavService) {
-  SideNavService.hide();
-  $scope.intervention = Intervention;
-  $scope.back = function () {
-    SideNavService.show();
-    window.history.back();
-  }
-}
-angular
-  .module('unicerApp')
-  .controller('InterventionUpdateController', InterventionUpdateController);
-
-InterventionUpdateController.$inject = [
-  '$scope',
-  'Intervention',
-  'Defaults',
-  'InterventionsHttp',
-  'SideNavService'
-];
-
-function InterventionUpdateController($scope, Intervention, Defaults, InterventionsHttp, SideNavService) {
-  SideNavService.hide();
-
-  var _initalID = Intervention.id;
-  var interTypes = Defaults.types;
-
-  $scope.intervention = Intervention;
-  $scope.defaults = Defaults;
-
-  bindSetters();
-  setInterventionType();
-
-  $scope.save = function () {
-    $scope.intervention.id = _initalID;
-    $scope.error = '';
-    InterventionsHttp.update($scope.intervention)
-      .then(function (data) {
-        $scope.message = "A intervenção foi alterada com sucesso.";
-      }).catch(function (err) {
-        $scope.error = "Ocorreu um erro ao tentar alterar a intervenção";
-      });
-  }
-  $scope.back = function () {
-    SideNavService.show();
-    window.history.back();
-  }
-
-  function bindSetters() {
-    $scope.setType = setValue.bind("type");
-    $scope.setTeam = setValue.bind("team");
-    $scope.setSeason = setValue.bind("season");
-    $scope.setYear = setValue.bind("year");
-    $scope.setPeriodicity = setValue.bind("periodicity");
-
-    function setValue(val) {
-      $scope.intervention[this] = val;
-    }
-  }
-  function setInterventionType(){
-    $scope.intervention.type = interTypes.find(function(type){
-      return type.id === Intervention.id_type;
-    });
-  }
-
-}
-angular
-  .module('unicerApp')
   .service('InterventionTypesHttp', InterventionTypesHttp);
 
 InterventionTypesHttp.$inject = ["$q", "$http"];
@@ -1490,6 +1490,96 @@ function TreesHttp($q, $http) {
       deferred.reject(err);
     });
     return deferred.promise;
+  }
+
+}
+angular
+  .module('unicerApp')
+  .service('SortingService', SortingService);
+
+SortingService.$inject = ['DefaultInterventionData'];
+
+function SortingService(Defaults){
+
+  return {
+    orderBySeasonYear: orderBySeasonYear
+  };
+
+  function orderBySeasonYear(intervention) {
+    var date = new Date(
+      intervention.year,
+      Defaults.getSeasons().indexOf(intervention.season) + 3,
+      1
+    );
+    return date.getTime();
+  }
+}  
+angular
+  .module('unicerApp')
+  .service('WFSStyles', WFSStyles);
+
+function WFSStyles() {
+
+  var _styles = {
+    defaultStyle: new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: 3,
+        fill: new ol.style.Fill({
+          color: [24, 72, 26, 0.8]
+        }),
+        stroke: new ol.style.Stroke({
+          color: [0, 0, 0, 1]
+        }),
+      })
+    }),
+    selected: new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: 4,
+        fill: new ol.style.Fill({
+          color: [72, 24, 70, 1]
+        }),
+        stroke: new ol.style.Stroke({
+          color: [0, 0, 0, 1],
+          width: 2
+        }),
+      }),
+      zIndex: 100
+    }),
+    intervention: new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: 4,
+        fill: new ol.style.Fill({
+          color: [72, 15, 15, 1]
+        }),
+        stroke: new ol.style.Stroke({
+          color: [0, 0, 0, 1],
+          width: 2
+        })
+      }),
+      zIndex: 50
+    })
+  };
+
+  return {
+    treeSelected: treeSelected,
+    treeDefault: treeDefault,
+    treeIntervention: treeIntervention,
+    treeHighlight: treeHighlight
+  }
+
+  function treeSelected(){
+    return _styles.selected;
+  }
+  function treeDefault() {
+    return _styles.defaultStyle;
+  }
+  function treeIntervention(feature, layer) {
+    return feature.getProperties().has_inter ? _styles.intervention : _styles.defaultStyle;
+  }
+  function treeHighlight(selectedFeatureID) {
+    return function (feature, layer) {
+      return selectedFeatureID === feature.getId() ? _styles.selected : _styles.defaultStyle;
+    }
   }
 
 }
@@ -2299,93 +2389,3 @@ function TreeDetailsService($q, TreesHttp, $rootScope, Dirty) {
   }
 
 }  
-angular
-  .module('unicerApp')
-  .service('SortingService', SortingService);
-
-SortingService.$inject = ['DefaultInterventionData'];
-
-function SortingService(Defaults){
-
-  return {
-    orderBySeasonYear: orderBySeasonYear
-  };
-
-  function orderBySeasonYear(intervention) {
-    var date = new Date(
-      intervention.year,
-      Defaults.getSeasons().indexOf(intervention.season) + 3,
-      1
-    );
-    return date.getTime();
-  }
-}  
-angular
-  .module('unicerApp')
-  .service('WFSStyles', WFSStyles);
-
-function WFSStyles() {
-
-  var _styles = {
-    defaultStyle: new ol.style.Style({
-      image: new ol.style.Circle({
-        radius: 3,
-        fill: new ol.style.Fill({
-          color: [24, 72, 26, 0.8]
-        }),
-        stroke: new ol.style.Stroke({
-          color: [0, 0, 0, 1]
-        }),
-      })
-    }),
-    selected: new ol.style.Style({
-      image: new ol.style.Circle({
-        radius: 4,
-        fill: new ol.style.Fill({
-          color: [72, 24, 70, 1]
-        }),
-        stroke: new ol.style.Stroke({
-          color: [0, 0, 0, 1],
-          width: 2
-        }),
-      }),
-      zIndex: 100
-    }),
-    intervention: new ol.style.Style({
-      image: new ol.style.Circle({
-        radius: 4,
-        fill: new ol.style.Fill({
-          color: [72, 15, 15, 1]
-        }),
-        stroke: new ol.style.Stroke({
-          color: [0, 0, 0, 1],
-          width: 2
-        })
-      }),
-      zIndex: 50
-    })
-  };
-
-  return {
-    treeSelected: treeSelected,
-    treeDefault: treeDefault,
-    treeIntervention: treeIntervention,
-    treeHighlight: treeHighlight
-  }
-
-  function treeSelected(){
-    return _styles.selected;
-  }
-  function treeDefault() {
-    return _styles.defaultStyle;
-  }
-  function treeIntervention(feature, layer) {
-    return feature.getProperties().has_inter ? _styles.intervention : _styles.defaultStyle;
-  }
-  function treeHighlight(selectedFeatureID) {
-    return function (feature, layer) {
-      return selectedFeatureID === feature.getId() ? _styles.selected : _styles.defaultStyle;
-    }
-  }
-
-}
