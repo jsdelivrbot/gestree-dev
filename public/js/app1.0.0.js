@@ -9,10 +9,10 @@ angular
   .constant('GlobalURLs', {
     // DEV
     host: "http://gistree.espigueiro.pt:8081",
-    //print: "http://gistree.espigueiro.pt:8081/print-servlet-3.8.0/print/gestree/report.pdf"
+    print: "http://gistree.espigueiro.pt:8081/print-servlet-3.8.0/print/gestree/report.pdf"
     // PROD
     //host: "http://localhost:8081",
-    print: "http://localhost:8081/print-servlet-3.8.0/print/gestree/report.pdf"
+    //print: "http://localhost:8081/print-servlet-3.8.0/print/gestree/report.pdf"
   });
 angular
   .module('unicerApp')
@@ -761,36 +761,6 @@ function InterventionUpdateController($scope, Intervention, Defaults, Interventi
 }
 angular
   .module('unicerApp')
-  .directive('printResult', PrintResult);
-
-function PrintResult() {
-  var directive = {
-    restrict: 'E',
-    scope: {
-      icon: '@',
-      url: '@',
-      name: '@',
-      params: '<',
-      click: "&onClick"
-    },
-    template: "<a target='_blank' ng-href='{{url}}{{urlParams}}' ng-click='click()'> " +
-    " <i class='print_result_icon fa {{icon || \"fa-file-o\"}}'></i>" +
-    " <div class='print_result_text'>&nbsp;{{name}}<div>" +
-    "<a/>",
-    link: function (scope, element, attrs) {
-      scope.$watch('params', function () {
-        if (scope.params != undefined) {
-          scope.urlParams = '?' + Object.keys(scope.params).map(function (k) {
-            return encodeURIComponent(k) + '=' + encodeURIComponent(scope.params[k])
-          }).join('&');
-        }
-      });
-    },
-  };
-  return directive;
-}
-angular
-  .module('unicerApp')
   .directive('interventionsTab', InterventionsTab);
 
 function InterventionsTab() {
@@ -1196,6 +1166,36 @@ function PrintTab() {
 }
 angular
   .module('unicerApp')
+  .directive('printResult', PrintResult);
+
+function PrintResult() {
+  var directive = {
+    restrict: 'E',
+    scope: {
+      icon: '@',
+      url: '@',
+      name: '@',
+      params: '<',
+      click: "&onClick"
+    },
+    template: "<a target='_blank' ng-href='{{url}}{{urlParams}}' ng-click='click()'> " +
+    " <i class='print_result_icon fa {{icon || \"fa-file-o\"}}'></i>" +
+    " <div class='print_result_text'>&nbsp;{{name}}<div>" +
+    "<a/>",
+    link: function (scope, element, attrs) {
+      scope.$watch('params', function () {
+        if (scope.params != undefined) {
+          scope.urlParams = '?' + Object.keys(scope.params).map(function (k) {
+            return encodeURIComponent(k) + '=' + encodeURIComponent(scope.params[k])
+          }).join('&');
+        }
+      });
+    },
+  };
+  return directive;
+}
+angular
+  .module('unicerApp')
   .service('InterventionTypesHttp', InterventionTypesHttp);
 
 InterventionTypesHttp.$inject = ["$q", "$http"];
@@ -1490,96 +1490,6 @@ function TreesHttp($q, $http) {
       deferred.reject(err);
     });
     return deferred.promise;
-  }
-
-}
-angular
-  .module('unicerApp')
-  .service('SortingService', SortingService);
-
-SortingService.$inject = ['DefaultInterventionData'];
-
-function SortingService(Defaults){
-
-  return {
-    orderBySeasonYear: orderBySeasonYear
-  };
-
-  function orderBySeasonYear(intervention) {
-    var date = new Date(
-      intervention.year,
-      Defaults.getSeasons().indexOf(intervention.season) + 3,
-      1
-    );
-    return date.getTime();
-  }
-}  
-angular
-  .module('unicerApp')
-  .service('WFSStyles', WFSStyles);
-
-function WFSStyles() {
-
-  var _styles = {
-    defaultStyle: new ol.style.Style({
-      image: new ol.style.Circle({
-        radius: 3,
-        fill: new ol.style.Fill({
-          color: [24, 72, 26, 0.8]
-        }),
-        stroke: new ol.style.Stroke({
-          color: [0, 0, 0, 1]
-        }),
-      })
-    }),
-    selected: new ol.style.Style({
-      image: new ol.style.Circle({
-        radius: 4,
-        fill: new ol.style.Fill({
-          color: [72, 24, 70, 1]
-        }),
-        stroke: new ol.style.Stroke({
-          color: [0, 0, 0, 1],
-          width: 2
-        }),
-      }),
-      zIndex: 100
-    }),
-    intervention: new ol.style.Style({
-      image: new ol.style.Circle({
-        radius: 4,
-        fill: new ol.style.Fill({
-          color: [72, 15, 15, 1]
-        }),
-        stroke: new ol.style.Stroke({
-          color: [0, 0, 0, 1],
-          width: 2
-        })
-      }),
-      zIndex: 50
-    })
-  };
-
-  return {
-    treeSelected: treeSelected,
-    treeDefault: treeDefault,
-    treeIntervention: treeIntervention,
-    treeHighlight: treeHighlight
-  }
-
-  function treeSelected(){
-    return _styles.selected;
-  }
-  function treeDefault() {
-    return _styles.defaultStyle;
-  }
-  function treeIntervention(feature, layer) {
-    return feature.getProperties().has_inter ? _styles.intervention : _styles.defaultStyle;
-  }
-  function treeHighlight(selectedFeatureID) {
-    return function (feature, layer) {
-      return selectedFeatureID === feature.getId() ? _styles.selected : _styles.defaultStyle;
-    }
   }
 
 }
@@ -2389,3 +2299,93 @@ function TreeDetailsService($q, TreesHttp, $rootScope, Dirty) {
   }
 
 }  
+angular
+  .module('unicerApp')
+  .service('SortingService', SortingService);
+
+SortingService.$inject = ['DefaultInterventionData'];
+
+function SortingService(Defaults){
+
+  return {
+    orderBySeasonYear: orderBySeasonYear
+  };
+
+  function orderBySeasonYear(intervention) {
+    var date = new Date(
+      intervention.year,
+      Defaults.getSeasons().indexOf(intervention.season) + 3,
+      1
+    );
+    return date.getTime();
+  }
+}  
+angular
+  .module('unicerApp')
+  .service('WFSStyles', WFSStyles);
+
+function WFSStyles() {
+
+  var _styles = {
+    defaultStyle: new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: 3,
+        fill: new ol.style.Fill({
+          color: [24, 72, 26, 0.8]
+        }),
+        stroke: new ol.style.Stroke({
+          color: [0, 0, 0, 1]
+        }),
+      })
+    }),
+    selected: new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: 4,
+        fill: new ol.style.Fill({
+          color: [72, 24, 70, 1]
+        }),
+        stroke: new ol.style.Stroke({
+          color: [0, 0, 0, 1],
+          width: 2
+        }),
+      }),
+      zIndex: 100
+    }),
+    intervention: new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: 4,
+        fill: new ol.style.Fill({
+          color: [72, 15, 15, 1]
+        }),
+        stroke: new ol.style.Stroke({
+          color: [0, 0, 0, 1],
+          width: 2
+        })
+      }),
+      zIndex: 50
+    })
+  };
+
+  return {
+    treeSelected: treeSelected,
+    treeDefault: treeDefault,
+    treeIntervention: treeIntervention,
+    treeHighlight: treeHighlight
+  }
+
+  function treeSelected(){
+    return _styles.selected;
+  }
+  function treeDefault() {
+    return _styles.defaultStyle;
+  }
+  function treeIntervention(feature, layer) {
+    return feature.getProperties().has_inter ? _styles.intervention : _styles.defaultStyle;
+  }
+  function treeHighlight(selectedFeatureID) {
+    return function (feature, layer) {
+      return selectedFeatureID === feature.getId() ? _styles.selected : _styles.defaultStyle;
+    }
+  }
+
+}
