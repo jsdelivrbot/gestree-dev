@@ -1,0 +1,61 @@
+<div id="interactions-toolbar" role="group" class="btn-group">
+  <button ng-click="setDefaultView()" type="button" class="btn btn-secondary" style="cursor: pointer">
+    <i class="fa fa-globe"></i></button>
+  <button ng-click="setInteraction('DragPan')" ng-class="{active: isActive('DragPan')}" type="button" class="btn btn-secondary tooltip-bottom"
+    data-tooltip="Mover"><i class="fa fa-hand-paper-o"></i></button>
+  <button ng-click="setInteraction('ZoomIn')" ng-class="{active: isActive('ZoomIn')}" type="button" class="btn btn-secondary tooltip-bottom"
+    data-tooltip="Aproximar"><i class="fa fa-search-plus"></i></button>
+  <button ng-click="setInteraction('ZoomOut')" ng-class="{active: isActive('ZoomOut')}" type="button" class="btn btn-secondary tooltip-bottom"
+    data-tooltip="Afastar"><i class="fa fa-search-minus"></i></button>
+  <button ng-click="setInteraction('ZoomBox')" ng-class="{active: isActive('ZoomBox')}" type="button" class="btn btn-secondary tooltip-bottom"
+    data-tooltip="Zoom Caixa"><i class="fa fa-expand"></i></button>
+  <button ng-click="setInteraction('Identify')" ng-class="{active: isActive('Identify')}" type="button" class="btn btn-secondary tooltip-bottom"
+    data-tooltip="Identificar"><i class="fa fa-info" style="padding: 0em 0.25em"></i></button>
+  <ui-select on-select="selectPark($model.geometry.coordinates, 'EPSG:3857')" ng-model="selectedPark.selected" theme="selectize"
+    class="park-select" title="Escolha um local">
+    <ui-select-match placeholder="Lista de Parques...">{{$select.selected.properties.nome}}</ui-select-match>
+    <ui-select-choices repeat="park in parks | filter: {properties: {nome: $select.search}} | limitTo : 10">
+      <span ng-bind-html="park.properties.nome"></span>
+    </ui-select-choices>
+  </ui-select>
+</div>
+
+<tree-details></tree-details>
+
+<section class="identify-container" ng-show="isActive('Identify')">
+  <div class="title">Resultados da Pesquisa</div>
+  <div class="content">
+    <div class="no-results" ng-hide="layerResults[0].features.length !== 0">Não foram encontrados resultados.</div>
+    <div ng-repeat="layer in layerResults" ng-hide="layerResults[0].features.length === 0">
+      <div class="layer">
+        <div ng-repeat="feature in layer.features">
+          <li ng-repeat="(key, value) in feature.properties">
+            <span class="key">{{key | uppercase}}:</span>
+            <span class="value">{{value | capitalize}}</span>
+          </li>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="bottom-interactions-left">
+  <div class="box">Acção Selecionada: {{ activeInteraction }}</div>
+</section>
+<section class="bottom-interactions-right">
+  <div class="card" style="width: 12rem;">
+    <div class="card-header">
+      WGS 84
+    </div>
+    <div class="card-block">
+      <div class="card-text" id="coordinate4326"></div>
+    </div>
+  </div>
+  <div class="card" style="width: 12rem;">
+    <div class="card-header">
+      Datum 73 / Portuguese Grid
+    </div>
+    <div class="card-block">
+      <div class="card-text" id="coordinate27493"></div>
+    </div>
+  </div>
+</section>

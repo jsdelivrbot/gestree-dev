@@ -1,0 +1,91 @@
+<section class="print-container">
+  <section ng-hide="file || isPrinting">
+    <h5>Filtros de Impressão</h5>
+    <section class="input-filter">
+      <div class="title">Parque: </div>
+      <div class="input-filter-content" ng-class="{'required':errors.park}">
+        <div class="dropdown">
+          <button required class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+          {{ printData.park.properties.nome || '--' }} <span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <li class="dropdown-item" ng-repeat="park in defaults.parks" ng-click="setPark(park)"><a>{{park.properties.nome}}</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section class="input-filter">
+      <div class="title">Conteúdo da Impressão: </div>
+      <div class="input-filter-content" ng-class="{'required':errors.contentType}">
+        <div class="dropdown">
+          <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+          {{ printData.contentType.value || '--' }} <span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <li class="dropdown-item" ng-repeat="content in defaults.contentTypes" ng-click="setContent(content)"><a>{{content.value}}</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section class="input-filter-alt" ng-show="printFilters">
+      <div class="input-filter-inline">
+        <div class="title">Época Agendada: </div>
+        <div class="input-filter-content-alt">
+          <div class="dropdown">
+            <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+            {{ printData.season || '--'}} <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item" ng-repeat="season in defaults.seasons" ng-click="setSeason(season)"><a>{{season}}</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="input-filter-inline">
+        <div class="title">Ano Agendado: </div>
+        <div class="input-filter-content-alt">
+          <div class="dropdown">
+            <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+            {{ printData.year || '--'}} <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item" ng-repeat="year in defaults.years" ng-click="setYear(year)"><a>{{year}}</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="input-filter">
+      <div class="title">Formato: </div>
+      <div class="input-filter-content" ng-class="{'required':errors.format}">
+        <div class="dropdown">
+          <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+          {{ printData.format.value || '--'}} <span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <li class="dropdown-item" ng-repeat="format in defaults.formats" ng-click="setFormat(format)"><a>{{format.value}}</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </section>
+  <div ng-if="errors.message" class="error-message-container" style="padding-left:unset;" role="alert">
+    <div class="text-center alert alert-danger">{{errors.message}}</div>
+  </div>
+  <section class="text-center" ng-show="isPrinting">
+    <hr>
+    <i class="fa fa-spinner fa-spin" style="font-size: 2.5em; color:rgb(92, 184, 92)"></i>
+    <hr>
+    <p>Processando o seu pedido de impressão.</p>
+    <p>Por favor, aguarde.</p>
+  </section>
+  <section ng-show="file">
+    <h5>Resultado da Impressão</h5>
+    <div class="text-center alert alert-success">
+      <print-result params="file.params" url="{{file.url}}" icon="{{file.icon}}" name="{{file.name}}"></print-result>
+    </div>
+  </section>
+  <section class="bottom-tree-commands">
+    <div ng-show="file">
+      <button type="button" class="btn btn-success" ng-click="newPrint()"><i class="fa fa-refresh"> Nova Impressão </i></button>
+    </div>
+    <div ng-hide="file">
+      <button type="button" class="btn btn-success" ng-click="print()"><i class="fa fa-print"> Imprimir </i></button>
+    </div>
+  </section>
+</section>

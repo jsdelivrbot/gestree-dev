@@ -1,0 +1,12 @@
+<div class="container full-height interventions-list">
+    <div class="top-bar" style="width:100%; height:35px; margin-left:-15px; padding:5px; z-index: 20; background-color:white; position:fixed;">
+        <a ng-href="/interventions/add" type="button" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Adicionar Nova Intervenção </a>
+    </div>
+    <div style="margin-top:35px" class="scrollable-container">
+        <div ng-repeat="intervention in interventions | orderBy:sort">
+            <div class="row">
+                <intervention-item intervention="intervention" style="min-width: 100%"></intervention-item>
+            </div>
+        </div>
+    </div>
+</div>

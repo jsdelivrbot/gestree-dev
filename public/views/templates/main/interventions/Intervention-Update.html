@@ -1,0 +1,191 @@
+<div class="project project-success" style="font-size:13px;">
+  <div class="project-content">
+    <h2 class="lead">
+      <span><b>PARQUE DAS PEDRAS SALGADAS</b> - Árvore {{intervention.id_tree}}</span>
+    </h2>
+    <div class="container">
+      <div class="row">
+        <div class="col-6" style="padding: 0.5em;">
+          <div class="content-box">
+            <div class="content-box-title">
+              <span><i class="fa fa-info"></i> &nbsp; <b>Dados da Intervenção</b></span>
+            </div>
+            <section class="input-filter">
+              <div class="title">Identificador de Intervenção</div>
+              <div class="input-filter-content auto-margin">
+                <div class="input-group input-group-sm">
+                  <span class="input-group-addon" id="basic-addon1"><i class="fa fa-ban"></i></span>
+                  <input type="number" class="form-control text-center" ng-model="intervention.id" placeholder="ID da Intervenção" aria-describedby="basic-addon1"
+                    disabled>
+                </div>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Tipo de Intervenção</div>
+              <div class="input-filter-content auto-margin">
+                <div class="dropdown">
+                  <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                              {{ intervention.type.value || "-" }} <span class="caret"></span></button>
+                  <ul class="dropdown-menu">
+                    <li class="dropdown-item" ng-repeat="type in defaults.types" ng-click="setType(type)"><a>{{type.value}}</a></li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Prioridade</div>
+              <div class="input-filter-content auto-margin">
+                <div class="radio radio-primary inline">
+                  <input type="radio" name="edit_priority1" id="edit_priority1" ng-value="1" ng-model="intervention.priority">
+                  <label for="edit_priority1">1</label>
+                </div>
+                <div class="radio radio-primary inline">
+                  <input type="radio" name="edit_priority2" id="edit_priority2" ng-value="2" ng-model="intervention.priority">
+                  <label for="edit_priority2">2</label>
+                </div>
+                <div class="radio radio-warning inline">
+                  <input type="radio" name="edit_priority3" id="edit_priority3" ng-value="3" ng-model="intervention.priority">
+                  <label for="edit_priority3">3</label>
+                </div>
+                <div class="radio radio-danger inline">
+                  <input type="radio" name="edit_priority4" id="edit_priority4" ng-value="4" ng-model="intervention.priority">
+                  <label for="edit_priority4">4</label>
+                </div>
+                <div class="radio radio-danger inline">
+                  <input type="radio" name="edit_priority5" id="edit_priority5" ng-value="5" ng-model="intervention.priority">
+                  <label for="edit_priority5">5</label>
+                </div>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Período Agendado</div>
+              <div class="input-filter-content auto-margin">
+                <div class="dropdown">
+                  <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                      {{ intervention.season || "-" }} <span class="caret"></span></button>
+                  <ul class="dropdown-menu">
+                    <li class="dropdown-item" ng-repeat="season in defaults.seasons" ng-click="setSeason(season)"><a>{{season}}</a></li>
+                  </ul>
+                </div>
+                <div class="dropdown" style="margin-top:2px">
+                  <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                    {{ intervention.year || "-" }} <span class="caret"></span></button>
+                  <ul class="dropdown-menu">
+                    <li class="dropdown-item" ng-repeat="year in defaults.years" ng-click="setYear(year)"><a>{{year}}</a></li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Data de Fecho</div>
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.closed_at | date:"dd/MM/yyyy" || "N/D" }}</span>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Periodicidade</div>
+              <div class="input-filter-content auto-margin">
+                <div class="dropdown">
+                  <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                          {{ intervention.periodicity || "-" }} <span class="caret"></span></button>
+                  <ul class="dropdown-menu">
+                    <li class="dropdown-item" ng-repeat="periodicity in defaults.periodicities" ng-click="setPeriodicity(periodicity)"><a>{{periodicity}}</a></li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Equipa</div>
+              <div class="input-filter-content auto-margin">
+                <div class="dropdown">
+                  <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                          {{ intervention.team || "-" }} <span class="caret"></span></button>
+                  <ul class="dropdown-menu">
+                    <li class="dropdown-item" ng-repeat="team in defaults.teams" ng-click="setTeam(team)"><a>{{team}}</a></li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+        <div class="col-6" style="padding: 0.5em;">
+          <div class="content-box">
+            <div class="content-box-title">
+              <span><i class="fa fa-info"></i> &nbsp; <b>Dados da Árvore</b></span>
+            </div>
+            <section class="input-filter">
+              <div class="title">Identificador da Árvore</div>
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.id_tree || "N/D"}}</span>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Zona</div>
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.tree.zone || "N/D"}}</span>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Nome Científico</div>
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.tree.cientifico || "N/D" }}</span>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Nome Comum</div>
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.tree.comum || "N/D" }}</span>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Tipo</div>
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.tree.tipo || "N/D" }}</span>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Diâmetro</div>
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.tree.diametro || "N/D" }}</span>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Altura</div>
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.tree.altura || "N/D" }}</span>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Diâmetro Copa</div>
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.tree.diametro_copa || "N/D" }}</span>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Idade Aproximada</div>
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.tree.idade || "N/D" }}</span>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Ano de Plantação</div>
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.tree.ano || "N/D" }}</span>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-8">
+          <div ng-if="error" style="margin-bottom:0" class="text-center alert alert-danger">{{error}}</div>
+          <div ng-if="message" style="margin-bottom:0" class="text-center alert alert-success">{{message}}</div>
+        </div>
+        <div class="col-4 text-center" style="margin: 10px auto; ">
+          <button ng-click="back()" class="btn btn-sm btn-success"><i class="fa fa-arrow-left"></i> Voltar</button>
+          <button ng-click="save()" class="btn btn-sm btn-success"><i class="fa fa-save"></i> Guardar Alterações</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
