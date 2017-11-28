@@ -1,0 +1,99 @@
+<section>
+  <div class="inter-container">
+    <div class="title"><b>Filtos de Intervenção</b></div>
+    <section class="radio-filter">
+      <div class="title">Parque</div>
+      <div class="radio-filter-content">
+        <div class="radio radio-primary">
+          <input type="radio" name="parque" id="parque1" value="pedras_salgadas" ng-model="filterData.parque">
+          <label for="parque1">Pedras Salgadas - Spa & Nature Park</label>
+        </div>
+        <div class="radio radio-primary">
+          <input type="radio" name="parque" id="parque2" value="vidago_palace" ng-model="filterData.parque">
+          <label for="parque2">Palace Vidago Hotel</label>
+        </div>
+      </div>
+    </section>
+    <section class="input-filter">
+      <div class="title">Árvore</div>
+      <div class="input-filter-content">
+        <div class="input-group input-group-sm" style="width: 50%">
+          <span class="input-group-addon" id="basic-addon1"><i class="fa fa-tree"></i></span>
+          <input type="number" class="form-control" ng-change="setIdTree(filterData.id_tree)" ng-model="filterData.id_tree" placeholder="Identificador" aria-describedby="basic-addon1">
+        </div>
+      </div>
+    </section>
+    <section class="radio-filter">
+      <div class="title">Estado</div>
+      <div class="radio-filter-content-inline">
+        <div class="radio radio-primary">
+          <input type="radio" name="estado" id="estado_aberta" value="ABERTA" ng-model="filterData.state">
+          <label for="estado_aberta">Aberta</label>
+        </div>
+        <div class="radio radio-danger">
+          <input type="radio" name="estado" id="estado_fechada" value="FECHADA" ng-model="filterData.state">
+          <label for="estado_fechada">Fechada</label>
+        </div>
+      </div>
+    </section>
+    <section class="input-filter">
+      <div class="title">Tipo de Intervenção</div>
+      <div class="input-filter-content">
+        <div class="dropdown">
+          <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+            {{ data.typeName || "--" }} <span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <li class="dropdown-item" ng-repeat="type in defaults.types" ng-click="setInterType(type)"><a>{{type.value}}</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section class="input-filter">
+      <div class="title">Data Agendada</div>
+      <div class="input-filter-content">
+        <div class="dropdown">
+          <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+            {{ filterData.season || "--" }} <span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <li class="dropdown-item" ng-repeat="season in defaults.seasons" ng-click="setSeason(season)"><a>{{season}}</a></li>
+          </ul>
+        </div>
+        <div class="dropdown" style="margin-top:2px">
+          <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+            {{ filterData.year || "--" }} <span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <li class="dropdown-item" ng-repeat="year in defaults.years" ng-click="setYear(year)"><a>{{year}}</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section class="radio-filter">
+      <div class="title">Prioridade</div>
+      <div class="radio-filter-content-inline">
+        <div class="radio radio-primary">
+          <input type="radio" name="priority1" id="priority1" ng-value='1' ng-model="filterData.priority">
+          <label for="priority1">1</label>
+        </div>
+        <div class="radio radio-primary">
+          <input type="radio" name="priority2" id="priority2" ng-value='2' ng-model="filterData.priority">
+          <label for="priority2">2</label>
+        </div>
+        <div class="radio radio-warning">
+          <input type="radio" name="priority3" id="priority3" ng-value='3' ng-model="filterData.priority">
+          <label for="priority3">3</label>
+        </div>
+        <div class="radio radio-danger">
+          <input type="radio" name="priority4" id="priority4" ng-value='4' ng-model="filterData.priority">
+          <label for="priority4">4</label>
+        </div>
+        <div class="radio radio-danger">
+          <input type="radio" name="priority5" id="priority5" ng-value='5' ng-model="filterData.priority">
+          <label for="priority5">5</label>
+        </div>
+      </div>
+    </section>
+    <div class="clear-filter-button" style="height: 5vh; text-align: right;">
+      <button type="button" ng-click="resetFilter()" class="btn btn-sm btn-success">Limpar Filtros</button>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,122 @@
+<div id="intervention-add">
+  <div class="top-bar">
+    <p1>Adiconar Nova Intervenção - Árvore {{ intervention.id_tree }}</p1>
+  </div>
+  <div class="content">
+    <form name="interventionForm">
+      <section class="input-filter half-width inline">
+        <div class="title">Identificador da Árvore</div>
+        <div class="input-filter-content half-width auto-margin" ng-class="{'required':errors.id_tree}" style="min-width: unset">
+          <div class="input-group input-group-sm">
+            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-tree"></i></span>
+            <input type="number" class="form-control text-center" ng-model="intervention.id_tree" placeholder="ID da Árvore" aria-describedby="basic-addon1"
+              ng-disabled="disableID">
+          </div>
+        </div>
+      </section>
+      <section class="radio-filter quarter-width inline">
+        <div class="title">Prioridade</div>
+        <div class="radio-filter-content-inline" ng-class="{'required':errors.priority}" style="min-width:unset;">
+          <div class="radio radio-primary">
+            <input type="radio" name="add-priority" id="add-priority-1" ng-value='1' ng-model="intervention.priority">
+            <label for="add-priority-1">1</label>
+          </div>
+          <div class="radio radio-primary">
+            <input type="radio" name="add-priority" id="add-priority-2" ng-value='2' ng-model="intervention.priority">
+            <label for="add-priority-2">2</label>
+          </div>
+          <div class="radio radio-warning">
+            <input type="radio" name="add-priority" id="add-priority-3" ng-value='3' ng-model="intervention.priority">
+            <label for="add-priority-3">3</label>
+          </div>
+          <div class="radio radio-danger">
+            <input type="radio" name="add-priority" id="add-priority-4" ng-value='4' ng-model="intervention.priority">
+            <label for="add-priority-4">4</label>
+          </div>
+          <div class="radio radio-danger">
+            <input type="radio" name="add-priority" id="add-priority-5" ng-value='5' ng-model="intervention.priority">
+            <label for="add-priority-5">5</label>
+          </div>
+        </div>
+      </section>
+      <section class="input-filter more-width inline">
+        <div class="title">Tipo de Intervenção</div>
+        <div class="input-filter-content full-width" ng-class="{'required':errors.type}">
+          <div class="dropdown">
+            <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                    {{ intervention.type.value || "-" }} <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item" ng-repeat="type in defaults.types" ng-click="setType(type)"><a>{{type.value}}</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      <div>
+        <section class="input-filter half-width inline">
+          <div class="title">Período Agendado</div>
+          <div class="input-filter-content full-width auto-margin" ng-class="{'required':errors.season || errors.year}">
+            <div class="dropdown half-width inline">
+              <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                      {{ intervention.season || "-" }} <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li class="dropdown-item" ng-repeat="season in defaults.seasons" ng-click="setSeason(season)"><a>{{season}}</a></li>
+              </ul>
+            </div>
+            <div class="dropdown half-width inline">
+              <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                    {{ intervention.year || "-" }} <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li class="dropdown-item" ng-repeat="year in defaults.years" ng-click="setYear(year)"><a>{{year}}</a></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        <section class="input-filter quarter-width inline auto-margin">
+          <div class="title">Periodicidade</div>
+          <div class="input-filter-content half-width auto-margin">
+            <div class="dropdown">
+              <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                      {{ intervention.periodicity || "-" }} <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li class="dropdown-item" ng-repeat="periodicity in defaults.periodicities" ng-click="setPeriodicity(periodicity)"><a>{{periodicity}}</a></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div style="width: 30%; margin: 0 auto;">
+        <section class="input-filter">
+          <div class="title">Equipa</div>
+          <div class="input-filter-content full-width">
+            <div class="dropdown">
+              <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                      {{ intervention.team || "-" }} <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li class="dropdown-item" ng-repeat="team in defaults.teams" ng-click="setTeam(team)"><a>{{team}}</a></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="full-width">
+        <section class="input-filter">
+          <div class="title">Comentários adicionais</div>
+          <div class="input-filter-content full-width auto-margin">
+            <div class="input-group input-group-sm">
+              <textarea ng-model="intervention.comments" name="noname" id="noid" cols="256" rows="1"></textarea>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div ng-show="errors.message" class="error-message-container">
+        <span class="error-message">{{ errors.message }}</span>
+      </div>
+      <div ng-if="error" class="alert alert-danger">{{error}}</div>
+      <div ng-if="message" class=" alert alert-success">{{message}}</div>
+      <div class="btn-container align-right">
+        <input type="button" class="btn btn-primary" value="Voltar" ng-click="back()">
+        <input type="submit" class="btn btn-primary" value="Confirmar" ng-click="send()">
+      </div>
+    </form>
+  </div>
+</div>
