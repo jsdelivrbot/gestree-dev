@@ -2053,7 +2053,9 @@ function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, De
     var data = {
       url: 'print/csv/' + params.contentType.key,
       name: params.contentType.value + '.csv',
-      params: {},
+      params: {
+        park: params.park.properties.nome 
+      },
       icon: 'fa-file-excel-o'
     };
     if (params.season) data.params.season = params.season;

@@ -12,7 +12,9 @@ module.exports = {
   interventions_csv: (req, res, next) => {
     db.interventions.print_csv(req.query)
       .then(data => {
-        const filename = "Intervenções - " + req.query.parque + "_" + req.query.season + "_" + req.query.year;
+        var filename = "Intervenções - " + req.query.park;
+        if(req.query.season) filename+= "_" +req.query.season;
+        if(req.query.year) filename+= "_" + req.query.year;
         res.set('Content-Disposition', 'attachment; filename="' + filename + '.csv"');
         res.status(200).csv(data, true);
       })
