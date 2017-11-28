@@ -1,4 +1,13 @@
 UPDATE "PSalgadas"."Interventions" 
-SET id_type = ${id_type}, created_at = ${created_at}, intervention_date = ${intervention_date}, finished_at = ${finished_at}, priority = ${priority}, state = ${state}
+SET 
+id_type = ${id_type},
+season = ${season}, 
+year = ${year},
+periodicity = ${periodicity},
+team = ${team},
+comments = ${comments},
+priority = ${priority},
+state= ${state},
+closed_at = ${closed_at}
 WHERE id = ${id}
 RETURNING *

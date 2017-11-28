@@ -1,0 +1,32 @@
+<div class="panel" ng-show="navigationVisibility">
+	<div class="tabbable-line">
+		<ul role="tablist" class="nav nav-tabs">
+			<a ng-href="/" ng-click="setActiveTab(1)" data-tooltip="Camadas" class="nav-item nav-link tooltip-bl" ng-class="{active: isActiveTab(1)}"><i class="nav-icon nav-icon-camadas"></i></a>
+			<a ng-href="/" ng-click="setActiveTab(2)" data-tooltip="Legendas" class="nav-item nav-link tooltip-bl" ng-class="{active: isActiveTab(2)}"><i class="nav-icon nav-icon-legendas"></i></a>
+			<a ng-href="/interventions" ng-click="setActiveTab(3)" data-tooltip="Intervenções" class="nav-item nav-link tooltip-bl" ng-class="{active: isActiveTab(3)}"><i class="nav-icon nav-icon-intervencoes"></i></a>
+			<a ng-href="/" ng-click="setActiveTab(4)" data-tooltip="Imprimir" class="nav-item nav-link tooltip-bl" ng-class="{active: isActiveTab(4)}"><i class="nav-icon nav-icon-impressao"></i></a>
+			<button type="button" ng-click="hideNavigation()" class="btn btn-secondary btn-circle btn-hide-navigation"><i class="fa fa-arrow-left"></i></button>
+		</ul>
+
+		<div id="tabcontent" class="tab-content">
+			<div id="layers" role="tabpanel" class="tab-pane" ng-class="{active: isActiveTab(1)}">
+				<layers-tab></layers-tab>
+			</div>
+			<div id="legenda" role="tabpanel" class="tab-pane" ng-class="{active: isActiveTab(2)}">
+				<legends-tab></legends-tab>
+			</div>
+			<div id="inter" role="tabpanel" class="tab-pane" ng-class="{active: isActiveTab(3)}">
+				<interventions-tab></interventions-tab>
+			</div>
+			<div id="print" role="tabpanel" class="tab-pane" ng-class="{active: isActiveTab(4)}">
+				<print-tab></print-tab>
+			</div>
+		</div>
+		
+	</div>
+</div>
+<div>
+	<button ng-hide="navigationVisibility" ng-click="showNavigation()" class="btn btn-secondary btn-circle btn-show-navigation">
+		<i class="fa fa-arrow-right"></i>
+	</button>
+</div>

@@ -1,2 +1,2389 @@
-!function(){"use strict";angular.module("unicerApp",["MainModule"]).config(["$mdThemingProvider",function(e){e.definePalette("whiteGreen",{50:"5cb85c",100:"000000",200:"5cb85c",300:"5cb85c",400:"5cb85c",500:"5cb85c",600:"5cb85c",700:"5cb85c",800:"5cb85c",900:"5cb85c",A100:"ffffff",A200:"000000",A400:"000000",A700:"000000",contrastDefaultColor:"light",contrastDarkColors:["50","100","200","300","400","A100"],contrastLightColors:void 0}),e.theme("default").primaryPalette("green").backgroundPalette("whiteGreen")}])}(),function(){"use strict";angular.module("unicerApp.configs",[]).constant("Globals",{ENVIRONMENT:"production",URL_WMS:{development:"http://localhost:3002/geoserver/wms",production:"/geoserver/wms"},URL_WFS:{development:"http://localhost:3002/geoserver/wfs",production:"/geoserver/wfs"},URL_PRINT:{development:"http://localhost:3002/geoserver/pdf",production:"/geoserver/pdf"}})}(),function(){"use strict";angular.module("ControlPanelModule",["LayersModule","LegendsModule","InterventionsModule","PrintModule"])}(),function(){"use strict";angular.module("LayersModule",[]).run(["ControlPanelService",function(e){e.addTab({id:1,name:"Camadas",tooltip:"Camadas",iconClass:"my-icon-camadas",location:"/"})}])}(),function(){"use strict";angular.module("LegendsModule",[]).run(["ControlPanelService",function(e){e.addTab({id:2,name:"Legendas",tooltip:"Legendas",iconClass:"my-icon-legends",location:"/"})}])}(),function(){"use strict";function e(e){return e.getAllInterventions()}function t(e,t){return t.getIntervention(e.current.params.int_id)}function n(e){return e.get()}angular.module("MainModule",["ngMaterial","ngMessages","ngRoute","ControlPanelModule"]).config(["$routeProvider","$locationProvider",function(o,r){o.when("/",{templateUrl:"views/templates/main.html",controller:["Map","$scope","$timeout",function(e,t,n){e.setTarget("map"),t.$watch("cPanelVisibility",function(){n(function(){e.updateSize()},50)})}]}).when("/interv",{templateUrl:"views/templates/interventions/interventionsList.html",controller:"InterventionsListController",controllerAs:"intListCtrl",resolve:{Interventions:["InterventionsService",e]}}).when("/interv/:int_id/edit",{templateUrl:"views/templates/interventions/edit.html",controller:"EditInterventionController",controllerAs:"editCtrl",resolve:{intervention:["$route","InterventionsService",t],interTypes:["InterventionTypesFactory",n]}}).when("/interv/:int_id/close",{templateUrl:"views/templates/interventions/close.html",controller:"CloseInterventionController",controllerAs:"closeCtrl",resolve:{intervention:["$route","InterventionsService",t]}}).when("/interv/:int_id/info",{templateUrl:"views/templates/interventions/info.html",controller:"MoreInfoContoller",controllerAs:"moreInfoCtrl",resolve:{intervention:["$route","InterventionsService",t]}}).otherwise({redirectTo:"/"}),r.html5Mode(!0)}]).run(["Map",function(e){e.setTarget("map")}])}(),function(){"use strict";angular.module("MapModule",["unicerApp.configs","MapInteractionsModule"]).config(["MapProvider","Globals",function(e,t){e.setDefaultLayers([new ol.layer.Tile({source:new ol.source.OSM({}),queryable:!1})]),e.setInteractions([new ol.interaction.MouseWheelZoom,new ol.interaction.DragPan]),e.setControls([new ol.control.ScaleLine,new ol.control.OverviewMap({className:"ol-overviewmap ol-custom-overviewmap",layers:[new ol.layer.Image({source:new ol.source.ImageWMS({url:t.URL_WMS[t.ENVIRONMENT],params:{LAYERS:"unicer:limite"},extent:[43858.7242812507,208452.333204688,44110.6809999999,209084.351648437]})}),new ol.layer.Image({source:new ol.source.ImageWMS({url:t.URL_WMS[t.ENVIRONMENT],params:{LAYERS:"unicer:base"},extent:[43858.7242812507,208452.333204688,44110.6809999999,209084.351648437]})}),new ol.layer.Image({source:new ol.source.ImageWMS({url:t.URL_WMS[t.ENVIRONMENT],params:{LAYERS:"unicer:edificios"},extent:[43858.7242812507,208452.333204688,44110.6809999999,209084.351648437]})})],collapseLabel:"-",label:"+",collapsed:!0,tipLabel:""})]),e.setCenterAndZoom([-7.593569,41.595564],11)}]).config(["MinimapProvider","Globals",function(e,t){e.setDefaultLayers([new ol.layer.Tile({source:new ol.source.OSM({}),queryable:!1}),new ol.layer.Image({opacity:1,source:new ol.source.ImageWMS({url:t.URL_WMS[t.ENVIRONMENT],params:{LAYERS:"unicer:limite"},extent:[43858.7242812507,208452.333204688,44110.6809999999,209084.351648437]})}),new ol.layer.Tile({opacity:1,source:new ol.source.TileWMS({url:t.URL_WMS[t.ENVIRONMENT],params:{LAYERS:"unicer:base"},extent:[43858.7242812507,208452.333204688,44110.6809999999,209084.351648437]})}),new ol.layer.Tile({opacity:1,source:new ol.source.TileWMS({url:t.URL_WMS[t.ENVIRONMENT],params:{LAYERS:"unicer:edificios"},extent:[43858.7242812507,208452.333204688,44110.6809999999,209084.351648437]})})]),e.setInteractions([]),e.setControls([]),e.setCenterAndZoom([-7.593569,41.595564],11)}]).run(function(){proj4.defs("EPSG:27493","+proj=tmerc +lat_0=39.66666666666666 +lon_0=-8.131906111111112 +k=1 +x_0=180.598 +y_0=-86.98999999999999 +ellps=intl +towgs84=-223.237,110.193,36.649,0,0,0,0 +units=m +no_defs");var e=[-127101.82,-300782.39,160592.41,278542.12];ol.proj.get("EPSG:27493").setExtent(e),ol.Collection.prototype.insertLayer=function(e){var t=this.getArray().findIndex(function(t){return t.get("group")<e.get("group")});-1!==t?this.insertAt(t,e):this.push(e)},ol.layer.Base.prototype.isQueryable=function(){return this.get("queryable")}})}(),function(){"use strict";angular.module("InterventionsModule",["ngRoute","MapModule"]).config(["$mdDateLocaleProvider",function(e){e.months=["janeiro","fevereiro","março","abril","maio","junho","agosto","setembro","outubro","novembro","dezembro"],e.shortMonths=["jan","feb","mar","abr","mai","jun","jul","ago","set","out","nov","dez"],e.days=["domingo","segunda","terça","quarta","quinta","sexta","sabado"],e.shortDays=["Do","Se","Te","Qa","Qi","Se","Sa"],e.firstDayOfWeek=1,e.parseDate=function(e){var t=moment(e,"DD/MM/YYYY",!0);return t.isValid()?t.toDate():new Date(NaN)},e.formatDate=function(e){return e?moment(e).format("DD/MM/YYYY"):""},e.weekNumberFormatter=function(e){return"Semana "+e},e.msgCalendar="Calendário",e.msgOpenCalendar="Abrir o calendário",e.firstRenderableDate=new Date(2e3,1,1),e.lastRenderableDate=new Date(2100,12,31)}]).run(["ControlPanelService",function(e){e.addTab({id:3,name:"Intervenções",tooltip:"Intervenções",iconClass:"my-icon-tree",location:"/interv"})}])}(),function(){"use strict";angular.module("MapInteractionsModule",["ui.select","ngSanitize"])}(),function(){"use strict";angular.module("PrintModule",[]).constant("PrintGlobals",{url_print_host:"http://gistree.espigueiro.pt:8081",url_pdf_print:"http://gistree.espigueiro.pt:8081/print-servlet-3.8.0/print/gestree/report.pdf"}).run(["ControlPanelService",function(e){e.addTab({id:4,name:"Imprimir",tooltip:"Imprimir",iconClass:"my-icon-print",location:"/"})}])}(),function(){"use strict";function e(e,t){var n=this;n.hideControlPanel=function(){t.$emit("controlPanel:panelVisibility",!1)},n.setActiveTab=function(e,t){n.active=e},n.isActiveTab=function(e){return n.active===e},n.showControlPanel=function(){t.$emit("controlPanel:panelVisibility",!0)},function(){n.active=1,n.tabs=e.getTabs()}()}angular.module("ControlPanelModule").controller("ControlPanelController",e),e.$inject=["ControlPanelService","$scope"]}(),function(){"use strict";function e(){return{bindToController:!0,controller:"ControlPanelController",controllerAs:"cPanelCtrl",restrict:"E",templateUrl:"views/templates/control-panel/controlPanel.html"}}angular.module("ControlPanelModule").directive("controlPanel",e)}(),function(){"use strict";function e(){function e(e){n.push(e)}function t(){return n}var n=[];this.addTab=e,this.getTabs=t}angular.module("ControlPanelModule").service("ControlPanelService",e)}(),function(){"use strict";function e(e,t,n){var o=this;o.setBaseLayer=function(t){o.baseLayer=t.name,e.setBaseLayer(t.layerDef)},o.setTab=function(e){tc.selectedTab=e},o.expandTree=function(){t.tree.visit(function(e){e.setExpanded(!0)})},o.collapseTree=function(){t.tree.visit(function(e){e.setExpanded(!1)})},o.deselectAll=function(){t.tree.visit(function(e){e.setSelected(!1)})},o.help=function(){alert(" Em Desenvolvimento... ")},function(){o.baseLayers=[{name:"Open Street Map",layerDef:new ol.layer.Tile({source:new ol.source.OSM({})})},{name:"Camada em Branco",layerDef:new ol.layer.Tile({})}],o.baseLayer="Mapa de Base"}()}angular.module("LayersModule").controller("LayersController",e),e.$inject=["Map","$scope","$rootScope"]}(),function(){"use strict";function e(e,t,n,o,r){function i(i,a,s){var l=new o;a.find("#tree").fancytree({extensions:["edit","glyph","wide"],checkbox:!0,glyph:t.glyph_opts,clickFolderMode:4,selectMode:3,source:{url:t.url},toggleEffect:{effect:"drop",options:{direction:"left"},duration:200},wide:{iconWidth:"1em",iconSpacing:"0.5em",levelOfs:"1.5em",labelSpacing:"0.5em"},select:function(t,o){r(function(){if(o.node.isFolder()){var t=o.node.children;o.node.isSelected()?t.forEach(function(t){t.data.key=t.data.key||t.key,e.addLayer(t.data,l[t.style]),n.addLayerLegend(t)}):t.forEach(function(t){t.data.key=t.data.key||t.key,e.removeLayer(t.data),n.removeLayerLegend(t)})}else o.node.isSelected()?(o.node.data.key=o.node.data.key||o.node.key,e.addLayer(o.node.data,l[o.node.data.style]),n.addLayerLegend(o.node)):(o.node.data.key=o.node.data.key||o.node.key,e.removeLayer(o.node.data),n.removeLayerLegend(o.node))},1)},init:function(t,n){var o=e.map.getView().getZoom();o===parseInt(o,10)&&n.tree.visit(function(e){!1===e.checkbox&&e.addClass("icon-padding"),e.data.preselected&&e.setSelected(!0);var t=e.data.minZoom;e.data.maxZoom;e.isFolder()||void 0!=t&&(t<o?e.removeClass("layer-hidden"):e.addClass("layer-hidden"))})},click:function(t,n){if("icon"===n.targetType&&!n.node.isFolder()){var o=ol.proj.transformExtent(n.node.data.extent,ol.proj.get("EPSG:27493"),"EPSG:3857");e.map.getView().fit(o,{duration:1500})}}});i.tree=a.find("#tree").fancytree("getTree")}return{bindToController:!0,controller:"LayersController",controllerAs:"layersCtrl",link:i,restrict:"E",scope:{},templateUrl:"views/templates/control-panel/layersTab.html"}}angular.module("LayersModule").directive("layersTab",e),e.$inject=["Map","LayersFactory","LegendsService","StylesFactory","$timeout"]}(),function(){"use strict";function e(){function e(e){$("#tree").fancytree("getTree").visit(function(t){t.isFolder()&&t.title==e.title&&e.children.forEach(function(e){e.extraClasses="protected",t.addChildren(e,0)})})}function t(){var e=[];$("#tree").fancytree("getTree").visit(function(t){!t.isFolder()&&t.data.protected&&e.push(t.key)});for(var t=0;t<e.length;t++){$("#tree").fancytree("getTree").getNodeByKey(e[t]).remove()}}return{glyph_opts:{map:{checkbox:"fa fa-toggle-off",checkboxSelected:"fa fa-toggle-on",checkboxUnknown:"fa fa-circle",doc:"fa fa-search",docOpen:"fa fa-search",error:"fa fa-exclamation-triangle",expanderClosed:"fa  fa-arrow-right",expanderLazy:"fa fa-arrow-right",expanderOpen:"fa fa-arrow-down",folder:"fa fa-folder",folderOpen:"fa fa-folder-open",loading:"fa fa-spinner"}},addLayer:e,removeProtectedLayers:t,url:"/layers"}}angular.module("MapModule").factory("LayersFactory",e)}(),function(){"use strict";function e(){return{restrict:"A",scope:{title:"@"},transclude:!0,templateUrl:"views/templates/legendItem.html"}}angular.module("LegendsModule").directive("legendItem",e)}(),function(){"use strict";function e(){return{bindToController:!0,controller:t,controllerAs:"lgCtrl",restrict:"E",scope:{},templateUrl:"views/templates/control-panel/legendsTab.html"}}function t(e){this.groups=e.groups}angular.module("LegendsModule").directive("legendsTab",e),t.$inject=["LegendsService"]}(),function(){"use strict";function e(e){function t(e,t){return e.findIndex(function(e){return e.title==this.title},t)}function n(e,t){return e.findIndex(function(e){return e._key==this.data.key},t)}function o(e,t){e.splice(t,1)}this.groups=[],this.addLayerLegend=function(o){var r=o.data.style||"",i=t(this.groups,o.parent);if(i>-1){var a=n(this.groups[i].data,o);-1==a?this.groups[i].data.push({_key:o.data.key,title:o.title,url:e.URL_WMS[e.ENVIRONMENT]+"?REQUEST=GetLegendGraphic&VERSION=1.1.1&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER="+o.data.workspace+":"+o.data.name+"&LEGEND_OPTIONS=forceLabels:on;fontSize:11&SCALE=1000000&Style="+r}):this.groups[i].data[a]={_key:o.data.key,title:o.title,url:e.URL_WMS[e.ENVIRONMENT]+"?REQUEST=GetLegendGraphic&VERSION=1.1.1&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER="+o.data.workspace+":"+o.data.name+"&LEGEND_OPTIONS=forceLabels:on;fontSize:11&SCALE=1000000&Style="+r}}else this.groups.push({title:o.parent.title,data:[]}),this.addLayerLegend(o)},this.removeLayerLegend=function(e){var r=t(this.groups,e.parent),i=n(this.groups[r].data,e);o(this.groups[r].data,i),0==this.groups[r].data.length&&o(this.groups,r)}}angular.module("LegendsModule").service("LegendsService",e),e.$inject=["Globals"]}(),function(){"use strict";function e(e){var t,n=this;n.showControlPanel=function(){e.cPanelVisibility=!0},e.$on("controlPanel:panelVisibility",function(n,o){n.stopPropagation(),t=e.cPanelVisibility=o}),e.$on("$destroy",function(e){t()}),function(){e.cPanelVisibility=!0}()}angular.module("MainModule").controller("MainController",e),e.$inject=["$scope"]}(),function(){"use strict";function e(e){function t(e){this.map=new ol.Map({target:e._mapTarget,layers:e._defaultLayers,interactions:e._interactions,controls:e._controls,view:e._defaultView}),this._defaultConfig={},this._layers={},this._userFeatures={},angular.copy(e,this._defaultConfig)}function n(e){return void 0===e?e:Math.floor(156543.04/Math.pow(2,e))}return t.prototype.getMapObject=function(){return this.map},t.prototype.setTarget=function(e){this.map.setTarget(document.getElementById(e))},t.prototype.updateSize=function(){this.map.updateSize()},t.prototype.setDefaultView=function(e){this.map.setView(this._defaultConfig._defaultView)},t.prototype.setCenter=function(e,t){var n=t||"EPSG:4326";this.map.getView().setCenter(ol.proj.transform(e,ol.proj.get(n),"EPSG:3857"))},t.prototype.setZoom=function(e){this.map.getView().setZoom(e)},t.prototype.setCenterAndZoom=function(e,t,n){this.setCenter(e,n),this.setZoom(t)},t.prototype.zoomToCoordinate=function(e,t){var n=t||"EPSG:4326";this.map.getView().animate({center:ol.proj.transform(e,ol.proj.get(n),"EPSG:3857"),duration:1e3,zoom:16})},t.prototype.setBaseLayer=function(e){this.map.getLayers().setAt(0,e)},t.prototype.addLayer=function(e,t){return"WMS"===e.type?this._addWMSLayer(e):"TileWMS"===e.type?this._addTiledWMSLayer(e):this._addWFSLayer(e,t)},t.prototype._addWFSLayer=function(t,n){if(this._checkLayer(t.key)){var o=new ol.layer.Vector({source:new ol.source.Vector({loader:function(n){$.ajax(e.URL_WFS[e.ENVIRONMENT],{type:"GET",data:{service:"WFS",version:"1.1.1",request:"GetFeature",typename:t.workspace+":"+t.name,srsname:"EPSG:27493",outputFormat:"application/json",bbox:ol.proj.transformExtent(n,"EPSG:3857",ol.proj.get("EPSG:27493")).join(",")+","+ol.proj.get("EPSG:27493").getCode(),format_options:"id_policy:gid"},crossDomain:!0}).done(function(e){o.getSource().addFeatures((new ol.format.GeoJSON).readFeatures(e,{featureProjection:"EPSG:3857",dataProjection:ol.proj.get("EPSG:27493")}))})},strategy:ol.loadingstrategy.bbox})});this._layers[t.key]=o,t.style&&(o.setStyle(n),o.setOpacity(t.opacity)),this.map.addLayer(o),this._layers[t.key].visible=!0}else this._layers[t.key].visible?this._layers[t.key].setStyle(n):(this._layers[t.key].setStyle(n),this.map.addLayer(this._layers[t.key]),this._layers[t.key].visible=!0);return this._layers[t.key]},t.prototype._addWMSLayer=function(t){if(this._checkLayer(t.key)){var o=new ol.layer.Image({opacity:t.opacity,source:new ol.source.ImageWMS({url:e.URL_WMS[e.ENVIRONMENT],params:{LAYERS:t.workspace+":"+t.name},extent:t.extent}),minResolution:n(t.maxZoom),maxResolution:n(t.minZoom),group:t.group,queryable:t.queryable});this._layers[t.key]=o,this.map.getLayers().insertLayer(o),this._layers[t.key].visible=!0}else this._layers[t.key].visible||(this.map.getLayers().insertLayer(this._layers[t.key]),this._layers[t.key].visible=!0)},t.prototype._addTiledWMSLayer=function(t){if(this._checkLayer(t.key)){var o=new ol.layer.Tile({opacity:t.opacity,source:new ol.source.TileWMS({url:e.URL_WMS[e.ENVIRONMENT],params:{LAYERS:t.workspace+":"+t.name},extent:t.extent}),minResolution:n(t.maxZoom),maxResolution:n(t.minZoom),group:t.group,queryable:t.queryable});this._layers[t.key]=o,this.map.getLayers().insertLayer(o),this._layers[t.key].visible=!0}else this._layers[t.key].visible||(this.map.getLayers().insertLayer(this._layers[t.key]),this._layers[t.key].visible=!0)},t.prototype._checkLayer=function(e){return!this._layers.hasOwnProperty(e)},t.prototype.removeLayer=function(e){this._layers[e.key]&&(this.map.removeLayer(this._layers[e.key]),this._layers[e.key].visible=!1)},t}angular.module("MapModule").factory("MapFactory",e),e.$inject=["Globals"]}(),function(){"use strict";function e(){var e={};this.setInteractions=function(t){e._interactions=t},this.setControls=function(t){e._controls=t},this.setDefaultView=function(t){e._defaultView=t},this.setCenterAndZoom=function(t,n){e._center=t,e._zoom=n,e._defaultView=new ol.View({center:ol.proj.transform(e._center,"EPSG:4326","EPSG:3857"),zoom:e._zoom,minZoom:11})},this.setDefaultLayers=function(t){e._defaultLayers=t},this.$get=["MapFactory",function(t){return new t(e)}]}angular.module("MapModule").provider("Map",e).provider("Minimap",e)}(),function(){"use strict";function e(){function e(){this.treeDefault=function(){return e.defaultStyle},this.treeHighlight=function(t,n){return t==n?e.purplePoint:e.defaultStyle},this.treeIntervention=function(t){return t.getProperties().has_inter?e.redPoint:e.defaultStyle};var e={purplePoint:new ol.style.Style({image:new ol.style.Circle({radius:4,fill:new ol.style.Fill({color:[72,24,70,1]}),stroke:new ol.style.Stroke({color:[0,0,0,1],width:2})})}),redPoint:new ol.style.Style({image:new ol.style.Circle({radius:4,fill:new ol.style.Fill({color:[72,15,15,1]}),stroke:new ol.style.Stroke({color:[0,0,0,1],width:2})}),zIndex:100}),defaultStyle:new ol.style.Style({image:new ol.style.Circle({radius:3,fill:new ol.style.Fill({color:[24,72,26,.8]}),stroke:new ol.style.Stroke({color:[0,0,0,1]})})})}}return e}angular.module("MapModule").factory("StylesFactory",e)}(),function(){"use strict";function e(e,t,n,o){var r=this;r.inter=o,r.close=function(o){r.error="",o.$invalid||(r.inter.state="FECHADA",n.closeIntervention(r.inter).then(function(n){r.message="A intervenção foi fechada com sucesso.",e(function(){t.path("/interv")},1e3)}).catch(function(e){r.error="Ocorreu um erro no fecho da intervenção."}))}}angular.module("InterventionsModule").controller("CloseInterventionController",e),e.$inject=["$timeout","$location","InterventionsService","intervention"]}(),function(){"use strict";function e(e,t,n,o,r,i,a){var s,l=this,c=o.tree,u=[c.geom.coordinates[0][0],c.geom.coordinates[0][1]],d=new t;l.inter=o,l.interTypes=n,l.setInterType=function(e){l.inter.id_type=e},l.save=function(){l.error="",r.updateIntervention(l.inter).then(function(e){l.message="A intervenção foi alterada com sucesso."}).catch(function(e){l.error="Ocorreu um erro ao tentar alterar a intervenção"})},i.$on("$destroy",function(){a.cancel(s)}),function(){e.setTarget("minimap"),e.setCenterAndZoom(u,21,"EPSG:27493"),e.addLayer({workspace:"unicer",name:"arvores",type:"WFS",extent:[43858.7242812507,208452.333204688,44110.6809999999,209084.351648437],opacity:1}).setStyle(function(e){return e.id_==c.gid?d.treeHighlight():d.treeDefault()}),s=a(function(){e.updateSize()},100)}()}angular.module("InterventionsModule").controller("EditInterventionController",e),e.$inject=["Minimap","StylesFactory","interTypes","intervention","InterventionsService","$scope","$timeout"]}(),function(){"use strict";function e(e,t){var n=this;n.edit=function(){t.path("/interv/"+n.intervention.id+"/edit")},n.info=function(){t.path("/interv/"+n.intervention.id+"/info")},n.close=function(){t.path("/interv/"+n.intervention.id+"/close")}}angular.module("InterventionsModule").controller("InterventionItemController",e),e.$inject=["$scope","$location"]}(),function(){"use strict";function e(e,t,n,o){function r(){e.interventions=n("filter")(e.allInterventions,i),e.interventions=n("dateFilter")(e.interventions,"created_at",a.createdAtStart,a.createdAtEnd),e.interventions=n("dateFilter")(e.interventions,"intervention_date",a.interventionStart,a.interventionEnd),e.interventions=n("dateFilter")(e.interventions,"finished_at",a.finishedAtStart,a.finishedAtEnd)}var i={},a={};e.$watch(function(){return t.getFilter()},function(e,t){i=e,r()},!0),e.$watch(function(){return t.getFilterDate()},function(e,t){a=e,r()},!0),function(){e.allInterventions=o,e.interventions=o,r()}()}angular.module("InterventionsModule").controller("InterventionsListController",e),e.$inject=["$scope","FilterDataService","$filter","Interventions"]}(),function(){"use strict";function e(e,t,n,o,r){this.inter=n;var i,a=n.tree,s=[a.geom.coordinates[0][0],a.geom.coordinates[0][1]],l=new t;o.$on("$destroy",function(){r.cancel(i)}),function(){e.setTarget("minimap"),e.setCenterAndZoom(s,21,"EPSG:27493"),e.addLayer({workspace:"unicer",name:"arvores",type:"WFS",extent:[43858.7242812507,208452.333204688,44110.6809999999,209084.351648437],opacity:1}).setStyle(function(e){return e.id_==a.gid?l.treeHighlight():l.treeDefault()}),i=r(function(){e.updateSize()},100)}()}angular.module("InterventionsModule").controller("MoreInfoContoller",e),e.$inject=["Minimap","StylesFactory","intervention","$scope","$timeout"]}(),function(){"use strict";function e(){return{bindToController:!0,controller:"InterventionItemController",controllerAs:"intItemCtrl",restrict:"E",scope:{intervention:"="},templateUrl:"views/templates/interventions/interventionItem.html"}}angular.module("InterventionsModule").directive("interventionItem",e)}(),function(){"use strict";function e(){return{bindToController:!0,controller:t,controllerAs:"intTabCtrl",restrict:"E",scope:{},templateUrl:"views/templates/control-panel/interventionsTab.html"}}function t(e,t,n){var o=this;e.filterData={},e.filterDate={},o.setPriority=function(t){e.filterData.priority=t},o.setInterType=function(t){o.selInterType=t,e.filterData.id_type=t},o.resetFilter=function(){e.filterData={},e.filterDate={},o.selInterType="--"},function(){t.get().then(function(e){o.interTypes=e,o.selInterType="--"}),e.$watch("filterData",function(e,t){n.setFilter(e)},!0),e.$watch("filterDate",function(e,t){n.setFilterDate(e)},!0)}()}angular.module("InterventionsModule").directive("interventionsTab",e),t.$inject=["$scope","InterventionTypesFactory","FilterDataService"]}(),function(){"use strict";function e(e){return function(t,n,o,r){return e("filter")(t,function(e){var t=moment(e[n]);return!o&&!r||t>=moment(o)&&t<=moment(r)})}}angular.module("InterventionsModule").filter("dateFilter",e),e.$inject=["$filter"]}(),function(){"use strict";function e(){function e(e){r=e}function t(){return r}function n(e){i=e}function o(){return i}var r={},i={};this.setFilter=e,this.getFilter=t,this.getFilterDate=o,this.setFilterDate=n}angular.module("InterventionsModule").service("FilterDataService",e)}(),function(){"use strict";function e(e,t){function n(){var t=e.defer();return t.resolve([1,2,3,4,5,6]),t.promise}return{get:n}}angular.module("InterventionsModule").factory("InterventionTypesFactory",e),e.$inject=["$q","$http"]}(),function(){"use strict";function e(e,t){function n(){var n=e.defer();return t({method:"GET",url:"/api/interventions"}).then(function(e){n.resolve(e.data)},function(e){n.reject(e)}),n.promise}function o(n){var o=e.defer();return t({method:"GET",url:"api/interventions/"+n}).then(function(e){o.resolve(e.data)},function(e){o.reject(e)}),o.promise}function r(n){var o=e.defer();return t({method:"PUT",url:"api/interventions/"+n.id,headers:{"Content-Type":"application/json"},data:n}).then(function(e){o.resolve(e.data)},function(e){o.reject(e)}),o.promise}function i(e){return r(e)}function a(n){var o=e.defer();return t({method:"GET",url:"api/filter/interventions",headers:{"Content-Type":"application/json"},params:n}).then(function(e){o.resolve(e.data)},function(e){o.reject(e)}),o.promise}this.getAllInterventions=n,this.getIntervention=o,this.closeIntervention=i,this.updateIntervention=r,this.getInterventionsWithFilter=a}angular.module("InterventionsModule").service("InterventionsService",e),e.$inject=["$q","$http"]}(),function(){"use strict";function e(e,t){var n=this;!function(){n.results=[]}(),n.title="Resultados da Pesquisa",e.$watchCollection(function(){return t.getResults()},function(e){n.results=e}),n.hasResults=function(){return n.results.length>0}}angular.module("MapInteractionsModule").controller("LayerResultsController",e),e.$inject=["$scope","LayerQueryResultsService"]}(),function(){"use strict";function e(e,t){var n=this;!function(){e.get().then(function(e){n.locations=e.features}),n.location={}}(),n.onSelectCallback=function(e){t.zoomToCoordinate(e.geometry.coordinates,"EPSG:3857")}}angular.module("MapInteractionsModule").controller("LocationController",e),e.$inject=["LocationsService","Map"]}(),function(){"use strict";function e(e,t,n){var o=this;o.isActive=function(e){return o.active==e},o.setDefaultView=function(e){n.setDefaultView()},o.setInteraction=function(e){t.setMapInteraction(e)},o.showSearchBar=function(){o.search=!o.search},o.isSearch=function(){return!o.search},e.$watch(function(){return t.getMapInteraction()},function(e){o.active=e,o.currentInteraction=t.getText()}),function(){t.setMapInteraction("DragPan"),o.search=!1}()}angular.module("MapInteractionsModule").controller("MapInteractionsController",e),e.$inject=["$scope","MapInteractionsService","Map"]}(),function(){"use strict";function e(e){function t(t,n,o){e.map.addControl(new ol.control.MousePosition({coordinateFormat:function(e){return ol.coordinate.format(e," {x} , {y} ",4)},projection:"EPSG:4326",className:"",target:document.getElementById("coordinate4326"),undefinedHTML:"&nbsp;"})),e.map.addControl(new ol.control.MousePosition({coordinateFormat:function(e){return ol.coordinate.format(e," {x} , {y} ",4)},projection:ol.proj.get("EPSG:27493"),className:"",target:document.getElementById("coordinate27493"),undefinedHTML:"&nbsp;"}))}return{bindToController:!0,controller:"MapInteractionsController",controllerAs:"itCtrl",link:t,restrict:"E",templateUrl:"views/templates/map-interactions/interactions.html"}}angular.module("MapInteractionsModule").directive("mapInteractions",e),e.$inject=["Map"]}(),function(){"use strict";function e(){return function(e){return angular.isNumber(e)?e:e?e.charAt(0).toUpperCase()+e.substr(1).toLowerCase():""}}angular.module("MapInteractionsModule").filter("capitalize",e)}(),function(){"use strict";angular.module("MapInteractionsModule").filter("propsFilter",function(){return function(e,t){var n=[];if(angular.isArray(e)){var o=Object.keys(t);e.forEach(function(e){for(var r=!1,i=0;i<o.length;i++){var a=o[i],s=t[a].toLowerCase();if(-1!==e[a].toString().toLowerCase().indexOf(s)){r=!0;break}}r&&n.push(e)})}else n=e;return n}})}(),function(){"use strict";function e(e){function t(t,n,i){i.forEach(function(i){if(i.isQueryable()){var a=i.getSource().getGetFeatureInfoUrl(ol.proj.transform(t.coordinate,"EPSG:3857",ol.proj.get("EPSG:27493")),n.getResolution(),ol.proj.get("EPSG:27493"),{INFO_FORMAT:"application/json"});if(a){o();new ol.format.GeoJSON;e({url:a}).then(function(e){e.data.features.length>0&&r.push(e.data)})}}})}function n(){return r}function o(){r.length=0}var r=[];this.getResults=n,this.getLayersInfo=t,this.clearResults=o}angular.module("MapInteractionsModule").service("LayerQueryResultsService",e),e.$inject=["$http"]}(),function(){"use strict";function e(e,t){function n(){var n=t.defer();return e({method:"GET",url:"/locations"}).then(function(e){n.resolve(e.data)},function(e){n.reject(e)}),n.promise}return{get:n}}angular.module("MapInteractionsModule").factory("LocationsService",e),e.$inject=["$http","$q"]}(),function(){"use strict";function e(e,t,n){var o={interaction:"",interactionText:""},r=e.getMapObject();this.setMapInteraction=function(e){switch(r.getInteractions().pop(),e){case"DragPan":o.interactionText="Mover Mapa",r.addInteraction(new ol.interaction.DragPan);break;case"ZoomIn":o.interactionText="Aproximar Mapa",r.addInteraction(new ol.interaction.Pointer({handleDownEvent:function(e){var t=r.getView();t.setCenter(e.coordinate),t.setZoom(t.getZoom()+1)}}));break;case"ZoomOut":o.interactionText="Afastar Mapa",r.addInteraction(new ol.interaction.Pointer({handleDownEvent:function(e){var t=r.getView();t.setCenter(e.coordinate),t.setZoom(t.getZoom()-1)}}));break;case"ZoomBox":o.interactionText="Fazer Zoom de Caixa",r.addInteraction(new ol.interaction.DragZoom({condition:ol.events.condition.always,className:"drag_zoom_box"}));break;case"Identify":o.interactionText="Identificar Camadas",r.addInteraction(new ol.interaction.Pointer({handleDownEvent:function(e){t.getLayersInfo(e,e.map.getView(),e.map.getLayers().getArray())}}))}o.interaction=e},this.getMapInteraction=function(){return o.interaction},this.getText=function(){return o.interactionText},this.setText=function(e){o.interactionText=e}}angular.module("MapInteractionsModule").service("MapInteractionsService",e),e.$inject=["Map","LayerQueryResultsService","$http"]}(),function(){"use strict";function e(e,t,n){var o=this,e=new e;o.values={},o.interFilters=!1,o.setParque=function(t){o.values.parque=t,e.setParque(t)},o.setContent=function(t){o.interFilters="inter"==t.key,o.values.content=t,e.setContentType(t)},o.setSeason=function(t){o.values.season=t,e.setSeason(t)},o.setYear=function(t){o.values.year=t,e.setYear(t)},o.setFormat=function(e){o.values.format=e},o.print=function(n){t.validateFields(o.values,function(t,n){var r;r=o.values,o.errors={},o.file={ext:r.format.key,name:r.content.value,close:function(){this.hasFile=!1}},t?(o.isPrinting=!0,"csv"===r.format.key?("inter"===r.content.key?(o.file.name=r.content.value+"_"+r.parque.key+"_"+r.season.value+"_"+r.year.value,o.file.params={parque:r.parque.key,season:r.season.value,year:r.year.value}):(o.file.name=r.content.value+"_"+r.parque.key,o.file.params={parque:r.parque.key}),o.isPrinting=!1,o.file.url="/csv/"+r.content.key,o.file.hasFile=!0):e.getRequestObject().then(function(e){console.log(e)})):n.forEach(function(e){o.errors[e]=!0,o.errors.message="Falta preencher campos obrigatórios"})})},function(){o.defaults={parques:[{key:"pedras",value:"Parque de Pedras Salgadas"},{key:"vidago",value:"Vidago Palace Hotel"}],contents:[{key:"trees",value:"Árvores"},{key:"inter",value:"Intervenções"}],seasons:[{key:1,value:"Primavera"},{key:2,value:"Verão"},{key:3,value:"Outono"},{key:4,value:"Inverno"}],years:[{key:2017,value:2017},{key:2018,value:2018},{key:2019,value:2019},{key:2020,value:2020},{key:2021,value:2021}],formats:[{key:"csv",value:".csv (Comma Separated Values)"},{key:"pdf",value:".pdf (Printable Document Format)"}]}}()}angular.module("PrintModule").controller("PrintController",e),e.$inject=["PDFRequestObjectFactory","ValidatorService","PrintPdfService"]}(),function(){"use strict";function e(){function e(e,t,n){}return{bindToController:!0,controller:"PrintController",controllerAs:"printCtrl",link:e,restrict:"E",scope:{},templateUrl:"views/templates/control-panel/printTab.html"}}angular.module("PrintModule").directive("printTab",e)}(),function(){"use strict";function e(){return{restrict:"E",scope:{icon:"@",url:"@",ext:"@",name:"@",params:"<",click:"&onClick"},template:"<a target='_black' ng-href='{{url}}{{urlParams}}' ng-click='click()'>  <i class='print_result_icon fa {{icon || \"fa-file-o\"}}'></i> <div class='print_result_text'>&nbsp;{{name}}.{{ext}}<div><a/>",link:function(e,t,n){e.$watch("params",function(){void 0!=e.params&&(e.urlParams="?"+Object.keys(e.params).map(function(t){
-return encodeURIComponent(t)+"="+encodeURIComponent(e.params[t])}).join("&"))})}}}angular.module("PrintModule").directive("printResult",e)}(),function(){"use strict";function e(e,t){function n(){function n(e){var t,n=e.reduce(function(e,t,n,o){return e.hasOwnProperty(t.id_tree)?e[t.id_tree].table.push(t):e[t.id_tree]={zone:t.id_tree,idTree:t.id_tree,table:[t]},e},{});t=Object.values(n);for(var o=0;o<t.length;o++)t[o]instanceof Array||(t[o].table=i(t[o].table));return t}function i(e){var t=[];for(var n in e[0])e[0].hasOwnProperty(n)&&t.push(n);for(var o=0;o<e.length;o++)e[o]instanceof Array||(e[o]=t.map(function(t){return e[o].hasOwnProperty(t)?e[o][t]:null}));return{columns:t,data:e}}var a,s,l,c,u,d={longitudeFirst:!0,center:[],scale:4e3,projection:"EPSG:4326",dpi:254,height:550,width:500,rotation:0,layers:[{type:"WMS",baseURL:"http://localhost:8081/geoserver/wms",layers:["unicer:base","unicer:limite","unicer:edificios"],serverType:"geoserver"}]};this.getRequestObject=function(){var o=e.defer(),r={layout:a,outputFormat:"pdf",attributes:{title:"Gestree - Gestão",subtitle:s,map:d,parque:l.value}};return"arvores"==a?(r.outputFilename=a+"_"+l.key,r.attributes.datasource=setArvoresDatasource()):(r.outputFilename=a+"_"+l.key+"_"+c+"_"+u,t.getInterventionsWithFilter({parque:l.key,season:c,year:u}).then(function(e){r.attributes.datasource=n(e),o.resolve(r)}).catch(function(e){console.log(e),o.reject()}),r.attributes.season=c,r.attributes.year=u),o.promise},this.setParque=function(e){l=e,"pedras"==e.key?d.center=o:d.center=r},this.setContentType=function(e){a=e.key,s="Impressão de "+e.value},this.getContentType=function(){return a},this.setSeason=function(e){c=e.value},this.setYear=function(e){u=e.value}}const o=[-7.606827,4.546916],r=[-7.606827,4.546916];return n}angular.module("PrintModule").factory("PDFRequestObjectFactory",e),e.$inject=["$q","InterventionsService"]}(),function(){"use strict";function e(e,t,n,o,r){function i(t,o){n({method:"POST",url:e.url_pdf_print,data:t}).then(function(t){a(e.url_print_host+t.data.statusURL,s,o)}).catch(function(e){o(e)})}function a(e,t,o){n({method:"GET",url:e}).then(function(e){t(e,o)}).catch(function(e){o(e)})}function s(t,n){console.log("Print Result!"),console.log(t),t.data.done?n(null,e.url_print_host+t.data.downloadURL):o(function(){a(t.config.url,s,n)},2500)}this.print=i}angular.module("PrintModule").service("PrintPdfService",e),e.$inject=["PrintGlobals","$q","$http","$timeout","$window"]}(),function(){"use strict";function e(){function e(e,t){var n=[];e.hasOwnProperty("parque")||n.push("parque"),e.hasOwnProperty("format")||n.push("format"),e.hasOwnProperty("content")?"Intervenções"===e.content&&(e.hasOwnProperty("season")||n.push("season"),e.hasOwnProperty("year")||n.push("year")):n.push("content"),t(0==n.length,n)}this.validateFields=e}angular.module("PrintModule").service("ValidatorService",e)}();
+angular
+  .module('unicerApp', [
+    'ui.select',
+    'ngSanitize',
+    'ngMaterial',
+    'ngMessages',
+    'ngRoute'
+  ])
+  .constant('GlobalURLs', {
+    // DEV
+    host: "http://gistree.espigueiro.pt:8081",
+    print: "http://gistree.espigueiro.pt:8081/print-servlet-3.8.0/print/gestree/report.pdf"
+    // PROD
+    //host: "localhost:8081",
+    //print: "localhost:8081/print-servlet-3.8.0/print/gestree/report.pdf"
+  });
+angular
+  .module('unicerApp')
+  .config(['$mdDateLocaleProvider', function ($mdDateLocaleProvider) {
+    $mdDateLocaleProvider.months = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+    $mdDateLocaleProvider.shortMonths = ['jan', 'feb', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+    $mdDateLocaleProvider.days = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sabado'];
+    $mdDateLocaleProvider.shortDays = ['Do', 'Se', 'Te', 'Qa', 'Qi', 'Se', 'Sa'];
+    $mdDateLocaleProvider.firstDayOfWeek = 1;
+    $mdDateLocaleProvider.parseDate = function (dateString) {
+      var m = moment(dateString, 'DD/MM/YYYY', true);
+      return m.isValid() ? m.toDate() : new Date(NaN);
+    };
+    $mdDateLocaleProvider.formatDate = function (date) {
+      return date ? moment(date).format('DD/MM/YYYY') : '';
+    };
+    // In addition to date display, date components also need localized messages
+    // for aria-labels for screen-reader users.
+    $mdDateLocaleProvider.weekNumberFormatter = function (weekNumber) {
+      return 'Semana ' + weekNumber;
+    };
+    $mdDateLocaleProvider.msgCalendar = 'Calendário';
+    $mdDateLocaleProvider.msgOpenCalendar = 'Abrir o calendário';
+    // You can also set when your calendar begins and ends.
+    $mdDateLocaleProvider.firstRenderableDate = new Date(2000, 1, 1);
+    $mdDateLocaleProvider.lastRenderableDate = new Date(2100, 12, 31);
+  }])
+angular
+  .module('unicerApp')
+  .run(function () {
+    proj4.defs("EPSG:27493", "+proj=tmerc +lat_0=39.66666666666666 +lon_0=-8.131906111111112 +k=1 +x_0=180.598 +y_0=-86.98999999999999 +ellps=intl +towgs84=-223.237,110.193,36.649,0,0,0,0 +units=m +no_defs");
+    var extent = [-127101.82, -300782.39, 160592.41, 278542.12];
+    var projection = ol.proj.get('EPSG:27493');
+    projection.setExtent(extent);
+    ol.Collection.prototype.insertLayer = function (layer) {
+      var index = this.getArray().findIndex(function (mapLayer) {
+        return mapLayer.get('group') < layer.get('group');
+      });
+      if (index !== -1) {
+        this.insertAt(index, layer);
+      } else {
+        this.push(layer);
+      }
+    };
+    ol.layer.Base.prototype.isQueryable = function () {
+      return this.get('queryable');
+    };
+  })
+angular
+  .module('unicerApp')
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider
+      .when('/', {
+        templateUrl: 'views/templates/main/Map.html',
+        controller: 'MapController',
+        controllerAs: 'MapCtrl'
+      })
+      .when('/interventions', {
+        templateUrl: 'views/templates/main/List-Interventions.html',
+        controller: 'InterventionListController',
+        controllerAs: 'interventionListCtrl',
+        resolve: {
+          Interventions: ['InterventionsHttp', _getAllInterventions]
+        }
+      })
+      .when('/interventions/add', {
+        templateUrl: 'views/templates/main/interventions/Intervention-Add.html',
+        controller: 'InterventionAddController',
+        controllerAs: 'addCtrl',
+        resolve: {
+          Defaults: ['DefaultInterventionData', _getDefaults]
+        }
+      })
+      .when('/interventions/:int_id/update', {
+        templateUrl: 'views/templates/main/interventions/Intervention-Update.html',
+        controller: 'InterventionUpdateController',
+        controllerAs: 'updateCtrl',
+        resolve: {
+          Intervention: ['$route', 'InterventionsHttp', _getIntervention],
+          Defaults: ['DefaultInterventionData', _getDefaults]
+        }
+      })
+      .when('/interventions/:int_id/info', {
+        templateUrl: 'views/templates/main/interventions/Intervention-Info.html',
+        controller: 'InterventionInfoController',
+        controllerAs: 'infoCtrl',
+        resolve: {
+          Intervention: ['$route', 'InterventionsHttp', _getIntervention]
+        }
+      })
+      .when('/interventions/:int_id/close', {
+        templateUrl: 'views/templates/main/interventions/Intervention-Close.html',
+        controller: 'InterventionCloseController',
+        controllerAs: 'closeCtrl',
+        resolve: {
+          Intervention: ['$route', 'InterventionsHttp', _getIntervention]
+        }
+      })
+      .when('/tree/:gid/interventions', {
+        templateUrl: 'views/templates/main/Tree-Interventions.html',
+        controller: 'TreeInterventionsController',
+        controllerAs: 'treeInterventionsCtrl',
+        resolve: {
+          TreeInterventions: ['$route', 'TreesHttp', _getTree]
+        }
+      })
+      .otherwise({
+        redirectTo: '/'
+      });
+  }])
+  .config(['$locationProvider', function ($locationProvider) {
+    $locationProvider.html5Mode(true);
+  }]);
+
+function _getAllInterventions(InterventionsHttp) {
+  return InterventionsHttp.getAll();
+}
+function _getIntervention($route, InterventionsHttp) {
+  return InterventionsHttp.get($route.current.params.int_id);
+}
+function _getDefaults(Defaults) {
+  return Defaults.getInterventionDefaults();
+}
+function _getTree($route, TreesHttp){
+  return TreesHttp.getTreeInterventions($route.current.params.gid);
+}
+angular
+  .module('unicerApp')
+  .config(['$mdThemingProvider', function ($mdThemingProvider) {
+    $mdThemingProvider.definePalette('whiteGreen', {
+      '50': '5cb85c',
+      '100': '000000',
+      '200': '5cb85c',
+      '300': '5cb85c',
+      '400': '5cb85c',
+      '500': '5cb85c',
+      '600': '5cb85c',
+      '700': '5cb85c',
+      '800': '5cb85c',
+      '900': '5cb85c',
+      'A100': 'ffffff',
+      'A200': '000000',
+      'A400': '000000',
+      'A700': '000000',
+      'contrastDefaultColor': 'light',
+      'contrastDarkColors': ['50', '100',
+        '200', '300', '400', 'A100'
+      ],
+      'contrastLightColors': undefined
+    });
+    $mdThemingProvider.theme('default')
+      .primaryPalette('green')
+      .backgroundPalette('whiteGreen');
+  }])
+angular
+  .module('unicerApp')
+  .controller('BaseLayerController', BaseLayerController);
+
+BaseLayerController.$inject = ['$scope'];
+
+function BaseLayerController($scope) {
+
+  $scope.baseLayers = [
+    {
+      name: "Open Street Map",
+      layerDef: new ol.layer.Tile({
+        source: new ol.source.OSM({})
+      })
+    },
+    {
+      name: "Camada em Branco",
+      layerDef: new ol.layer.Tile({})
+    }
+  ];
+  $scope.baseLayer = "Mapa de Base";
+
+  $scope.setBaseLayer = function (layer) {
+    $scope.baseLayer = layer.name;
+    Map.setBaseLayer(layer.layerDef);
+  };
+  
+}
+angular
+  .module('unicerApp')
+  .controller('InterventionListController', InterventionListController);
+
+InterventionListController.$inject = [
+  '$scope',
+  'Interventions',
+  'SortingService',
+  'FilterSharedData',
+  '$filter'
+];
+
+function InterventionListController($scope, Interventions, SortingService, FilterSharedData, $filter) {
+
+  $scope.sort = SortingService.orderBySeasonYear;
+
+  $scope.$watch(FilterSharedData.getFilter, _handleFilterUpdate, true);
+  function _handleFilterUpdate(newVal, oldVal, scope) {
+    scope.interventions = $filter('interventions-filter')(Interventions, newVal);
+  }
+
+};
+angular
+  .module('unicerApp')
+  .controller('LayerIdentifierController', LayerIdentifierController);
+
+LayerIdentifierController.$inject = ['$scope', 'LayerQueryResultsService'];
+
+function LayerIdentifierController($scope, LayerRes) {
+  var lrCtrl = this;
+  activate();
+
+  lrCtrl.title = "Resultados da Pesquisa";
+  $scope.$watchCollection(function () {
+    return LayerRes.getResults();
+  }, function (res) {
+    lrCtrl.results = res;
+  });
+
+  lrCtrl.hasResults = function () {
+    return lrCtrl.results.length > 0;
+  };
+
+  function activate() {
+    lrCtrl.results = [];
+  };
+}
+angular
+  .module('unicerApp')
+  .controller('MapController', MapController);
+
+MapController.$inject = ['MapService', 'DirtyDataManager'];
+
+function MapController(MapService, DirtyDataManager) {
+  MapService.init();
+  MapService.drawMap();
+  if (DirtyDataManager.isLayerDirty()) {
+    MapService.reloadLayers();
+    DirtyDataManager.cleanLayer();
+  };
+}  
+angular
+  .module('unicerApp')
+  .controller('ParkSelectorController', ParkSelectorController);
+
+ParkSelectorController.$inject = ['ParksHttp', 'Map'];
+
+function ParkSelectorController(ParksHttp, Map) {
+  var locCtrl = this;
+  activate();
+
+  function activate() {
+    ParksHttp.getParks().then(function (loc) {
+      locCtrl.locations = loc.features;
+    });
+    locCtrl.location = {};
+  }
+  locCtrl.onSelectCallback = function (model) {
+    Map.zoomToCoordinate(model.geometry.coordinates, 'EPSG:3857');
+  }
+}
+angular
+  .module('unicerApp')
+  .controller('TreeInterventionsController', TreeInterventionsController);
+
+TreeInterventionsController.$inject = [
+  '$scope',
+  'SideNavService',
+  'TreeInterventions',
+  'SortingService',
+  'FilterSharedData',
+  '$filter',
+];
+
+function TreeInterventionsController($scope, SideNavService, TreeInterventions, SortingService, FilterSharedData, $filter) {
+  SideNavService.setActiveTab(3);
+
+  $scope.sort = SortingService.orderBySeasonYear;
+  $scope.back = function(e){
+    e.preventDefault();
+    SideNavService.setActiveTab(1);
+    window.history.back();
+  }
+
+  $scope.$watch(FilterSharedData.getFilter, _handleFilterUpdate, true);
+  function _handleFilterUpdate(newVal, oldVal, scope) {
+    scope.interventions = $filter('interventions-filter')(TreeInterventions, newVal);
+  }
+}
+angular
+  .module('unicerApp')
+  .directive('interventionItem', InterventionItem);
+
+function InterventionItem() {
+  var directive = {
+    bindToController: true,
+    controller: InterventionItemController,
+    controllerAs: 'intItemCtrl',
+    restrict: 'E',
+    scope: {
+      intervention: "="
+    },
+    templateUrl: 'views/templates/components/interventionItem.html'
+  };
+  return directive;
+}
+
+InterventionItemController.$inject = ['$scope', '$location']
+function InterventionItemController($scope, $location) {
+  var intItemCtrl = this;
+  $scope.edit = function () {
+    $location.path('/interventions/' + intItemCtrl.intervention.id + '/update');
+  };
+  $scope.info = function () {
+    $location.path('/interventions/' + intItemCtrl.intervention.id + '/info');
+  };
+  $scope.close = function () {
+    $location.path('/interventions/' + intItemCtrl.intervention.id + '/close');
+  };
+}
+angular
+  .module('unicerApp')
+  .directive('legendItem', LegendItem);
+
+function LegendItem() {
+  var directive = {
+    restrict: 'A',
+    scope: {
+      title: '@',
+    },
+    transclude: true,
+    templateUrl: 'views/templates/legendItem.html'
+  };
+  return directive;
+}
+angular
+  .module('unicerApp')
+  .directive('mapInteractions', MapInteractions);
+
+MapInteractions.$inject = ['MapService'];
+function MapInteractions(MapService) {
+  var directive = {
+    bindToController: true,
+    controller: MapInteractionsController,
+    controllerAs: 'itCtrl',
+    link: link,
+    restrict: 'E',
+    scope: {},
+    templateUrl: 'views/templates/main/MapInteractions.html'
+  }
+  return directive;
+
+  function link(scope, element, attrs) {
+    var map = MapService.getMap();
+    var mapControls = MapService.getControls();
+    mapControls.item(2).setTarget(element.find('#coordinate4326')[0]);
+    mapControls.item(2).setMap(map);
+    mapControls.item(3).setTarget(element.find('#coordinate27493')[0]);
+    mapControls.item(3).setMap(map);
+  }
+
+  MapInteractionsController.$inject = ['$scope', 'MapInteractionsService', 'LayerIdentifier', 'ParksHttp'];
+  function MapInteractionsController($scope, MapInteractionsService, LayerIdentifier, ParksHttp) {
+    var activeInteractionWatch, layerIdentifierWatch;
+
+    $scope.setInteraction = MapInteractionsService.setActiveInteraction;
+    $scope.isActive = MapInteractionsService.isActive;
+    $scope.setDefaultView = MapInteractionsService.setDefaultView;
+    ParksHttp.getParks().then(function (parks) {
+      $scope.parks = parks;
+      $scope.selectedPark = {};
+      $scope.selectPark = function (coor, proj) {
+        $scope.selectedPark = {};
+        MapInteractionsService.zoomTo(coor, proj);
+      }
+    });
+
+    $scope.$watch(MapInteractionsService.getActiveInteraction, _setActiveInteraction, true);
+    function _setActiveInteraction(newVal, oldVal, scope) {
+      scope.activeInteraction = newVal;
+    };
+
+    $scope.$watchCollection(LayerIdentifier.getLayers, _setLayerResults);
+    function _setLayerResults(newVal, oldVal, scope) {
+      newVal.reduce(function (promiseChain, currentValue) {
+        return promiseChain.then(function (chainResults) {
+          return currentValue.then(function (currentResult) {
+            return chainResults.concat(currentResult);
+          });
+        });
+      }, Promise.resolve([])).then(function (layerResults) {
+        scope.$apply(function () {
+          scope.layerResults = layerResults;
+        });
+      });
+    };
+
+  }
+}
+angular
+  .module('unicerApp')
+  .directive('treeDetails', TreeDetails);
+
+function TreeDetails() {
+  var directive = {
+    bindToController: true,
+    controller: TreeDetailsController,
+    controllerAs: 'treeDetailsCtrl',
+    scope: {},
+    restrict: 'E',
+    templateUrl: 'views/templates/components/TreeDetails.html'
+  };
+  return directive;
+
+  TreeDetailsController.$inject = [
+    '$scope', 
+    'MapInteractionsService', 
+    'TreeDetailsService', 
+    'DirtyDataManager'
+  ];
+  function TreeDetailsController($scope, MapInteractionsService, TreeDetailsService, DirtyDataManager) {
+
+    MapInteractionsService.getSelectInteraction().on('select', TreeDetailsService.getTreeDetails);
+    $scope.$watch(TreeDetailsService.getSelectedTree, function (newVal, oldVal, scope) {
+      scope.tree = newVal;
+      if (scope.tree) {
+        if(DirtyDataManager.isTreeDirty()) TreeDetailsService.getTree(scope.tree.gid);    
+        scope.visible = true;
+        scope.hasInterventions = scope.tree.open_interventions + scope.tree.closed_interventions; 
+      } else {
+        scope.visible = false;
+      }
+    });
+    $scope.$on('$destroy', function () {
+      MapInteractionsService.getSelectInteraction().un('select', TreeDetailsService.getTreeDetails);
+    });
+
+  }
+};  
+angular
+  .module('unicerApp')
+  .filter('capitalize', Capitalize);
+
+function Capitalize() {
+  return function (input) {
+    if (!angular.isNumber(input)) {
+      return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
+    } else {
+      return input;
+    }
+  }
+}
+angular
+  .module('unicerApp')
+  .filter('interventions-filter', InterventionListFilter);
+
+function InterventionListFilter() {
+  return function (input, filterData) {
+    var filteredInterventions = input;
+
+    if (_hasNoFilters(filterData)) {
+      return input;
+    }
+
+    for (var prop in filterData) {
+      filteredInterventions = _filterArray(filteredInterventions, filterData, prop);
+    }
+    return filteredInterventions;
+  };
+
+  function _filterArray(array, filter, prop) {
+    var filtered = [];
+    for (var i = 0; i < array.length; i++) {
+      if (array[i][prop] === filter[prop]) {
+        filtered.push(array[i]);
+      }
+    }
+    return filtered;
+  }
+
+  function _hasNoFilters(filterData) {
+    for (var prop in filterData) {
+      if (filterData.hasOwnProperty(prop))
+        return false;
+    }
+    return true;
+  };
+}
+angular
+  .module('unicerApp')
+  .service('LegendsService', LegendsService);
+
+function LegendsService() {
+  var legends = [];
+
+  return {
+    getLegends: getLegends,
+    addLegend: addLegend,
+    removeLegend: removeLegend
+  }
+
+  function addLegend(layer) {
+    var style = layer.data.style || '';
+    var index = _findGroupIndex(legends, layer.parent);
+    if (index > -1) {
+      var layerIndex = _findIndex(legends[index].data, layer);
+      if (layerIndex == -1) {
+        legends[index].data.push({
+          _key: layer.data.key,
+          title: layer.title,
+          url: 'http://gistree.espigueiro.pt/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.1.1&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=' + layer.data.workspace + ':' + layer.data.name + '&LEGEND_OPTIONS=forceLabels:on;fontSize:11&SCALE=1000000&Style=' + style
+        });
+      } else {
+        legends[index].data[layerIndex] = {
+          _key: layer.data.key,
+          title: layer.title,
+          url: 'http://gistree.espigueiro.pt/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.1.1&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=' + layer.data.workspace + ':' + layer.data.name + '&LEGEND_OPTIONS=forceLabels:on;fontSize:11&SCALE=1000000&Style=' + style
+        }
+      }
+    } else {
+      legends.push({
+        title: layer.parent.title,
+        data: []
+      });
+      addLegend(layer);
+    }
+  }
+  function getLegends() {
+    return legends;
+  }
+  function removeLegend(layer) {
+    var index = _findGroupIndex(legends, layer.parent);
+    var lIndex = _findIndex(legends[index].data, layer);
+    _removeAt(legends[index].data, lIndex);
+    if (legends[index].data.length == 0) {
+      _removeAt(legends, index);
+    }
+  }
+
+  function _findGroupIndex(array, data) {
+    return array.findIndex(function (e) {
+      return e.title == this.title;
+    }, data);
+  }
+  function _findIndex(array, data) {
+    return array.findIndex(function (e) {
+      return e._key == this.data.key;
+    }, data);
+  }
+  function _removeAt(a, i) {
+    a.splice(i, 1);
+  }
+}
+
+angular
+  .module('unicerApp')
+  .controller('InterventionAddController', InterventionAddController);
+
+InterventionAddController.$inject = [
+  '$scope',
+  '$routeParams',
+  '$timeout',
+  'InterventionsHttp',
+  'Defaults',
+  'SideNavService'
+];
+
+function InterventionAddController($scope, $routeParams, $timeout, InterventionsHttp, Defaults, SideNavService) {
+  SideNavService.hide();
+
+  $scope.defaults = Defaults;
+  $scope.intervention = {
+    periodicity: '-',
+    comments: null,
+    team: '-'
+  };
+  if ($routeParams.idTree) {
+    $scope.intervention.id_tree = parseInt($routeParams.idTree);
+    $scope.disableID = true;
+  }
+
+  $scope.back = _goBack;
+  
+  $scope.send = function () {
+    var _self = this;
+    if (!_dataIsInvalid()) {
+      return;
+    }
+    InterventionsHttp.add(this.intervention)
+      .then(function (res) {
+        _self.message = "Intervenção adicionada com sucesso.";
+        $timeout(function () {
+          _goBack();
+        }, 1000);
+      }).catch(function (err) {
+        _self.error = "Ocorreu um erro ao adicionar a intervenção.";
+      });
+  }
+
+  bindSetters()
+  function bindSetters() {
+    $scope.setType = setValue.bind("type");
+    $scope.setTeam = setValue.bind("team");
+    $scope.setSeason = setValue.bind("season");
+    $scope.setYear = setValue.bind("year");
+    $scope.setPeriodicity = setValue.bind("periodicity");
+    function setValue(val) {
+      $scope.intervention[this] = val;
+    }
+  }
+  function _dataIsInvalid() {
+    var errors = { size: 0 };
+    var requiredFields = ['id_tree', 'type', 'priority', 'season', 'year'];
+    requiredFields.map(function (field, index) {
+      if (!$scope.intervention.hasOwnProperty(field)) {
+        errors[field] = true;
+        errors.size++;
+      }
+    });
+    if (errors.size > 0) {
+      errors.message = "* Falta Preencher Campos Obrigatórios";
+    }
+    $scope.errors = errors;
+    return errors.size === 0;
+  }
+  function _goBack(){
+    SideNavService.show();
+    window.history.back();
+  }
+
+}
+angular
+  .module('unicerApp')
+  .controller('InterventionCloseController', InterventionCloseController);
+
+InterventionCloseController.$inject = [
+  '$scope',
+  'Intervention',
+  'InterventionsHttp',
+  '$timeout',
+  'SideNavService'
+];
+
+function InterventionCloseController($scope, Intervention, InterventionsHttp, $timeout, SideNavService) {
+  $scope.intervention = Intervention;
+  SideNavService.hide();
+
+  $scope.back = function () {
+    SideNavService.show();
+    window.history.back();
+  }
+  $scope.close = function (form) {
+    var _self = this;
+    _self.error = '';
+    if (form.$invalid) {
+      return;
+    }
+    _self.intervention.state = "FECHADA";
+    InterventionsHttp.close(_self.intervention)
+      .then(function (data) {
+        _self.message = "A intervenção foi fechada com sucesso.";
+        $timeout(function () {
+          window.history.back();
+        }, 1000);
+      }).catch(function (err) {
+        _self.error = "Ocorreu um erro no fecho da intervenção.";
+      });
+  };
+}
+angular
+  .module('unicerApp')
+  .controller('InterventionInfoController', InterventionInfoController);
+
+InterventionInfoController.$inject = [
+  '$scope',
+  'Intervention',
+  'SideNavService'
+];
+
+function InterventionInfoController($scope, Intervention, SideNavService) {
+  SideNavService.hide();
+  $scope.intervention = Intervention;
+  $scope.back = function () {
+    SideNavService.show();
+    window.history.back();
+  }
+}
+angular
+  .module('unicerApp')
+  .controller('InterventionUpdateController', InterventionUpdateController);
+
+InterventionUpdateController.$inject = [
+  '$scope',
+  'Intervention',
+  'Defaults',
+  'InterventionsHttp',
+  'SideNavService'
+];
+
+function InterventionUpdateController($scope, Intervention, Defaults, InterventionsHttp, SideNavService) {
+  SideNavService.hide();
+
+  var _initalID = Intervention.id;
+  var interTypes = Defaults.types;
+
+  $scope.intervention = Intervention;
+  $scope.defaults = Defaults;
+
+  bindSetters();
+  setInterventionType();
+
+  $scope.save = function () {
+    $scope.intervention.id = _initalID;
+    $scope.error = '';
+    InterventionsHttp.update($scope.intervention)
+      .then(function (data) {
+        $scope.message = "A intervenção foi alterada com sucesso.";
+      }).catch(function (err) {
+        $scope.error = "Ocorreu um erro ao tentar alterar a intervenção";
+      });
+  }
+  $scope.back = function () {
+    SideNavService.show();
+    window.history.back();
+  }
+
+  function bindSetters() {
+    $scope.setType = setValue.bind("type");
+    $scope.setTeam = setValue.bind("team");
+    $scope.setSeason = setValue.bind("season");
+    $scope.setYear = setValue.bind("year");
+    $scope.setPeriodicity = setValue.bind("periodicity");
+
+    function setValue(val) {
+      $scope.intervention[this] = val;
+    }
+  }
+  function setInterventionType(){
+    $scope.intervention.type = interTypes.find(function(type){
+      return type.id === Intervention.id_type;
+    });
+  }
+
+}
+angular
+  .module('unicerApp')
+  .directive('interventionsTab', InterventionsTab);
+
+function InterventionsTab() {
+  var directive = {
+    bindToController: true,
+    controller: InterventionsTabController,
+    controllerAs: 'intTabCtrl',
+    restrict: 'E',
+    scope: {},
+    templateUrl: 'views/templates/navigation/tabs/Tab-Interventions.html'
+  };
+  return directive;
+}
+
+InterventionsTabController.$inject = [
+  '$scope',
+  'DefaultInterventionData',
+  'FilterSharedData',
+  'SideNavService'
+];
+
+function InterventionsTabController($scope, Defaults, FilterSharedData, SideNavService) {
+
+  $scope.filterData = {
+    state: "ABERTA"
+  };
+  $scope.data = {};
+  Defaults.getInterventionDefaults().then(function (defaults) {
+    $scope.defaults = defaults;
+  });
+
+  $scope.setIdTree = setIdTree;
+  $scope.setInterType = setInterType;
+  $scope.setSeason = setSeason;
+  $scope.setYear = setYear;
+  $scope.resetFilter = resetFilter;
+
+  $scope.$watch('filterData', function (newVal, oldVal) {
+    FilterSharedData.setFilter(newVal);
+  }, true);
+  $scope.$watch(SideNavService.getActiveTab, function (activeTab, oldVal, scope) {
+    if (activeTab === 3) {
+      resetFilter.call(scope);   
+    }
+  }, true);
+
+  function setIdTree(idTree) {
+    if (idTree === null) {
+      delete (this.filterData.id_tree);
+    }
+  }
+  function setInterType(type) {
+    this.filterData.id_type = type.id;
+    this.data.typeName = type.value;
+  }
+  function setSeason(season) {
+    this.filterData.season = season;
+  }
+  function setYear(year) {
+    this.filterData.year = year;
+  }
+  function resetFilter() {
+    this.data = {};
+    this.filterData = {
+      state: "ABERTA"
+    };
+  }
+
+}
+angular
+  .module('unicerApp')
+  .directive('layersTab', LayersTab);
+
+LayersTab.$inject = ['MapService', 'Layers', 'LegendsService', '$timeout'];
+
+function LayersTab(MapService, Layers, Legends, $timeout) {
+  var directive = {
+    bindToController: true,
+    controller: LayersTabController,
+    controllerAs: 'layersCtrl',
+    link: link,
+    restrict: 'E',
+    scope: {},
+    templateUrl: 'views/templates/navigation/tabs/Tab-Layers.html'
+  };
+  return directive;
+
+  function link(scope, element, attrs) {
+    var fancytreeOptions = {
+      extensions: ["edit", "glyph", "wide"],
+      checkbox: true,
+      glyph: {
+        map: {
+          checkbox: "fa fa-toggle-off",
+          checkboxSelected: "fa fa-toggle-on",
+          checkboxUnknown: "fa fa-circle",
+          doc: "fa fa-search",
+          docOpen: "fa fa-search",
+          error: "fa fa-exclamation-triangle",
+          expanderClosed: "fa  fa-arrow-right",
+          expanderLazy: "fa fa-arrow-right",
+          expanderOpen: "fa fa-arrow-down",
+          folder: "fa fa-folder",
+          folderOpen: "fa fa-folder-open",
+          loading: "fa fa-spinner"
+        }
+      },
+      clickFolderMode: 4,
+      selectMode: 3,
+      source: {
+        url: '/layers',
+      },
+      toggleEffect: {
+        effect: "drop",
+        options: {
+          direction: "left"
+        },
+        duration: 200
+      },
+      wide: {
+        iconWidth: "1em",
+        iconSpacing: "0.5em",
+        levelOfs: "1.5em",
+        labelSpacing: "0.5em"
+      },
+      select: _onSelect,
+      init: _onInit,
+      click: _onClick
+    }
+    var tree = element.find("#tree").fancytree(fancytreeOptions);
+    scope.tree = tree.fancytree("getTree");
+  }
+  function _onInit(event, eventData) {
+    var zoomLevel = MapService.getView().getZoom();
+    if (zoomLevel === parseInt(zoomLevel, 10)) {
+      eventData.tree.visit(function (node) {
+        if (node.checkbox === false) {
+          node.addClass("icon-padding");
+        }
+        if (node.data.preselected) {
+          node.setSelected(true);
+        }
+        var minZoom = node.data.minZoom,
+          maxZoom = node.data.maxZoom;
+        if (!node.isFolder()) {
+          if (minZoom != undefined) {
+            if (minZoom < zoomLevel) {
+              node.removeClass("layer-hidden");
+            } else {
+              node.addClass("layer-hidden");
+            }
+          }
+        }
+      });
+    }
+  }
+  function _onSelect(event, eventData) {
+    $timeout(function () {
+      if (eventData.node.isFolder()) {
+        var children = eventData.node.children;
+        if (eventData.node.isSelected()) {
+          children.forEach(function (layer) {
+            layer.data.key = layer.data.key || layer.key;
+            Layers.addLayer(layer.data);
+            Legends.addLegend(layer);
+          });
+        } else {
+          children.forEach(function (layer) {
+            layer.data.key = layer.data.key || layer.key;
+            Layers.removeLayer(layer.data)
+            Legends.removeLegend(layer);
+          });
+        }
+      } else {
+        if (eventData.node.isSelected()) {
+          eventData.node.data.key = eventData.node.data.key || eventData.node.key;
+          Layers.addLayer(eventData.node.data);
+          Legends.addLegend(eventData.node);
+        } else {
+          eventData.node.data.key = eventData.node.data.key || eventData.node.key;
+          Legends.removeLegend(eventData.node);
+          Layers.removeLayer(eventData.node.data)
+        }
+      }
+    }, 1);
+  }
+  function _onClick(event, eventData) {
+    if (eventData.targetType === 'icon' && !eventData.node.isFolder()) {
+      var extent = ol.proj.transformExtent(eventData.node.data.extent, ol.proj.get('EPSG:27493'), 'EPSG:3857');
+      MapService.getView().fit(extent, {
+        duration: 1500
+      });
+    }
+  }
+
+  LayersTabController.$inject = ['$scope', 'Layers'];
+  function LayersTabController($scope, Layers) {
+    // Tree Controllers
+    $scope.expandTree = expandTree
+    $scope.collapseTree = collapseTree
+    $scope.deselectAll = deselectAll
+    function expandTree() {
+      this.tree.visit(function (node) {
+        node.setExpanded(true);
+      });
+    }
+    function collapseTree() {
+      this.tree.visit(function (node) {
+        node.setExpanded(false);
+      });
+    }
+    function deselectAll() {
+      this.tree.visit(function (node) {
+        node.setSelected(false);
+      });
+    }
+
+    // Base Layer Controllers
+    $scope.baseLayers = [
+      {
+        name: "Open Street Map",
+        layerDef: new ol.layer.Tile({
+          source: new ol.source.OSM({})
+        })
+      },
+      {
+        name: "Camada em Branco",
+        layerDef: new ol.layer.Tile({})
+      }]
+    $scope.selectedBaseLayer = $scope.baseLayers[0]
+    $scope.setBaseLayer = setBaseLayer
+    function setBaseLayer(baseLayer) {
+      $scope.selectedBaseLayer = baseLayer;
+      Layers.setBaseLayer(baseLayer.layerDef);
+    }
+  }
+}
+angular
+  .module('unicerApp')
+  .directive('legendsTab', LegendsTab);
+
+function LegendsTab() {
+  var directive = {
+    bindToController: true,
+    controller: LegendsTabController,
+    controllerAs: 'lgCtrl',
+    restrict: 'E',
+    scope: {},
+    templateUrl: 'views/templates/navigation/tabs/Tab-Legends.html'
+  };
+  return directive;
+  
+  LegendsTabController.$inject = ['$scope', 'LegendsService'];
+  function LegendsTabController($scope, LegendsService) {
+    $scope.groups = LegendsService.getLegends();
+  }
+}
+angular
+  .module('unicerApp')
+  .directive('sideNav', SideNav);
+
+function SideNav() {
+  var directive = {
+    bindToController: true,
+    controller: SideNavController,
+    controllerAs: 'SideNavCtrl',
+    restrict: 'E',
+    scope: {},
+    templateUrl: 'views/templates/navigation/navigation.html'
+  };
+  return directive;
+
+  SideNavController.$inject = ['$rootScope', '$scope', 'SideNavService', 'MapService', '$timeout'];
+  function SideNavController($rootScope, $scope, SideNavService, MapService, $timeout) {
+
+    $scope.hideNavigation = SideNavService.hideNavigation;
+    $scope.showNavigation = SideNavService.showNavigation;
+    $scope.setActiveTab = SideNavService.setActiveTab;
+    $scope.isActiveTab = SideNavService.isActiveTab;
+
+    $scope.$watch(SideNavService.isVisible, _changeVisibility, false);
+    function _changeVisibility(newVal, oldVal, scope) {
+      scope.navigationVisibility = newVal;
+      $rootScope.navigationVisibility = newVal;
+      MapService.drawMap();
+    };
+
+  }
+}
+angular
+  .module('unicerApp')
+  .directive('printTab', PrintTab);
+
+function PrintTab() {
+  var directive = {
+    bindToController: true,
+    controller: PrintController,
+    controllerAs: 'printCtrl',
+    restrict: 'E',
+    scope: {},
+    templateUrl: 'views/templates/navigation/tabs/Tab-Print.html'
+  };
+  return directive;
+
+
+  PrintController.$inject = ['$scope', 'PrintManager'];
+
+  function PrintController($scope, PrintManager) {
+    $scope.printData = {};
+
+    PrintManager.getPrintDefaults()
+      .then(function (defaults) {
+        $scope.defaults = defaults;
+      });
+
+
+    $scope.print = print;
+    $scope.newPrint = newPrint;
+    $scope.setPark = setPark;
+    $scope.setContent = setContent;
+    $scope.setSeason = setSeason;
+    $scope.setYear = setYear;
+    $scope.setFormat = setFormat;
+
+    function print() {
+      var data = $scope.printData;
+      if (!_requiredFields()) {
+        return;
+      }
+      $scope.isPrinting = true;
+      switch (data.format.key) {
+        case 'csv':
+          PrintManager.getCSVLinks(data).then(_handleResults);
+          break;
+        case 'pdf':
+          PrintManager.getPDFLinks(data).then(_handleResults);
+          break;
+      }
+      function _handleResults(fileParams) {
+        $scope.isPrinting = false;
+        $scope.file = fileParams;
+      }
+    }
+    function newPrint() {
+      $scope.printData = {};
+      $scope.printFilters = false;
+      delete $scope.file;
+    }
+
+    function setPark(p) {
+      $scope.printData.park = p;
+    }
+    function setContent(c) {
+      $scope.printFilters = (c.key === 'interventions')
+      $scope.printData.contentType = c;
+    }
+    function setSeason(s) {
+      $scope.printData.season = s;
+    }
+    function setYear(y) {
+      $scope.printData.year = y;
+    }
+    function setFormat(f) {
+      $scope.printData.format = f;
+    }
+
+    function _requiredFields() {
+      var errors = { size: 0 };
+      var requiredFields = ['park', 'contentType', 'format'];
+      requiredFields.map(function (field, index) {
+        if (!$scope.printData.hasOwnProperty(field)) {
+          errors[field] = true;
+          errors.size++;
+        }
+      });
+      if (errors.size > 0) {
+        errors.message = "* Falta Preencher Campos Obrigatórios";
+      }
+      $scope.errors = errors;
+      return errors.size === 0;
+    }
+
+    /* 
+
+            PrintRequest.getRequestObject().then(function (data) {
+              console.log(data);
+
+              /*PrintHttp.print(JSON.stringify(data), function (err, url) {
+                  if (err) console.log("There was an Error");
+                  printCtrl.isPrinting = false;
+                  printCtrl.file.name = values.content.value + "_" + values.parque.key + "_" + values.season.value + "_" + values.year.value;
+                  printCtrl.file.url = url;
+                  printCtrl.file.hasFile = true;
+              });
+            });
+          }
+        }
+      });
+    }
+
+    }*/
+  }
+}
+angular
+  .module('unicerApp')
+  .directive('printResult', PrintResult);
+
+function PrintResult() {
+  var directive = {
+    restrict: 'E',
+    scope: {
+      icon: '@',
+      url: '@',
+      name: '@',
+      params: '<',
+      click: "&onClick"
+    },
+    template: "<a target='_blank' ng-href='{{url}}{{urlParams}}' ng-click='click()'> " +
+    " <i class='print_result_icon fa {{icon || \"fa-file-o\"}}'></i>" +
+    " <div class='print_result_text'>&nbsp;{{name}}<div>" +
+    "<a/>",
+    link: function (scope, element, attrs) {
+      scope.$watch('params', function () {
+        if (scope.params != undefined) {
+          scope.urlParams = '?' + Object.keys(scope.params).map(function (k) {
+            return encodeURIComponent(k) + '=' + encodeURIComponent(scope.params[k])
+          }).join('&');
+        }
+      });
+    },
+  };
+  return directive;
+}
+angular
+  .module('unicerApp')
+  .service('InterventionTypesHttp', InterventionTypesHttp);
+
+InterventionTypesHttp.$inject = ["$q", "$http"];
+
+function InterventionTypesHttp($q, $http) {
+  var interventionTypes;
+
+  return {
+    getInterventionTypes: getInterventionTypes
+  }
+
+  function getInterventionTypes() {
+    var deferred = $q.defer();
+    if (interventionTypes) {
+      deferred.resolve(interventionTypes);
+    } else {
+      $http.get("/api/intervention_types")
+        .then(function (res) {
+          interventionTypes = res.data;
+          deferred.resolve(res.data);
+        });
+    }
+    return deferred.promise;
+  }
+  
+}
+angular
+  .module('unicerApp')
+  .service('InterventionsHttp', InterventionsHttp);
+
+InterventionsHttp.$inject = ['$q', '$http', 'DirtyDataManager'];
+
+function InterventionsHttp($q, $http, DirtyDataManager) {
+
+  return {
+    add: add,
+    getAll: getAll,
+    get: get,
+    getFilteredInterventions: getFilter,
+    update: update,
+    close: close
+  };
+
+  function add(inter) {
+    var deferred = $q.defer();
+    $http({
+      method: 'POST',
+      url: '/api/trees/' + inter.id_tree + '/interventions',
+      data: _prepareData(inter)
+    }).then(function (response) {
+      DirtyDataManager.setDirty();
+      deferred.resolve(response.data);
+    }, function (err) {
+      deferred.reject(err);
+    });
+    return deferred.promise;
+  }
+  function getAll() {
+    var deferred = $q.defer();
+    $http({
+      method: 'GET',
+      url: '/api/interventions'
+    }).then(function successCallback(response) {
+      deferred.resolve(response.data);
+    }, function errorCallback(err) {
+      deferred.reject(err);
+    });
+    return deferred.promise;
+  }
+  function get(id) {
+    var deferred = $q.defer();
+    $http({
+      method: 'GET',
+      url: 'api/interventions/' + id
+    }).then(function successCallback(response) {
+      deferred.resolve(response.data);
+    }, function errorCallback(err) {
+      deferred.reject(err);
+    });
+    return deferred.promise;
+  }
+  function getFilter(filter) {
+    var deferred = $q.defer();
+    $http({
+      method: 'GET',
+      url: 'api/interventions/filter',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      params: filter
+    }).then(function successCallback(response) {
+      deferred.resolve(response.data);
+    }, function errorCallback(err) {
+      deferred.reject(err);
+    });
+    return deferred.promise;
+  }
+  function update(inter) {
+    return _updateRequest(_prepareData(inter));
+  }
+  function close(inter) {
+    return _updateRequest(inter);
+  }
+
+  function _updateRequest(inter) {
+    var deferred = $q.defer();
+    $http({
+      method: 'PUT',
+      url: 'api/interventions/' + inter.id,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: inter
+    }).then(function successCallback(response) {
+      DirtyDataManager.setDirty();
+      deferred.resolve(response.data);
+    }, function errorCallback(err) {
+      deferred.reject(err);
+    });
+    return deferred.promise;
+  }
+  function _prepareData(inter) {
+    return Object.assign({}, inter, { id_type: inter.type.id });
+  }
+
+}
+angular
+  .module('unicerApp')
+  .service('LayersHttp', LayersHttp);
+
+LayersHttp.$inject = ['$q', '$http', 'GlobalURLs'];
+
+function LayersHttp($q, $http, GlobalURLs) {
+
+  return {
+    fetch: fetch,
+    fetchInfo: fetchInfo
+  };
+
+  function fetch(data) {
+    var deferred = $q.defer();
+    $http({
+      method: 'GET',
+      url: GlobalURLs.host+'/geoserver/wfs',
+      params: data
+    }).then(function (response) {
+      deferred.resolve(response.data);
+    });
+    return deferred.promise;
+  }
+  function fetchInfo(layer, coordinate, view) {
+    var deferred = $q.defer();
+    var url = layer.getSource().getGetFeatureInfoUrl(
+      ol.proj.transform(coordinate, "EPSG:3857", ol.proj.get('EPSG:27493')),
+      view.getResolution(),
+      ol.proj.get('EPSG:27493'), {
+        'INFO_FORMAT': 'application/json'
+      });
+    $http({
+      method: 'GET',
+      url: url
+    }).then(function (response) {
+      deferred.resolve(response.data);
+    });
+    return deferred.promise;
+  }
+
+}
+angular
+  .module('unicerApp')
+  .factory('ParksHttp', ParksHttp);
+
+ParksHttp.$inject = ['$http', '$q'];
+
+function ParksHttp($http, $q) {
+  return {
+    getParks: get
+  };
+
+  function get() {
+    var deferred = $q.defer();
+    $http({
+      method: 'GET',
+      url: '/locations'
+    }).then(function successCallback(response) {
+      deferred.resolve(response.data.features);
+    }, function errorCallback(err) {
+      deferred.reject(err);
+    });
+    return deferred.promise;
+  }
+}
+angular
+  .module('unicerApp')
+  .service('PrintHttp', PrintHttp);
+
+PrintHttp.$inject = ['GlobalURLs', '$q', '$http', '$timeout'];
+
+function PrintHttp(GlobalURLs, $q, $http, $timeout) {
+
+  return {
+    printTrees: print,
+    printInterventions: print
+  };
+
+  function print(requestData) {
+    var deferred = $q.defer();
+    $http({
+      method: 'POST',
+      url: GlobalURLs.print,
+      data: requestData,
+    })
+      .then(function (response) {
+        return response.data.statusURL;
+      })
+      .then(_checkStatus)
+      .then(function (res) {
+        deferred.resolve(GlobalURLs.host + res.downloadURL);
+      })
+      .catch(function (err) {
+        deferred.reject(err);
+      });
+    return deferred.promise;
+  }
+  function _checkStatus(statusURL) {
+    var deferred = $q.defer();
+    _fetchData();
+    function _fetchData() {
+      $http({
+        method: 'GET',
+        url: GlobalURLs.host + statusURL
+      }).then(function (res) {
+        if (res.data.done) {
+          deferred.resolve(res.data);
+        } else {
+          $timeout(function () {
+            _fetchData();
+          }, 1500);
+        }
+      });
+    }
+    return deferred.promise;
+  }
+
+};
+angular
+  .module('unicerApp')
+  .service('TreesHttp', TreesHttp);
+
+TreesHttp.$inject = ['$q', '$http'];
+
+function TreesHttp($q, $http) {
+
+  return {
+    getTrees: getTrees,
+    getTreeDetails: getTreeDetails,
+    getTreeInterventions: getTreeInterventions
+  };
+
+  function getTrees() {
+    var deferred = $q.defer();
+    $http({
+      method: 'GET',
+      url: '/api/trees/'
+    }).then(function successCallback(response) {
+      deferred.resolve(response.data);
+    }, function errorCallback(err) {
+      deferred.reject(err);
+    });
+    return deferred.promise;
+  }
+  function getTreeDetails(id_tree) {
+    var deferred = $q.defer();
+    $http({
+      method: 'GET',
+      url: '/api/trees/' + id_tree
+    }).then(function successCallback(response) {
+      deferred.resolve(response.data);
+    }, function errorCallback(err) {
+      deferred.reject(err);
+    });
+    return deferred.promise;
+  }
+  function getTreeInterventions(id_tree) {
+    var deferred = $q.defer();
+    $http({
+      method: 'GET',
+      url: '/api/trees/' + id_tree + '/interventions'
+    }).then(function successCallback(response) {
+      deferred.resolve(response.data);
+    }, function errorCallback(err) {
+      deferred.reject(err);
+    });
+    return deferred.promise;
+  }
+
+}
+angular
+  .module('unicerApp')
+  .service('DefaultInterventionData', DefaultInterventionData);
+
+DefaultInterventionData.$inject = ['$q', 'InterventionTypesHttp'];
+
+function DefaultInterventionData($q, InterventionTypesHttp) {
+
+  var deferred = $q.defer();
+
+  return {
+    getInterventionDefaults: getInterventionDefaults,
+    getSeasons: getSeasons,
+    getYears: getYears,
+    getTeams: getTeams,
+    getPeriodicities: getPeriodicities,
+    getInterventionTypes: getInterventionTypes
+  }
+
+  function getInterventionDefaults() {
+    var defaults = {};
+    defaults.seasons = getSeasons();
+    defaults.years = getYears();
+    defaults.periodicities = getPeriodicities();
+    defaults.teams = getTeams();
+    InterventionTypesHttp.getInterventionTypes()
+      .then(function (types) {
+        defaults.types = types;
+        deferred.resolve(defaults);
+      })
+    return deferred.promise;
+  }
+  function getInterventionTypes() {
+    return InterventionTypesHttp.getInterventionTypes();
+  }
+  function getPeriodicities() {
+    return ['-', 'Anual', 'Bi-Anual'];
+  }
+  function getTeams() {
+    return ["-", "Interna", "Externa", "Outra"];
+  }
+  function getSeasons() {
+    return ["Primavera", "Verão", "Outono", "Inverno"];
+  }
+  function getYears(year_range) {
+    var YEAR_RANGE = year_range || 5;
+    var currentYear = new Date().getFullYear();
+    var years = [];
+    for (var i = 0; i < YEAR_RANGE; i++) {
+      years.push(currentYear + i);
+    }
+    return years;
+  }
+
+}
+angular
+  .module('unicerApp')
+  .service('DirtyDataManager', DirtyDataManager);
+
+function DirtyDataManager(){
+  var dirtyTree = true,
+      dirtyLayers = true;
+
+  return {
+    setDirty: setDataDirty,
+    isLayerDirty: isTreeDirty,
+    isTreeDirty: isTreeDirty,
+    cleanTree: cleanTree,
+    cleanLayer: cleanLayer
+  };
+
+  function setDataDirty(){
+    dirtyTree = true;
+    dirtyLayers = true;
+  }
+  function isLayerDirty(){
+    return dirtyLayers;
+  };
+  function isTreeDirty(){
+    return dirtyTree;
+  };
+  function cleanTree(){
+    dirtyTree = false;
+  };
+  function cleanLayer(){
+    dirtyLayers = false;
+  };
+}  
+angular
+  .module('unicerApp')
+  .service('FilterSharedData', FilterSharedData);
+
+function FilterSharedData() {
+  var filterData = {};
+
+  return {
+    setFilter: set,
+    getFilter: get
+  }
+
+  function set(filter) {
+    filterData = filter;
+  }
+  function get() {
+    return filterData;
+  }
+
+}
+angular
+  .module('unicerApp')
+  .service('LayerIdentifier', LayerIdentifierService);
+
+LayerIdentifierService.$inject = ['LayersHttp'];
+
+function LayerIdentifierService(LayersHttp) {
+  var promises = [];
+
+  return {
+    setLayers: setLayers,
+    getLayers: getLayers
+  };
+
+  function setLayers(evt, view, layers) {
+    promises.length = 0;
+    for (var i = 0; i < layers.length; i++) {
+      if (layers[i].isQueryable()) {
+        promises.push(LayersHttp.fetchInfo(layers[i], evt.coordinate, view));
+      }
+    }
+  }
+  
+  function getLayers(){
+    return promises;
+  }
+}
+angular
+  .module('unicerApp')
+  .service('Layers', Layers);
+
+Layers.$inject = ['MapService', 'LayersHttp', 'WFSStyles', 'DirtyDataManager'];
+
+function Layers(MapService, LayersHttp, WFSStyles, DirtyDataManager) {
+
+  var layers = {};
+
+  return {
+    addLayer: addLayer,
+    removeLayer: removeLayer,
+    setBaseLayer: setBaseLayer
+  }
+
+  function addLayer(layerData, style) {
+    if (layerData.type === 'WMS') {
+      _addWMSLayer(layerData);
+    } else if (layerData.type === 'TileWMS') {
+      _addTiledWMSLayer(layerData);
+    } else {
+      _addWFSLayer(layerData, style);
+    }
+  }
+  function removeLayer(layerData) {
+    if (layers[layerData.key]) {
+      MapService.getMap().removeLayer(layers[layerData.key]);
+      layers[layerData.key].isVisible = false;
+    }
+  }
+  function setBaseLayer(layer) {
+    MapService.getMap().getLayers().setAt(0, layer);
+  }
+
+  function _addWFSLayer(layerData) {
+    if (_checkLayer(layerData.key)) {
+      var wfsLayer = new ol.layer.Vector({
+        source: new ol.source.Vector({
+          loader: function (extent) {
+            var dataOptions = {
+              service: 'WFS',
+              version: '1.1.1',
+              request: 'GetFeature',
+              typename: layerData.workspace + ":" + layerData.name,
+              srsname: 'EPSG:27493',
+              outputFormat: 'application/json',
+              bbox: ol.proj.transformExtent(extent, 'EPSG:3857', ol.proj.get('EPSG:27493')).join(',') + ',' + ol.proj.get('EPSG:27493').getCode(),
+              format_options: 'id_policy:gid'
+            }
+            LayersHttp
+              .fetch(dataOptions)
+              .then(function (response) {
+                wfsLayer
+                  .getSource()
+                  .addFeatures(
+                  new ol.format.GeoJSON().readFeatures(response, {
+                    featureProjection: 'EPSG:3857',
+                    dataProjection: ol.proj.get('EPSG:27493')
+                  }))
+              });
+          },
+          strategy: ol.loadingstrategy.bbox,
+          updateWhileAnimating: true
+        })
+      });
+      wfsLayer.isVisible = true;
+      if (layerData.style) {
+        wfsLayer.setStyle(WFSStyles[layerData.style]);
+      }
+      if (layerData.opacity) {
+        wfsLayer.setOpacity(layerData.opacity);
+      }
+      MapService.getMap().addLayer(wfsLayer);
+      layers[layerData.key] = wfsLayer;
+    } else {
+      if (layerData.style) {
+        layers[layerData.key].setStyle(WFSStyles[layerData.style]);
+      }
+      if (!layers[layerData.key].isVisible) {
+        MapService.getMap().addLayer(layers[layerData.key]);
+        layers[layerData.key].isVisible = true;
+      }
+    }
+  }
+  function _addWMSLayer(layerData) {
+    var wmsLayer = new ol.layer.Image({
+      opacity: layerData.opacity,
+      source: new ol.source.ImageWMS({
+        url: 'http://gistree.espigueiro.pt/geoserver/wms',
+        params: {
+          'LAYERS': layerData.workspace + ":" + layerData.name
+        },
+        extent: layerData.extent,
+      }),
+      minResolution: _calculateResolution(layerData.maxZoom),
+      maxResolution: _calculateResolution(layerData.minZoom),
+      group: layerData.group,
+      queryable: layerData.queryable
+    });
+    MapService.getMap().addLayer(wmsLayer);
+    layers[layerData.key] = wmsLayer;
+  }
+  function _addTiledWMSLayer(layerData) {
+    var wmsLayer = new ol.layer.Tile({
+      opacity: layerData.opacity,
+      source: new ol.source.TileWMS({
+        url: 'http://gistree.espigueiro.pt/geoserver/wms',
+        params: {
+          'LAYERS': layerData.workspace + ":" + layerData.name
+        },
+        extent: layerData.extent,
+      }),
+      minResolution: _calculateResolution(layerData.maxZoom),
+      maxResolution: _calculateResolution(layerData.minZoom),
+      group: layerData.group,
+      queryable: layerData.queryable
+    });
+    MapService.getMap().addLayer(wmsLayer);
+    layers[layerData.key] = wmsLayer;
+  }
+
+  function _checkLayer(layer_key) {
+    return !layers.hasOwnProperty(layer_key);
+  }
+  function _calculateResolution(zoomLevel) {
+    if (typeof zoomLevel == 'undefined') {
+      return zoomLevel;
+    } else {
+      return Math.floor(156543.04 / (Math.pow(2, zoomLevel)));
+    }
+  };
+
+}
+angular
+  .module('unicerApp')
+  .service('MapService', MapService);
+
+MapService.$inject = ['$timeout'];
+
+function MapService($timeout) {
+
+  var map;
+  var defaultInteractions = [
+    new ol.interaction.MouseWheelZoom()];
+  var defaultControls = [
+    new ol.control.ScaleLine(),
+    new ol.control.OverviewMap({
+      className: 'ol-overviewmap ol-custom-overviewmap',
+      layers: [
+        new ol.layer.Image({
+          source: new ol.source.ImageWMS({
+            url: 'http://gistree.espigueiro.pt/geoserver/wms',
+            params: {
+              'LAYERS': 'unicer:limite'
+            },
+            extent: [43858.7242812507, 208452.333204688, 44110.6809999999, 209084.351648437],
+          }),
+        }),
+        new ol.layer.Image({
+          source: new ol.source.ImageWMS({
+            url: 'http://gistree.espigueiro.pt/geoserver/wms',
+            params: {
+              'LAYERS': 'unicer:base'
+            },
+            extent: [43858.7242812507, 208452.333204688, 44110.6809999999, 209084.351648437],
+          }),
+        }),
+        new ol.layer.Image({
+          source: new ol.source.ImageWMS({
+            url: 'http://gistree.espigueiro.pt/geoserver/wms',
+            params: {
+              'LAYERS': 'unicer:edificios'
+            },
+            extent: [43858.7242812507, 208452.333204688, 44110.6809999999, 209084.351648437],
+          }),
+        })
+      ],
+      collapseLabel: '\u002D',
+      label: '\u002B',
+      collapsed: false,
+      tipLabel: ''
+    }),
+    new ol.control.MousePosition({
+      coordinateFormat: function (coord) {
+        return ol.coordinate.format(coord, " {x} , {y} ", 4);
+      },
+      projection: 'EPSG:4326',
+      className: '',
+      undefinedHTML: '&nbsp;'
+    }),
+    new ol.control.MousePosition({
+      coordinateFormat: function (coord) {
+        return ol.coordinate.format(coord, " {x} , {y} ", 4);
+      },
+      projection: ol.proj.get('EPSG:27493'),
+      className: '',
+      undefinedHTML: '&nbsp;'
+    })];
+  var defaultOptions = {
+    target: 'map',
+    layers: [
+      new ol.layer.Tile({
+        source: new ol.source.OSM({}),
+        queryable: false
+      })
+    ],
+    interactions: [],
+    controls: [],
+    view: new ol.View({
+      center: ol.proj.transform([-7.593569, 41.595564], 'EPSG:4326', 'EPSG:3857'),
+      zoom: 11,
+      minZoom: 11
+    })
+  };
+
+  return {
+    init: mapInitialization,
+    getMap: getMap,
+    getView: getView,
+    getControls: getControls,
+    getInteractions: getInteractions,
+    resetView: resetView,
+    zoomToCoordinate: zoomToCoordinate,
+    drawMap: drawMap,
+    reloadLayers: reloadLayers
+  };
+
+  function mapInitialization(options) {
+    var mapOptions = angular.extend(defaultOptions, options);
+    if (!map) {
+      map = new ol.Map(mapOptions);
+      for (var i = 0; i < defaultInteractions.length; i++) {
+        map.addInteraction(defaultInteractions[i]);
+      }
+      $timeout(function () {
+        for (var i = 0; i < defaultControls.length; i++) {
+          map.addControl(defaultControls[i]);
+        }
+      })
+    }
+  }
+  function getMap() {
+    return map;
+  }
+  function getView() {
+    return map.getView();
+  }
+  function getControls() {
+    return map.getControls();
+  }
+  function getInteractions() {
+    return map.getInteractions();
+  }
+  function resetView() {
+    var newView = new ol.View({
+      center: ol.proj.transform([-7.593569, 41.595564], 'EPSG:4326', 'EPSG:3857'),
+      zoom: 11,
+      minZoom: 11
+    });
+    map.setView(newView);
+  }
+  function zoomToCoordinate(coordinate, projection) {
+    var proj = projection || 'EPSG:4326';
+    map.getView().animate({
+      center: ol.proj.transform(coordinate, ol.proj.get(proj), 'EPSG:3857'),
+      duration: 1000,
+      zoom: 16
+    });
+  }
+  function drawMap() {
+    $timeout(function () {
+      map.setTarget(document.getElementById('map'));
+      map.updateSize();
+    }, 200);
+  }
+  function reloadLayers() {
+    map.getLayers().forEach(function (layer) {
+      if (layer instanceof ol.layer.Vector) {
+        layer.getSource().clear();
+      }
+    });
+  }
+
+}
+angular
+  .module('unicerApp')
+  .service('MapInteractionsService', MapInteractionsService);
+
+MapInteractionsService.$inject = ['MapService', 'LayerIdentifier', 'WFSStyles'];
+
+function MapInteractionsService(MapService, LayerIdentifier, WFSStyles) {
+  var mapInteractions = MapService.getInteractions();
+  var activeInteraction = {};
+  var selectInteraction = new ol.interaction.Select({
+    style: WFSStyles.treeSelected
+  });
+  setActiveInteraction('DragPan');
+  MapService.getMap().addInteraction(selectInteraction);
+
+  return {
+    setActiveInteraction: setActiveInteraction,
+    getActiveInteraction: getActiveInteraction,
+    isActive: isActive,
+    setDefaultView: setDefaultView,
+    zoomTo: zoomTo,
+    getSelectInteraction: getSelectInteraction
+  }
+
+  function setActiveInteraction(interaction) {
+    switch (interaction) {
+      case 'DragPan':
+        activeInteraction = new ol.interaction.DragPan({});
+        activeInteraction.text = 'Mover Mapa';
+        break;
+      case 'ZoomIn':
+        activeInteraction = new ol.interaction.Pointer({
+          handleDownEvent: function (e) {
+            var view = MapService.getView();
+            view.setCenter(e.coordinate);
+            view.setZoom(view.getZoom() + 1);
+          }
+        });
+        activeInteraction.text = 'Aproximar Mapa';
+        break;
+      case 'ZoomOut':
+        activeInteraction = new ol.interaction.Pointer({
+          handleDownEvent: function (e) {
+            var view = MapService.getView();
+            view.setCenter(e.coordinate);
+            view.setZoom(view.getZoom() - 1);
+          }
+        })
+        activeInteraction.text = 'Afastar Mapa';
+        break;
+      case 'ZoomBox':
+        activeInteraction = new ol.interaction.DragZoom({
+          condition: ol.events.condition.always,
+          className: 'drag_zoom_box'
+        })
+        activeInteraction.text = 'Fazer Zoom de Caixa';
+        break;
+      case 'Identify':
+        activeInteraction = new ol.interaction.Pointer({
+          handleDownEvent: function (evt) {
+            LayerIdentifier.setLayers(evt, evt.map.getView(), evt.map.getLayers().getArray());
+          }
+        });
+        activeInteraction.text = 'Identificar Camadas';
+        break;
+    }
+    activeInteraction.type = interaction;
+    mapInteractions.setAt(1, activeInteraction);
+  }
+  function getActiveInteraction() {
+    return activeInteraction.text;
+  }
+  function isActive(type) {
+    return activeInteraction.type === type;
+  }
+  function setDefaultView() {
+    MapService.resetView();
+  }
+  function zoomTo(coordinate, proj) {
+    MapService.zoomToCoordinate(coordinate, proj);
+  }
+  function getSelectInteraction() {
+    return selectInteraction;
+  }
+
+
+
+}
+angular
+  .module('unicerApp')
+  .service('PrintManager', PrintManager);
+
+PrintManager.$inject = [
+  '$q',
+  'ParksHttp',
+  'PrintHttp',
+  'TreesHttp',
+  'InterventionsHttp',
+  'DefaultInterventionData',
+];
+
+function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, Defaults) {
+
+  return {
+    getPrintDefaults: getPrintDefaults,
+    getCSVLinks: getCSVLinks,
+    getPDFLinks: getPDFLinks
+  };
+
+  function getPrintDefaults() {
+    return ParksHttp.getParks().then(function (parks) {
+      return {
+        parks: parks,
+        seasons: Defaults.getSeasons(),
+        years: Defaults.getYears(),
+        contentTypes: [
+          {
+            key: 'trees',
+            value: "Árvores"
+          },
+          {
+            key: 'interventions',
+            value: "Intervenções"
+          }],
+        formats: [
+          {
+            key: 'csv',
+            value: ".csv (Comma Separated Values)"
+          }, {
+            key: "pdf",
+            value: ".pdf (Printable Document Format)"
+          }]
+      }
+    });
+  }
+  function getCSVLinks(params) {
+    var deferred = $q.defer();
+    var data = {
+      url: 'print/csv/' + params.contentType.key,
+      name: params.contentType.value + '.csv',
+      params: {},
+      icon: 'fa-file-excel-o'
+    };
+    if (params.season) data.params.season = params.season;
+    if (params.year) data.params.year = params.year;
+    deferred.resolve(data);
+    return deferred.promise;
+  }
+  function getPDFLinks(params) {
+    var requestData = _getDefaultRequestData();
+
+    requestData.params = params;
+    
+    requestData.attributes.map.center = ol.proj.toLonLat(params.park.geometry.coordinates);
+    requestData.attributes.parque = params.park.properties.nome;
+
+    if (params.contentType.key === "trees") {
+      requestData.layout = "arvores";
+      requestData.outputFilename = "Árvores";
+      requestData.attributes.subtitle = "Impressão de Árvores";
+      return _getTreeLink(requestData).then(function (downloadURL) {
+        return {
+          name: 'Árvores.pdf',
+          url: downloadURL,
+          icon: 'fa-file-pdf-o'
+        }
+      });
+    } else {
+      requestData.layout = "inter";
+      requestData.outputFilename = "Intervenções";
+      requestData.attributes.subtitle = "Impressão de Intervenções";
+      requestData.attributes.map.layers[0].styles = ["", "", "", "treeIntervention"];
+      return _getInterventionsLink(requestData).then(function (downloadURL) {
+        return {
+          name: 'Intervenções.pdf',
+          url: downloadURL,
+          icon: 'fa-file-pdf-o'
+        }
+      })
+    }
+  }
+
+  function _getDefaultRequestData() {
+    return {
+      outputFormat: "pdf",
+      attributes: {
+        title: "Gestree - Gestão",
+        map: {
+          longitudeFirst: true,
+          scale: 4000,
+          projection: "EPSG:4326",
+          dpi: 254,
+          height: 550,
+          width: 500,
+          rotation: 0,
+          layers: [
+            {
+              type: "WMS",
+              baseURL: "http://localhost/geoserver/wms",
+              layers: [
+                "unicer:base",
+                "unicer:limite",
+                "unicer:edificios",
+                "unicer:arvores"
+              ],
+              serverType: "geoserver"
+            }
+          ]
+        },
+        datasource: []
+      }
+    }
+  }
+  function _getTreeLink(requestData) {
+    return TreesHttp.getTrees()
+      .then(_getTreeTable)
+      .then(function (datasource) {
+        requestData.attributes.datasource.push({ title: "Árvores" });
+        requestData.attributes.datasource[0].table = datasource;
+        return requestData;
+      }).then(function (requestData) {
+        return PrintHttp.printTrees(requestData);
+      });
+  }
+  function _getTreeTable(trees) {
+    var columns = [], data = [];
+    var genericTree = trees[0];
+    for (var attr in genericTree) {
+      columns.push(attr);
+    };
+    for (var i = 0; i < trees.length; i++) {
+      var treeData = [];
+      for (var treeAttr in trees[i]) {
+        treeData.splice(
+          columns.findIndex(function (el) {
+            return el === treeAttr;
+          }), 0, trees[i][treeAttr]);
+      }
+      data.push(treeData);
+    }
+    return {
+      columns: columns,
+      data: data
+    };
+  }
+  function _getInterventionsLink(requestData) {
+    var filter = {};
+    if (requestData.params.hasOwnProperty('season')) {
+      filter.season = requestData.params.season;
+    }
+    if (requestData.params.hasOwnProperty('year')) {
+      filter.year = requestData.params.year;
+    }
+    return InterventionsHttp.getFilteredInterventions(filter)
+      .then(_getInterventionsTable)
+      .then(function (datasource) {
+        requestData.attributes.datasource = datasource;
+        return requestData;
+      })
+      .then(function (requestData) {
+        return PrintHttp.printInterventions(requestData);
+      });
+  }
+  function _getInterventionsTable(interventions) {
+    var columns = [];
+    var datasource = [];
+    var genericIntervention = interventions[0];
+    for (var attr in genericIntervention) {
+      columns.push(attr);
+    }
+    for (var i = 0; i < interventions.length; i++) {
+      var interventionsData = [];
+      var id_tree = interventions[i].id_tree;
+      var hasTree = datasource.findIndex(function (el) {
+        return el.id_tree === id_tree;
+      })
+      for (var interventionsAttr in interventions[i]) {
+        interventionsData.splice(
+          columns.findIndex(function (el) {
+            return el === interventionsAttr;
+          }), 0, interventions[i][interventionsAttr]);
+      };
+      if (hasTree === -1) {
+        datasource.push({
+          id_tree: id_tree,
+          table: {
+            columns: columns,
+            data: [interventionsData]
+          }
+        });
+      } else {
+        datasource[hasTree].table.data.push(interventionsData);
+      }
+    }
+    return datasource;
+  }
+}  
+angular
+  .module('unicerApp')
+  .service('SideNavService', SideNavService);
+
+function SideNavService() {
+
+  var isVisible = true;
+  var activeTab = 1;
+  var lastActiveTab;
+
+  return {
+    isVisible: getVisibility,
+    showNavigation: showNavigation,
+    hideNavigation: hideNavigation,
+    setActiveTab: setActiveTab,
+    getActiveTab: getActiveTab,
+    isActiveTab: isActiveTab,
+    hide: hide,
+    show: show
+  }
+
+  function getVisibility() {
+    return isVisible;
+  }
+  function showNavigation() {
+    isVisible = true;
+  }
+  function hideNavigation() {
+    isVisible = false;
+  }
+
+  function setActiveTab(tab) {
+    activeTab = tab;
+  }
+  function getActiveTab(){
+    return activeTab;
+  }
+  function isActiveTab(tab){
+    return activeTab === tab;
+  }
+
+  function hide(){
+    lastActiveTab = activeTab;
+    setActiveTab(null);
+  }
+  function show(){
+    setActiveTab(lastActiveTab);
+  }
+
+}  
+angular
+  .module('unicerApp')
+  .service('TreeDetailsService', TreeDetailsService);
+
+TreeDetailsService.$inject = ['$q', 'TreesHttp', '$rootScope', 'DirtyDataManager'];
+
+function TreeDetailsService($q, TreesHttp, $rootScope, Dirty) {
+
+  var selectedTree;
+
+  return {
+    getTreeDetails: getTreeDetails,
+    getSelectedTree: getSelectedTree,
+    getTree: getTree
+  }
+
+  function getTreeDetails(evt) {
+    var deferred = $q.defer();
+    if (evt && evt.selected.length !== 0) {
+      getTree(evt.selected[0].getId());
+    } else {
+      $rootScope.$apply(function () {
+        selectedTree = undefined;
+      })
+    }
+  }
+  function getSelectedTree() {
+    return selectedTree;
+  }
+  function getTree(treeID) {
+    TreesHttp.getTreeDetails(treeID).then(function (tree) {
+      selectedTree = tree;
+      Dirty.cleanTree();
+    });
+  }
+
+}  
+angular
+  .module('unicerApp')
+  .service('SortingService', SortingService);
+
+SortingService.$inject = ['DefaultInterventionData'];
+
+function SortingService(Defaults){
+
+  return {
+    orderBySeasonYear: orderBySeasonYear
+  };
+
+  function orderBySeasonYear(intervention) {
+    var date = new Date(
+      intervention.year,
+      Defaults.getSeasons().indexOf(intervention.season) + 3,
+      1
+    );
+    return date.getTime();
+  }
+}  
+angular
+  .module('unicerApp')
+  .service('WFSStyles', WFSStyles);
+
+function WFSStyles() {
+
+  var _styles = {
+    defaultStyle: new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: 3,
+        fill: new ol.style.Fill({
+          color: [24, 72, 26, 0.8]
+        }),
+        stroke: new ol.style.Stroke({
+          color: [0, 0, 0, 1]
+        }),
+      })
+    }),
+    selected: new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: 4,
+        fill: new ol.style.Fill({
+          color: [72, 24, 70, 1]
+        }),
+        stroke: new ol.style.Stroke({
+          color: [0, 0, 0, 1],
+          width: 2
+        }),
+      }),
+      zIndex: 100
+    }),
+    intervention: new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: 4,
+        fill: new ol.style.Fill({
+          color: [72, 15, 15, 1]
+        }),
+        stroke: new ol.style.Stroke({
+          color: [0, 0, 0, 1],
+          width: 2
+        })
+      }),
+      zIndex: 50
+    })
+  };
+
+  return {
+    treeSelected: treeSelected,
+    treeDefault: treeDefault,
+    treeIntervention: treeIntervention,
+    treeHighlight: treeHighlight
+  }
+
+  function treeSelected(){
+    return _styles.selected;
+  }
+  function treeDefault() {
+    return _styles.defaultStyle;
+  }
+  function treeIntervention(feature, layer) {
+    return feature.getProperties().has_inter ? _styles.intervention : _styles.defaultStyle;
+  }
+  function treeHighlight(selectedFeatureID) {
+    return function (feature, layer) {
+      return selectedFeatureID === feature.getId() ? _styles.selected : _styles.defaultStyle;
+    }
+  }
+
+}

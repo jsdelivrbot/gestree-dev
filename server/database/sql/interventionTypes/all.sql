@@ -1,0 +1,2 @@
+SELECT * 
+FROM "PSalgadas"."InterventionTypes";

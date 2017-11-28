@@ -1,0 +1,82 @@
+[{
+    "title": "Arvores",
+    "folder": true,
+    "expanded": true,
+    "checkbox": false,
+    "radiogroup": true,
+    "children": [{
+        "title": "Localização",
+        "data": {
+          "key": "_tree",
+          "workspace": "unicer",
+          "name": "arvores",
+          "type": "WFS",
+          "extent": [43858.7242812507, 208452.333204688, 44110.6809999999, 209084.351648437],
+          "opacity": 1,
+          "queryable": true,
+          "style": "treeDefault"
+        }
+      },
+      {
+        "title": "Intervenções",
+        "data": {
+          "key": "_tree",
+          "workspace": "unicer",
+          "name": "arvores",
+          "type": "WFS",
+          "extent": [43858.7242812507, 208452.333204688, 44110.6809999999, 209084.351648437],
+          "opacity": 1,
+          "queryable": true,
+          "style": "treeIntervention"
+        }
+      }
+    ]
+  },
+  {
+    "title": "Enquadramento",
+    "folder": true,
+    "expanded": true,
+    "children": [{
+      "title": "Edificios",
+      "preselected": true,
+      "data": {
+        "workspace": "unicer",
+        "name": "edificios",
+        "type": "TileWMS",
+        "extent": [43858.7242812507, 208452.333204688, 44110.6809999999, 209084.351648437],
+        "opacity": 1,
+        "queryable": true
+      }
+    }]
+  },
+  {
+    "title": "Base",
+    "folder": true,
+    "expanded": true,
+    "children": [{
+        "title": "Camada de Base",
+        "preselected": true,
+        "data": {
+          "workspace": "unicer",
+          "name": "base",
+          "type": "TileWMS",
+          "extent": [43858.7242812507, 208452.333204688, 44110.6809999999, 209084.351648437],
+          "opacity": 1,
+          "queryable": false
+        }
+      },
+      {
+        "title": "Limite do Parque",
+        "preselected": true,
+        "data": {
+          "workspace": "unicer",
+          "name": "limite",
+          "type": "WMS",
+          "extent": [43858.7242812507, 208452.333204688, 44110.6809999999, 209084.351648437],
+          "opacity": 1,
+          "queryable": false
+        }
+      }
+    ]
+  }
+]

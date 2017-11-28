@@ -46,14 +46,16 @@ module.exports = {
         getInterventions: sql('trees/getInterventions.sql'),
         postIntervention: sql('trees/postIntervention.sql'),
         getIntervention: sql('trees/getIntervention.sql'),
-        updateIntervention: sql('trees/updateIntervention.sql')
+        updateIntervention: sql('trees/updateIntervention.sql'),
+        print_csv: sql('trees/print_csv.sql')
     },
     interventions: {
         all: sql('interventions/all.sql'),
         allWithState: sql('interventions/allWithState.sql'),
         get: sql('interventions/get.sql'),
-        put: sql('interventions/put.sql'),
-        csv: sql('interventions/csv.sql'),
-        filter: sql('interventions/filter.sql')
+        put: sql('interventions/put.sql')
+    },
+    interventionTypes: {
+        all: sql('interventionTypes/all.sql')
     }
 };

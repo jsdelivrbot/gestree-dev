@@ -1,0 +1,143 @@
+<div class="project project-success" style="font-size:13px;">
+  <div class="project-content">
+    <h2 class="lead">
+      <span><b>PARQUE DAS PEDRAS SALGADAS</b> - Árvore {{intervention.id_tree}}</span>
+    </h2>
+    <div class="container">
+      <div class="row">
+        <div class="col-6" style="padding: 0.5em;">
+          <div class="content-box" style="height: 70vh;">
+            <div class="content-box-title">
+              <span><i class="fa fa-info"></i> &nbsp; <b>Dados da Intervenção</b></span>
+            </div>
+            <section class="input-filter">
+              <div class="title">Identificador da Intervenção</div>
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.id || "N/D"}}</span>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Tipo de Intervenção</div>
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.value_type || "N/D"}}</span>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Priority</div>
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.priority || "N/D" }}</span>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Período Agendado</div>
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.season || "N/D" }}</span>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.year || "N/D" }}</span>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Data de Fecho</div>
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.closed_at | date:"dd/MM/yyyy" || "N/D" }}</span>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Periodicidade</div>
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.periodicity || "N/D" }}</span>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Equipa</div>
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.team || "N/D" }}</span>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Comentários</div>
+              <div class="input-filter-content auto-margin" style="overflow-y: auto; max-height: 80px;">
+                <span>{{ intervention.comments || "N/D" }}</span>
+              </div>
+            </section>
+          </div>
+        </div>
+        <div class="col-6" style="padding: 0.5em;">
+          <div class="content-box" style="height: 70vh;">
+            <div class="content-box-title">
+              <span><i class="fa fa-info"></i> &nbsp; <b>Dados da Árvore</b></span>
+            </div>
+            <section class="input-filter">
+              <div class="title">Identificador da Árvore</div>
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.id_tree || "N/D"}}</span>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Zona</div>
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.tree.zone || "N/D"}}</span>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Nome Científico</div>
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.tree.cientifico || "N/D" }}</span>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Nome Comum</div>
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.tree.comum || "N/D" }}</span>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Tipo</div>
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.tree.tipo || "N/D" }}</span>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Diâmetro</div>
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.tree.diametro || "N/D" }}</span>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Altura</div>
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.tree.altura || "N/D" }}</span>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Diâmetro Copa</div>
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.tree.diametro_copa || "N/D" }}</span>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Idade Aproximada</div>
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.tree.idade || "N/D" }}</span>
+              </div>
+            </section>
+            <section class="input-filter">
+              <div class="title">Ano de Plantação</div>
+              <div class="input-filter-content auto-margin">
+                <span>{{ intervention.tree.ano || "N/D" }}</span>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 text-center">
+          <button ng-click="back()" class="btn btn-sm btn-success"><i class="fa fa-arrow-left"></i> Voltar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
