@@ -1,5 +1,5 @@
 SELECT a.*,
-'Pedras Salgadas' as parque
+'Pedras Salgadas' as parque,
 (
     SELECT COUNT(*)::integer
     FROM "PSalgadas"."Interventions" old

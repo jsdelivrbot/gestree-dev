@@ -452,55 +452,6 @@ function TreeDetails() {
 };  
 angular
   .module('unicerApp')
-  .filter('capitalize', Capitalize);
-
-function Capitalize() {
-  return function (input) {
-    if (!angular.isNumber(input)) {
-      return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
-    } else {
-      return input;
-    }
-  }
-}
-angular
-  .module('unicerApp')
-  .filter('interventions-filter', InterventionListFilter);
-
-function InterventionListFilter() {
-  return function (input, filterData) {
-    var filteredInterventions = input;
-
-    if (_hasNoFilters(filterData)) {
-      return input;
-    }
-
-    for (var prop in filterData) {
-      filteredInterventions = _filterArray(filteredInterventions, filterData, prop);
-    }
-    return filteredInterventions;
-  };
-
-  function _filterArray(array, filter, prop) {
-    var filtered = [];
-    for (var i = 0; i < array.length; i++) {
-      if (array[i][prop] === filter[prop]) {
-        filtered.push(array[i]);
-      }
-    }
-    return filtered;
-  }
-
-  function _hasNoFilters(filterData) {
-    for (var prop in filterData) {
-      if (filterData.hasOwnProperty(prop))
-        return false;
-    }
-    return true;
-  };
-}
-angular
-  .module('unicerApp')
   .service('LegendsService', LegendsService);
 
 function LegendsService() {
@@ -565,6 +516,55 @@ function LegendsService() {
   }
 }
 
+angular
+  .module('unicerApp')
+  .filter('capitalize', Capitalize);
+
+function Capitalize() {
+  return function (input) {
+    if (!angular.isNumber(input)) {
+      return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
+    } else {
+      return input;
+    }
+  }
+}
+angular
+  .module('unicerApp')
+  .filter('interventions-filter', InterventionListFilter);
+
+function InterventionListFilter() {
+  return function (input, filterData) {
+    var filteredInterventions = input;
+
+    if (_hasNoFilters(filterData)) {
+      return input;
+    }
+
+    for (var prop in filterData) {
+      filteredInterventions = _filterArray(filteredInterventions, filterData, prop);
+    }
+    return filteredInterventions;
+  };
+
+  function _filterArray(array, filter, prop) {
+    var filtered = [];
+    for (var i = 0; i < array.length; i++) {
+      if (array[i][prop] === filter[prop]) {
+        filtered.push(array[i]);
+      }
+    }
+    return filtered;
+  }
+
+  function _hasNoFilters(filterData) {
+    for (var prop in filterData) {
+      if (filterData.hasOwnProperty(prop))
+        return false;
+    }
+    return true;
+  };
+}
 angular
   .module('unicerApp')
   .controller('InterventionAddController', InterventionAddController);
