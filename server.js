@@ -38,7 +38,7 @@ app.get('/', function (req, res) {
 });
 
 app.use('/*', function (req, res) {
-  //res.redirect('/');
+  res.redirect('/');
 });
 
 app.use(function (req, res, next) {
