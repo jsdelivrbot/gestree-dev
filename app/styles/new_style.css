@@ -595,7 +595,8 @@ ul.fancytree-container {
     font-weight: 500;
 }
 
-li.fancytree-animating, ul.fancytree-animating {
+li.fancytree-animating,
+ul.fancytree-animating {
     position: inherit;
 }
 
@@ -626,6 +627,10 @@ span.fancytree-node.fancytree-selected span.fancytree-expander:hover {
 span.fancytree-expanded span.fancytree-expander {
     opacity: 0.8;
     color: #333;
+}
+
+span.fancytree-icon {
+    cursor: pointer !important;
 }
 
 .icon-padding span.fancytree-icon {
