@@ -55,6 +55,12 @@ function MapInteractions(MapService) {
         });
       }, Promise.resolve([])).then(function (layerResults) {
         scope.$apply(function () {
+          scope.hasLayerResults = false;
+          for(var i = 0; i< layerResults.length; i++){
+            if(layerResults[i].features.length !== 0){
+              scope.hasLayerResults = true;  
+            } 
+          }
           scope.layerResults = layerResults;
         });
       });

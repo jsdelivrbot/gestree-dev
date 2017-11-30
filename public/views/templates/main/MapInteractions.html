@@ -25,8 +25,8 @@
 <section class="identify-container" ng-show="isActive('Identify')">
   <div class="title">Resultados da Pesquisa</div>
   <div class="content">
-    <div class="no-results" ng-hide="layerResults[0].features.length !== 0">Não foram encontrados resultados.</div>
-    <div ng-repeat="layer in layerResults" ng-hide="layerResults[0].features.length === 0">
+    <div class="no-results" ng-hide="hasLayerResults">Não foram encontrados resultados.</div>
+    <div ng-repeat="layer in layerResults" ng-show="hasLayerResults">
       <div class="layer">
         <div ng-repeat="feature in layer.features">
           <li ng-repeat="(key, value) in feature.properties">

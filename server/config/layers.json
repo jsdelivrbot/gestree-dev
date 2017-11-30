@@ -50,6 +50,23 @@
     }]
   },
   {
+    "title": "Zonas",
+    "folder": true,
+    "expanded": true,
+    "children": [{
+      "title": "Zonas - Pedras Salgadas",
+      "preselected": false,
+      "data": {
+        "workspace": "unicer",
+        "name": "zonas_pedras_salgadas",
+        "type": "TileWMS",
+        "extent": [43858.7242812507, 208452.333204688, 44110.6809999999, 209084.351648437],
+        "opacity": 0.5,
+        "queryable": true
+      }
+    }]
+  },
+  {
     "title": "Base",
     "folder": true,
     "expanded": true,
