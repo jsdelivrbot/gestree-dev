@@ -595,6 +595,10 @@ ul.fancytree-container {
     font-weight: 500;
 }
 
+li.fancytree-animating, ul.fancytree-animating {
+    position: inherit;
+}
+
 .fancytree-checkbox {
     cursor: pointer;
 }
@@ -607,6 +611,10 @@ span.fancytree-title {
     background-color: #A2C199;
 }
 
+span.fancytree-node {
+    width: 80%;
+}
+
 span.fancytree-node span.fancytree-expander:hover {
     color: #297D2E;
 }
@@ -616,7 +624,8 @@ span.fancytree-node.fancytree-selected span.fancytree-expander:hover {
 }
 
 span.fancytree-expanded span.fancytree-expander {
-    color: #f7f7f7;
+    opacity: 0.8;
+    color: #333;
 }
 
 .icon-padding span.fancytree-icon {
@@ -686,6 +695,15 @@ span.fancytree-expanded span.fancytree-expander {
 
 .fancytree-plain.fancytree-container span.fancytree-node.fancytree-active:hover span.fancytree-title {
     background-color: #A2C199;
+}
+
+.fancytree-level-1 span.fancytree-title {
+    padding-left: 3em !important;
+    font-weight: bold !important;
+}
+
+.fancytree-level-1 span.fancytree-icon {
+    margin-left: 0.5em !important;
 }
 
 .fancytree-level-2 span.fancytree-title {

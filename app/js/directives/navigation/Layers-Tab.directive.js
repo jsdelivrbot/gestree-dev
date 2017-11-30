@@ -36,17 +36,10 @@ function LayersTab(MapService, Layers, Legends, $timeout) {
           loading: "fa fa-spinner"
         }
       },
-      clickFolderMode: 4,
+      clickFolderMode: 2,
       selectMode: 3,
       source: {
         url: '/layers',
-      },
-      toggleEffect: {
-        effect: "drop",
-        options: {
-          direction: "left"
-        },
-        duration: 200
       },
       wide: {
         iconWidth: "1em",
