@@ -1,8 +1,13 @@
 <section class="legends-container">
-    <ul class="list-group legends-list" ng-repeat="group in groups">
-        <b>{{group.title}}</b>
+  <ul class="list-group legends-list" ng-repeat="park in legends">
+    <b ng-hide="park.legendas.length == 0">{{park.title}}</b>
+    <li ng-repeat="group in park.legendas">
+      <p class="legends-list" style="margin-bottom:0px; font-size:1em;">{{group.title}}</p>
+      <ul style="padding:0">
         <li class="list-group-item legends-item" ng-repeat="legend in group.data">
-            <div legend title="{{legend.title}}"><img ng-src="{{legend.url}}"></legend>
+          <div legend title="{{legend.title}}"><img ng-src="{{legend.url}}"></legend>
         </li>
-    </ul>
+      </ul>
+    </li>
+  </ul>
 </section>

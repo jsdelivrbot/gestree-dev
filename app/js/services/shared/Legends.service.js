@@ -3,7 +3,16 @@ angular
   .service('LegendsService', LegendsService);
 
 function LegendsService() {
-  var legends = [];
+  var legends = [
+    {
+      title: "Parque de Pedras Salgadas",
+      legendas: []
+    },
+    {
+      title: "Vidago Palace",
+      legendas: []
+    }
+  ];
 
   return {
     getLegends: getLegends,
@@ -13,24 +22,27 @@ function LegendsService() {
 
   function addLegend(layer) {
     var style = layer.data.style || '';
-    var index = _findGroupIndex(legends, layer.parent);
-    if (index > -1) {
-      var layerIndex = _findIndex(legends[index].data, layer);
+    var parent = layer.parent;
+    var grandParent = parent.parent;
+    var parkIndex = _findParkIndex(legends, grandParent);
+    var groupIndex = _findGroupIndex(legends[parkIndex].legendas, parent);
+    if (groupIndex > -1) {
+      var layerIndex = _findIndex(legends[parkIndex].legendas[groupIndex].data, layer);
       if (layerIndex == -1) {
-        legends[index].data.push({
+        legends[parkIndex].legendas[groupIndex].data.push({
           _key: layer.data.key,
           title: layer.title,
           url: 'http://gistree.espigueiro.pt/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.1.1&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=' + layer.data.workspace + ':' + layer.data.name + '&LEGEND_OPTIONS=forceLabels:on;fontSize:11&SCALE=1000000&Style=' + style
         });
       } else {
-        legends[index].data[layerIndex] = {
+        legends[parkIndex].legendas[groupIndex].data[layerIndex] = {
           _key: layer.data.key,
           title: layer.title,
           url: 'http://gistree.espigueiro.pt/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.1.1&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=' + layer.data.workspace + ':' + layer.data.name + '&LEGEND_OPTIONS=forceLabels:on;fontSize:11&SCALE=1000000&Style=' + style
         }
       }
     } else {
-      legends.push({
+      legends[parkIndex].legendas.push({
         title: layer.parent.title,
         data: []
       });
@@ -41,14 +53,20 @@ function LegendsService() {
     return legends;
   }
   function removeLegend(layer) {
-    var index = _findGroupIndex(legends, layer.parent);
-    var lIndex = _findIndex(legends[index].data, layer);
-    _removeAt(legends[index].data, lIndex);
-    if (legends[index].data.length == 0) {
-      _removeAt(legends, index);
+    var parkIndex = _findParkIndex(legends, layer.parent.parent);
+    var groupIndex = _findGroupIndex(legends[parkIndex].legendas, layer.parent);
+    var lIndex = _findIndex(legends[parkIndex].legendas[groupIndex].data, layer);
+    _removeAt(legends[parkIndex].legendas[groupIndex].data, lIndex);
+    if (legends[parkIndex].legendas[groupIndex].data == 0) {
+      _removeAt(legends[parkIndex].legendas, groupIndex);
     }
   }
 
+  function _findParkIndex(array,data){
+    return array.findIndex(function (e) {
+      return e.title == this.title;
+    }, data);
+  }
   function _findGroupIndex(array, data) {
     return array.findIndex(function (e) {
       return e.title == this.title;

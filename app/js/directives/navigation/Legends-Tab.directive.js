@@ -15,6 +15,6 @@ function LegendsTab() {
   
   LegendsTabController.$inject = ['$scope', 'LegendsService'];
   function LegendsTabController($scope, LegendsService) {
-    $scope.groups = LegendsService.getLegends();
+    $scope.legends = LegendsService.getLegends();
   }
 }

@@ -3,6 +3,7 @@
     "folder": true,
     "expanded": true,
     "checkbox": false,
+    "key": "PSalgadas",
     "children": [{
         "title": "Arvores",
         "folder": true,
@@ -108,6 +109,7 @@
     "folder": true,
     "expanded": true,
     "checkbox": false,
+    "key": "Vidago",
     "children": [{
       "title": "Arvores",
       "folder": true,
