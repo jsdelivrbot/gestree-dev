@@ -84,40 +84,57 @@ function Layers(MapService, LayersHttp, WFSStyles, DirtyDataManager) {
     }
   }
   function _addWMSLayer(layerData) {
-    var wmsLayer = new ol.layer.Image({
-      opacity: layerData.opacity,
-      source: new ol.source.ImageWMS({
-        url: 'http://gistree.espigueiro.pt/geoserver/wms',
-        params: {
-          'LAYERS': layerData.workspace + ":" + layerData.name
-        },
-        extent: layerData.extent,
-      }),
-      minResolution: _calculateResolution(layerData.maxZoom),
-      maxResolution: _calculateResolution(layerData.minZoom),
-      group: layerData.group,
-      queryable: layerData.queryable
-    });
-    MapService.getMap().addLayer(wmsLayer);
-    layers[layerData.key] = wmsLayer;
+    if (_checkLayer(layerData.key)) {
+      var wmsLayer = new ol.layer.Image({
+        opacity: layerData.opacity,
+        source: new ol.source.ImageWMS({
+          url: 'http://gistree.espigueiro.pt/geoserver/wms',
+          params: {
+            'LAYERS': layerData.workspace + ":" + layerData.name
+          },
+          extent: layerData.extent,
+        }),
+        minResolution: _calculateResolution(layerData.maxZoom),
+        maxResolution: _calculateResolution(layerData.minZoom),
+        group: layerData.group,
+        queryable: layerData.queryable
+      });
+      MapService.getMap().addLayer(wmsLayer);
+      wmsLayer.isVisible = true;
+      layers[layerData.key] = wmsLayer;
+    } else {
+      if (!layers[layerData.key].isVisible) {
+        MapService.getMap().addLayer(layers[layerData.key]);
+        layers[layerData.key].isVisible = true;
+      }
+    }
   }
   function _addTiledWMSLayer(layerData) {
-    var wmsLayer = new ol.layer.Tile({
-      opacity: layerData.opacity,
-      source: new ol.source.TileWMS({
-        url: 'http://gistree.espigueiro.pt/geoserver/wms',
-        params: {
-          'LAYERS': layerData.workspace + ":" + layerData.name
-        },
-        extent: layerData.extent,
-      }),
-      minResolution: _calculateResolution(layerData.maxZoom),
-      maxResolution: _calculateResolution(layerData.minZoom),
-      group: layerData.group,
-      queryable: layerData.queryable
-    });
-    MapService.getMap().addLayer(wmsLayer);
-    layers[layerData.key] = wmsLayer;
+    if (_checkLayer(layerData.key)) {
+      var wmsLayer = new ol.layer.Tile({
+        opacity: layerData.opacity,
+        source: new ol.source.TileWMS({
+          url: 'http://gistree.espigueiro.pt/geoserver/wms',
+          params: {
+            'LAYERS': layerData.workspace + ":" + layerData.name
+          },
+          extent: layerData.extent,
+        }),
+        minResolution: _calculateResolution(layerData.maxZoom),
+        maxResolution: _calculateResolution(layerData.minZoom),
+        group: layerData.group,
+        queryable: layerData.queryable
+      });
+      MapService.getMap().addLayer(wmsLayer);
+      wmsLayer.isVisible = true;
+      layers[layerData.key] = wmsLayer;
+    } else {
+      if (!layers[layerData.key].isVisible) {
+        MapService.getMap().addLayer(layers[layerData.key]);
+        layers[layerData.key].isVisible = true;
+      }
+    }
+
   }
 
   function _checkLayer(layer_key) {

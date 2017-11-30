@@ -91,7 +91,7 @@ function LayersTab(MapService, Layers, Legends, $timeout) {
         } else {
           children.forEach(function (layer) {
             layer.data.key = layer.data.key || layer.key;
-            Layers.removeLayer(layer.data)
+            Layers.removeLayer(layer.data);
             Legends.removeLegend(layer);
           });
         }

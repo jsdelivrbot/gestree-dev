@@ -55,14 +55,18 @@ function LegendsService() {
   function removeLegend(layer) {
     var parkIndex = _findParkIndex(legends, layer.parent.parent);
     var groupIndex = _findGroupIndex(legends[parkIndex].legendas, layer.parent);
-    var lIndex = _findIndex(legends[parkIndex].legendas[groupIndex].data, layer);
-    _removeAt(legends[parkIndex].legendas[groupIndex].data, lIndex);
-    if (legends[parkIndex].legendas[groupIndex].data == 0) {
-      _removeAt(legends[parkIndex].legendas, groupIndex);
+    if (groupIndex > -1) {
+      var lIndex = _findIndex(legends[parkIndex].legendas[groupIndex].data, layer);
+      if (lIndex > -1) {
+        _removeAt(legends[parkIndex].legendas[groupIndex].data, lIndex);
+        if (legends[parkIndex].legendas[groupIndex].data == 0) {
+          _removeAt(legends[parkIndex].legendas, groupIndex);
+        }
+      }
     }
   }
 
-  function _findParkIndex(array,data){
+  function _findParkIndex(array, data) {
     return array.findIndex(function (e) {
       return e.title == this.title;
     }, data);

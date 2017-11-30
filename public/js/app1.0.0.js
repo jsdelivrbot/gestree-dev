@@ -165,6 +165,118 @@ angular
   }])
 angular
   .module('unicerApp')
+  .controller('BaseLayerController', BaseLayerController);
+
+BaseLayerController.$inject = ['$scope'];
+
+function BaseLayerController($scope) {
+
+  $scope.baseLayers = [
+    {
+      name: "Open Street Map",
+      layerDef: new ol.layer.Tile({
+        source: new ol.source.OSM({})
+      })
+    },
+    {
+      name: "Camada em Branco",
+      layerDef: new ol.layer.Tile({})
+    }
+  ];
+  $scope.baseLayer = "Mapa de Base";
+
+  $scope.setBaseLayer = function (layer) {
+    $scope.baseLayer = layer.name;
+    Map.setBaseLayer(layer.layerDef);
+  };
+  
+}
+angular
+  .module('unicerApp')
+  .controller('InterventionListController', InterventionListController);
+
+InterventionListController.$inject = [
+  '$scope',
+  'Interventions',
+  'SortingService',
+  'FilterSharedData',
+  '$filter'
+];
+
+function InterventionListController($scope, Interventions, SortingService, FilterSharedData, $filter) {
+
+  $scope.sort = SortingService.orderBySeasonYear;
+
+  $scope.$watch(FilterSharedData.getFilter, _handleFilterUpdate, true);
+  function _handleFilterUpdate(newVal, oldVal, scope) {
+    scope.interventions = $filter('interventions-filter')(Interventions, newVal);
+  }
+
+};
+angular
+  .module('unicerApp')
+  .controller('MapController', MapController);
+
+MapController.$inject = ['MapService', 'DirtyDataManager'];
+
+function MapController(MapService, DirtyDataManager) {
+  MapService.init();
+  MapService.drawMap();
+  if (DirtyDataManager.isLayerDirty()) {
+    MapService.reloadLayers();
+    DirtyDataManager.cleanLayer();
+  };
+}  
+angular
+  .module('unicerApp')
+  .controller('ParkSelectorController', ParkSelectorController);
+
+ParkSelectorController.$inject = ['ParksHttp', 'Map'];
+
+function ParkSelectorController(ParksHttp, Map) {
+  var locCtrl = this;
+  activate();
+
+  function activate() {
+    ParksHttp.getParks().then(function (loc) {
+      locCtrl.locations = loc.features;
+    });
+    locCtrl.location = {};
+  }
+  locCtrl.onSelectCallback = function (model) {
+    Map.zoomToCoordinate(model.geometry.coordinates, 'EPSG:3857');
+  }
+}
+angular
+  .module('unicerApp')
+  .controller('TreeInterventionsController', TreeInterventionsController);
+
+TreeInterventionsController.$inject = [
+  '$scope',
+  'SideNavService',
+  'TreeInterventions',
+  'SortingService',
+  'FilterSharedData',
+  '$filter',
+];
+
+function TreeInterventionsController($scope, SideNavService, TreeInterventions, SortingService, FilterSharedData, $filter) {
+  SideNavService.setActiveTab(3);
+
+  $scope.sort = SortingService.orderBySeasonYear;
+  $scope.back = function(e){
+    e.preventDefault();
+    SideNavService.setActiveTab(1);
+    window.history.back();
+  }
+
+  $scope.$watch(FilterSharedData.getFilter, _handleFilterUpdate, true);
+  function _handleFilterUpdate(newVal, oldVal, scope) {
+    scope.interventions = $filter('interventions-filter')(TreeInterventions, newVal);
+  }
+}
+angular
+  .module('unicerApp')
   .directive('interventionItem', InterventionItem);
 
 function InterventionItem() {
@@ -321,118 +433,6 @@ function TreeDetails() {
 };  
 angular
   .module('unicerApp')
-  .controller('BaseLayerController', BaseLayerController);
-
-BaseLayerController.$inject = ['$scope'];
-
-function BaseLayerController($scope) {
-
-  $scope.baseLayers = [
-    {
-      name: "Open Street Map",
-      layerDef: new ol.layer.Tile({
-        source: new ol.source.OSM({})
-      })
-    },
-    {
-      name: "Camada em Branco",
-      layerDef: new ol.layer.Tile({})
-    }
-  ];
-  $scope.baseLayer = "Mapa de Base";
-
-  $scope.setBaseLayer = function (layer) {
-    $scope.baseLayer = layer.name;
-    Map.setBaseLayer(layer.layerDef);
-  };
-  
-}
-angular
-  .module('unicerApp')
-  .controller('InterventionListController', InterventionListController);
-
-InterventionListController.$inject = [
-  '$scope',
-  'Interventions',
-  'SortingService',
-  'FilterSharedData',
-  '$filter'
-];
-
-function InterventionListController($scope, Interventions, SortingService, FilterSharedData, $filter) {
-
-  $scope.sort = SortingService.orderBySeasonYear;
-
-  $scope.$watch(FilterSharedData.getFilter, _handleFilterUpdate, true);
-  function _handleFilterUpdate(newVal, oldVal, scope) {
-    scope.interventions = $filter('interventions-filter')(Interventions, newVal);
-  }
-
-};
-angular
-  .module('unicerApp')
-  .controller('MapController', MapController);
-
-MapController.$inject = ['MapService', 'DirtyDataManager'];
-
-function MapController(MapService, DirtyDataManager) {
-  MapService.init();
-  MapService.drawMap();
-  if (DirtyDataManager.isLayerDirty()) {
-    MapService.reloadLayers();
-    DirtyDataManager.cleanLayer();
-  };
-}  
-angular
-  .module('unicerApp')
-  .controller('ParkSelectorController', ParkSelectorController);
-
-ParkSelectorController.$inject = ['ParksHttp', 'Map'];
-
-function ParkSelectorController(ParksHttp, Map) {
-  var locCtrl = this;
-  activate();
-
-  function activate() {
-    ParksHttp.getParks().then(function (loc) {
-      locCtrl.locations = loc.features;
-    });
-    locCtrl.location = {};
-  }
-  locCtrl.onSelectCallback = function (model) {
-    Map.zoomToCoordinate(model.geometry.coordinates, 'EPSG:3857');
-  }
-}
-angular
-  .module('unicerApp')
-  .controller('TreeInterventionsController', TreeInterventionsController);
-
-TreeInterventionsController.$inject = [
-  '$scope',
-  'SideNavService',
-  'TreeInterventions',
-  'SortingService',
-  'FilterSharedData',
-  '$filter',
-];
-
-function TreeInterventionsController($scope, SideNavService, TreeInterventions, SortingService, FilterSharedData, $filter) {
-  SideNavService.setActiveTab(3);
-
-  $scope.sort = SortingService.orderBySeasonYear;
-  $scope.back = function(e){
-    e.preventDefault();
-    SideNavService.setActiveTab(1);
-    window.history.back();
-  }
-
-  $scope.$watch(FilterSharedData.getFilter, _handleFilterUpdate, true);
-  function _handleFilterUpdate(newVal, oldVal, scope) {
-    scope.interventions = $filter('interventions-filter')(TreeInterventions, newVal);
-  }
-}
-angular
-  .module('unicerApp')
   .filter('capitalize', Capitalize);
 
 function Capitalize() {
@@ -479,6 +479,196 @@ function InterventionListFilter() {
     }
     return true;
   };
+}
+angular
+  .module('unicerApp')
+  .controller('InterventionAddController', InterventionAddController);
+
+InterventionAddController.$inject = [
+  '$scope',
+  '$routeParams',
+  '$timeout',
+  'InterventionsHttp',
+  'Defaults',
+  'SideNavService'
+];
+
+function InterventionAddController($scope, $routeParams, $timeout, InterventionsHttp, Defaults, SideNavService) {
+  SideNavService.hide();
+
+  $scope.defaults = Defaults;
+  $scope.intervention = {
+    periodicity: '-',
+    comments: null,
+    team: '-'
+  };
+  if ($routeParams.idTree) {
+    $scope.intervention.id_tree = parseInt($routeParams.idTree);
+    $scope.disableID = true;
+  }
+
+  $scope.back = _goBack;
+  
+  $scope.send = function () {
+    var _self = this;
+    if (!_dataIsInvalid()) {
+      return;
+    }
+    InterventionsHttp.add(this.intervention)
+      .then(function (res) {
+        _self.message = "Intervenção adicionada com sucesso.";
+        $timeout(function () {
+          _goBack();
+        }, 1000);
+      }).catch(function (err) {
+        _self.error = "Ocorreu um erro ao adicionar a intervenção.";
+      });
+  }
+
+  bindSetters()
+  function bindSetters() {
+    $scope.setType = setValue.bind("type");
+    $scope.setTeam = setValue.bind("team");
+    $scope.setSeason = setValue.bind("season");
+    $scope.setYear = setValue.bind("year");
+    $scope.setPeriodicity = setValue.bind("periodicity");
+    function setValue(val) {
+      $scope.intervention[this] = val;
+    }
+  }
+  function _dataIsInvalid() {
+    var errors = { size: 0 };
+    var requiredFields = ['id_tree', 'type', 'priority', 'season', 'year'];
+    requiredFields.map(function (field, index) {
+      if (!$scope.intervention.hasOwnProperty(field)) {
+        errors[field] = true;
+        errors.size++;
+      }
+    });
+    if (errors.size > 0) {
+      errors.message = "* Falta Preencher Campos Obrigatórios";
+    }
+    $scope.errors = errors;
+    return errors.size === 0;
+  }
+  function _goBack(){
+    SideNavService.show();
+    window.history.back();
+  }
+
+}
+angular
+  .module('unicerApp')
+  .controller('InterventionCloseController', InterventionCloseController);
+
+InterventionCloseController.$inject = [
+  '$scope',
+  'Intervention',
+  'InterventionsHttp',
+  '$timeout',
+  'SideNavService'
+];
+
+function InterventionCloseController($scope, Intervention, InterventionsHttp, $timeout, SideNavService) {
+  $scope.intervention = Intervention;
+  SideNavService.hide();
+
+  $scope.back = function () {
+    SideNavService.show();
+    window.history.back();
+  }
+  $scope.close = function (form) {
+    var _self = this;
+    _self.error = '';
+    if (form.$invalid) {
+      return;
+    }
+    _self.intervention.state = "FECHADA";
+    InterventionsHttp.close(_self.intervention)
+      .then(function (data) {
+        _self.message = "A intervenção foi fechada com sucesso.";
+        $timeout(function () {
+          window.history.back();
+        }, 1000);
+      }).catch(function (err) {
+        _self.error = "Ocorreu um erro no fecho da intervenção.";
+      });
+  };
+}
+angular
+  .module('unicerApp')
+  .controller('InterventionInfoController', InterventionInfoController);
+
+InterventionInfoController.$inject = [
+  '$scope',
+  'Intervention',
+  'SideNavService'
+];
+
+function InterventionInfoController($scope, Intervention, SideNavService) {
+  SideNavService.hide();
+  $scope.intervention = Intervention;
+  $scope.back = function () {
+    SideNavService.show();
+    window.history.back();
+  }
+}
+angular
+  .module('unicerApp')
+  .controller('InterventionUpdateController', InterventionUpdateController);
+
+InterventionUpdateController.$inject = [
+  '$scope',
+  'Intervention',
+  'Defaults',
+  'InterventionsHttp',
+  'SideNavService'
+];
+
+function InterventionUpdateController($scope, Intervention, Defaults, InterventionsHttp, SideNavService) {
+  SideNavService.hide();
+
+  var _initalID = Intervention.id;
+  var interTypes = Defaults.types;
+
+  $scope.intervention = Intervention;
+  $scope.defaults = Defaults;
+
+  bindSetters();
+  setInterventionType();
+
+  $scope.save = function () {
+    $scope.intervention.id = _initalID;
+    $scope.error = '';
+    InterventionsHttp.update($scope.intervention)
+      .then(function (data) {
+        $scope.message = "A intervenção foi alterada com sucesso.";
+      }).catch(function (err) {
+        $scope.error = "Ocorreu um erro ao tentar alterar a intervenção";
+      });
+  }
+  $scope.back = function () {
+    SideNavService.show();
+    window.history.back();
+  }
+
+  function bindSetters() {
+    $scope.setType = setValue.bind("type");
+    $scope.setTeam = setValue.bind("team");
+    $scope.setSeason = setValue.bind("season");
+    $scope.setYear = setValue.bind("year");
+    $scope.setPeriodicity = setValue.bind("periodicity");
+
+    function setValue(val) {
+      $scope.intervention[this] = val;
+    }
+  }
+  function setInterventionType(){
+    $scope.intervention.type = interTypes.find(function(type){
+      return type.id === Intervention.id_type;
+    });
+  }
+
 }
 angular
   .module('unicerApp')
@@ -644,7 +834,7 @@ function LayersTab(MapService, Layers, Legends, $timeout) {
         } else {
           children.forEach(function (layer) {
             layer.data.key = layer.data.key || layer.key;
-            Layers.removeLayer(layer.data)
+            Layers.removeLayer(layer.data);
             Legends.removeLegend(layer);
           });
         }
@@ -907,196 +1097,6 @@ function PrintResult() {
     },
   };
   return directive;
-}
-angular
-  .module('unicerApp')
-  .controller('InterventionAddController', InterventionAddController);
-
-InterventionAddController.$inject = [
-  '$scope',
-  '$routeParams',
-  '$timeout',
-  'InterventionsHttp',
-  'Defaults',
-  'SideNavService'
-];
-
-function InterventionAddController($scope, $routeParams, $timeout, InterventionsHttp, Defaults, SideNavService) {
-  SideNavService.hide();
-
-  $scope.defaults = Defaults;
-  $scope.intervention = {
-    periodicity: '-',
-    comments: null,
-    team: '-'
-  };
-  if ($routeParams.idTree) {
-    $scope.intervention.id_tree = parseInt($routeParams.idTree);
-    $scope.disableID = true;
-  }
-
-  $scope.back = _goBack;
-  
-  $scope.send = function () {
-    var _self = this;
-    if (!_dataIsInvalid()) {
-      return;
-    }
-    InterventionsHttp.add(this.intervention)
-      .then(function (res) {
-        _self.message = "Intervenção adicionada com sucesso.";
-        $timeout(function () {
-          _goBack();
-        }, 1000);
-      }).catch(function (err) {
-        _self.error = "Ocorreu um erro ao adicionar a intervenção.";
-      });
-  }
-
-  bindSetters()
-  function bindSetters() {
-    $scope.setType = setValue.bind("type");
-    $scope.setTeam = setValue.bind("team");
-    $scope.setSeason = setValue.bind("season");
-    $scope.setYear = setValue.bind("year");
-    $scope.setPeriodicity = setValue.bind("periodicity");
-    function setValue(val) {
-      $scope.intervention[this] = val;
-    }
-  }
-  function _dataIsInvalid() {
-    var errors = { size: 0 };
-    var requiredFields = ['id_tree', 'type', 'priority', 'season', 'year'];
-    requiredFields.map(function (field, index) {
-      if (!$scope.intervention.hasOwnProperty(field)) {
-        errors[field] = true;
-        errors.size++;
-      }
-    });
-    if (errors.size > 0) {
-      errors.message = "* Falta Preencher Campos Obrigatórios";
-    }
-    $scope.errors = errors;
-    return errors.size === 0;
-  }
-  function _goBack(){
-    SideNavService.show();
-    window.history.back();
-  }
-
-}
-angular
-  .module('unicerApp')
-  .controller('InterventionCloseController', InterventionCloseController);
-
-InterventionCloseController.$inject = [
-  '$scope',
-  'Intervention',
-  'InterventionsHttp',
-  '$timeout',
-  'SideNavService'
-];
-
-function InterventionCloseController($scope, Intervention, InterventionsHttp, $timeout, SideNavService) {
-  $scope.intervention = Intervention;
-  SideNavService.hide();
-
-  $scope.back = function () {
-    SideNavService.show();
-    window.history.back();
-  }
-  $scope.close = function (form) {
-    var _self = this;
-    _self.error = '';
-    if (form.$invalid) {
-      return;
-    }
-    _self.intervention.state = "FECHADA";
-    InterventionsHttp.close(_self.intervention)
-      .then(function (data) {
-        _self.message = "A intervenção foi fechada com sucesso.";
-        $timeout(function () {
-          window.history.back();
-        }, 1000);
-      }).catch(function (err) {
-        _self.error = "Ocorreu um erro no fecho da intervenção.";
-      });
-  };
-}
-angular
-  .module('unicerApp')
-  .controller('InterventionInfoController', InterventionInfoController);
-
-InterventionInfoController.$inject = [
-  '$scope',
-  'Intervention',
-  'SideNavService'
-];
-
-function InterventionInfoController($scope, Intervention, SideNavService) {
-  SideNavService.hide();
-  $scope.intervention = Intervention;
-  $scope.back = function () {
-    SideNavService.show();
-    window.history.back();
-  }
-}
-angular
-  .module('unicerApp')
-  .controller('InterventionUpdateController', InterventionUpdateController);
-
-InterventionUpdateController.$inject = [
-  '$scope',
-  'Intervention',
-  'Defaults',
-  'InterventionsHttp',
-  'SideNavService'
-];
-
-function InterventionUpdateController($scope, Intervention, Defaults, InterventionsHttp, SideNavService) {
-  SideNavService.hide();
-
-  var _initalID = Intervention.id;
-  var interTypes = Defaults.types;
-
-  $scope.intervention = Intervention;
-  $scope.defaults = Defaults;
-
-  bindSetters();
-  setInterventionType();
-
-  $scope.save = function () {
-    $scope.intervention.id = _initalID;
-    $scope.error = '';
-    InterventionsHttp.update($scope.intervention)
-      .then(function (data) {
-        $scope.message = "A intervenção foi alterada com sucesso.";
-      }).catch(function (err) {
-        $scope.error = "Ocorreu um erro ao tentar alterar a intervenção";
-      });
-  }
-  $scope.back = function () {
-    SideNavService.show();
-    window.history.back();
-  }
-
-  function bindSetters() {
-    $scope.setType = setValue.bind("type");
-    $scope.setTeam = setValue.bind("team");
-    $scope.setSeason = setValue.bind("season");
-    $scope.setYear = setValue.bind("year");
-    $scope.setPeriodicity = setValue.bind("periodicity");
-
-    function setValue(val) {
-      $scope.intervention[this] = val;
-    }
-  }
-  function setInterventionType(){
-    $scope.intervention.type = interTypes.find(function(type){
-      return type.id === Intervention.id_type;
-    });
-  }
-
 }
 angular
   .module('unicerApp')
@@ -1618,40 +1618,57 @@ function Layers(MapService, LayersHttp, WFSStyles, DirtyDataManager) {
     }
   }
   function _addWMSLayer(layerData) {
-    var wmsLayer = new ol.layer.Image({
-      opacity: layerData.opacity,
-      source: new ol.source.ImageWMS({
-        url: 'http://gistree.espigueiro.pt/geoserver/wms',
-        params: {
-          'LAYERS': layerData.workspace + ":" + layerData.name
-        },
-        extent: layerData.extent,
-      }),
-      minResolution: _calculateResolution(layerData.maxZoom),
-      maxResolution: _calculateResolution(layerData.minZoom),
-      group: layerData.group,
-      queryable: layerData.queryable
-    });
-    MapService.getMap().addLayer(wmsLayer);
-    layers[layerData.key] = wmsLayer;
+    if (_checkLayer(layerData.key)) {
+      var wmsLayer = new ol.layer.Image({
+        opacity: layerData.opacity,
+        source: new ol.source.ImageWMS({
+          url: 'http://gistree.espigueiro.pt/geoserver/wms',
+          params: {
+            'LAYERS': layerData.workspace + ":" + layerData.name
+          },
+          extent: layerData.extent,
+        }),
+        minResolution: _calculateResolution(layerData.maxZoom),
+        maxResolution: _calculateResolution(layerData.minZoom),
+        group: layerData.group,
+        queryable: layerData.queryable
+      });
+      MapService.getMap().addLayer(wmsLayer);
+      wmsLayer.isVisible = true;
+      layers[layerData.key] = wmsLayer;
+    } else {
+      if (!layers[layerData.key].isVisible) {
+        MapService.getMap().addLayer(layers[layerData.key]);
+        layers[layerData.key].isVisible = true;
+      }
+    }
   }
   function _addTiledWMSLayer(layerData) {
-    var wmsLayer = new ol.layer.Tile({
-      opacity: layerData.opacity,
-      source: new ol.source.TileWMS({
-        url: 'http://gistree.espigueiro.pt/geoserver/wms',
-        params: {
-          'LAYERS': layerData.workspace + ":" + layerData.name
-        },
-        extent: layerData.extent,
-      }),
-      minResolution: _calculateResolution(layerData.maxZoom),
-      maxResolution: _calculateResolution(layerData.minZoom),
-      group: layerData.group,
-      queryable: layerData.queryable
-    });
-    MapService.getMap().addLayer(wmsLayer);
-    layers[layerData.key] = wmsLayer;
+    if (_checkLayer(layerData.key)) {
+      var wmsLayer = new ol.layer.Tile({
+        opacity: layerData.opacity,
+        source: new ol.source.TileWMS({
+          url: 'http://gistree.espigueiro.pt/geoserver/wms',
+          params: {
+            'LAYERS': layerData.workspace + ":" + layerData.name
+          },
+          extent: layerData.extent,
+        }),
+        minResolution: _calculateResolution(layerData.maxZoom),
+        maxResolution: _calculateResolution(layerData.minZoom),
+        group: layerData.group,
+        queryable: layerData.queryable
+      });
+      MapService.getMap().addLayer(wmsLayer);
+      wmsLayer.isVisible = true;
+      layers[layerData.key] = wmsLayer;
+    } else {
+      if (!layers[layerData.key].isVisible) {
+        MapService.getMap().addLayer(layers[layerData.key]);
+        layers[layerData.key].isVisible = true;
+      }
+    }
+
   }
 
   function _checkLayer(layer_key) {
@@ -1723,14 +1740,18 @@ function LegendsService() {
   function removeLegend(layer) {
     var parkIndex = _findParkIndex(legends, layer.parent.parent);
     var groupIndex = _findGroupIndex(legends[parkIndex].legendas, layer.parent);
-    var lIndex = _findIndex(legends[parkIndex].legendas[groupIndex].data, layer);
-    _removeAt(legends[parkIndex].legendas[groupIndex].data, lIndex);
-    if (legends[parkIndex].legendas[groupIndex].data == 0) {
-      _removeAt(legends[parkIndex].legendas, groupIndex);
+    if (groupIndex > -1) {
+      var lIndex = _findIndex(legends[parkIndex].legendas[groupIndex].data, layer);
+      if (lIndex > -1) {
+        _removeAt(legends[parkIndex].legendas[groupIndex].data, lIndex);
+        if (legends[parkIndex].legendas[groupIndex].data == 0) {
+          _removeAt(legends[parkIndex].legendas, groupIndex);
+        }
+      }
     }
   }
 
-  function _findParkIndex(array,data){
+  function _findParkIndex(array, data) {
     return array.findIndex(function (e) {
       return e.title == this.title;
     }, data);
