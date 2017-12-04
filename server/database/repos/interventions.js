@@ -10,15 +10,15 @@ module.exports = (rep, pgp) => {
     filter: values => _filter(values)
   };
   function _filter(values) {
-    var query = 'SELECT *, to_char(closed_at, \'DD/MM/YYYY\') as st_closed_at FROM "PSalgadas"."Interventions"';
+    var query = 'SELECT *, to_char(closed_at, \'DD/MM/YYYY\') as st_closed_at FROM "Interventions"."Interventions"';
     if (values.season && values.year) {
-      query = 'SELECT *, to_char(closed_at, \'DD/MM/YYYY\') as st_closed_at FROM "PSalgadas"."Interventions" WHERE season=\'' + values.season + '\' AND year=' + values.year;
+      query = 'SELECT *, to_char(closed_at, \'DD/MM/YYYY\') as st_closed_at FROM "Interventions"."Interventions" WHERE season=\'' + values.season + '\' AND year=' + values.year;
     } else {
       if (values.season) {
-        query = 'SELECT *, to_char(closed_at, \'DD/MM/YYYY\') as st_closed_at FROM "PSalgadas"."Interventions" WHERE season=\'' + values.season + '\'';
+        query = 'SELECT *, to_char(closed_at, \'DD/MM/YYYY\') as st_closed_at FROM "Interventions"."Interventions" WHERE season=\'' + values.season + '\'';
       }
       if (values.year) {
-        query = 'SELECT *, to_char(closed_at, \'DD/MM/YYYY\') as st_closed_at FROM "PSalgadas"."Interventions" WHERE year=' + values.year;
+        query = 'SELECT *, to_char(closed_at, \'DD/MM/YYYY\') as st_closed_at FROM "Interventions"."Interventions" WHERE year=' + values.year;
       }
     }
     return rep.manyOrNone(query, values);

@@ -1,3 +1,3 @@
 SELECT *,
-FROM "PSalgadas"."Interventions"
+FROM "Interventions"."Interventions"
 WHERE state = ${state};

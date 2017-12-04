@@ -1,4 +1,4 @@
-UPDATE "PSalgadas"."Interventions" 
+UPDATE "Interventions"."Interventions" 
 SET 
 id_type = ${id_type},
 season = ${season}, 

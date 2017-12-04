@@ -1,2 +1,2 @@
 SELECT * 
-FROM "PSalgadas"."InterventionTypes";
+FROM "Interventions"."InterventionTypes";
