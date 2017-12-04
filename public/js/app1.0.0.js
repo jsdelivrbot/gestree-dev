@@ -593,6 +593,7 @@ function InterventionCloseController($scope, Intervention, InterventionsHttp, $t
         _self.message = "A intervenção foi fechada com sucesso.";
         $timeout(function () {
           window.history.back();
+          SideNavService.show();
         }, 1000);
       }).catch(function (err) {
         _self.error = "Ocorreu um erro no fecho da intervenção.";
