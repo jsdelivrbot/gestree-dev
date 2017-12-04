@@ -20,4 +20,4 @@ a.gid as id_tree,
     FROM "PSalgadas"."Interventions" old
     WHERE old.id_tree = a.gid AND state = 'ABERTA'
 ) as open_interventions
-FROM "PSalgadas".arvores a
+FROM "PSalgadas".trees a
