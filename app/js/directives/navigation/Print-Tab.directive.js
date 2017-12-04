@@ -91,24 +91,5 @@ function PrintTab() {
       return errors.size === 0;
     }
 
-    /* 
-
-            PrintRequest.getRequestObject().then(function (data) {
-              console.log(data);
-
-              /*PrintHttp.print(JSON.stringify(data), function (err, url) {
-                  if (err) console.log("There was an Error");
-                  printCtrl.isPrinting = false;
-                  printCtrl.file.name = values.content.value + "_" + values.parque.key + "_" + values.season.value + "_" + values.year.value;
-                  printCtrl.file.url = url;
-                  printCtrl.file.hasFile = true;
-              });
-            });
-          }
-        }
-      });
-    }
-
-    }*/
   }
 }

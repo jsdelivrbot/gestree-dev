@@ -14,8 +14,6 @@ function InterventionListController($scope, Interventions, SortingService, Filte
 
   $scope.sort = SortingService.orderBySeasonYear;
 
-  console.log(Interventions);
-
   $scope.$watch(FilterSharedData.getFilter, _handleFilterUpdate, true);
   function _handleFilterUpdate(newVal, oldVal, scope) {
     scope.interventions = $filter('interventions-filter')(Interventions, newVal);
