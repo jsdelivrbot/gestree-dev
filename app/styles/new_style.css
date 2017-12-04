@@ -1091,7 +1091,7 @@ md-icon {
 }
 
 .required {
-    border-bottom: 1px #d9534f solid;
+    border-bottom: 1px #d9534f solid !important;
 }
 
 .error-message-container {

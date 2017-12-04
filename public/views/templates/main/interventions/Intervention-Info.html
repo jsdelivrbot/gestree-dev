@@ -1,7 +1,7 @@
 <div class="project project-success" style="font-size:13px;">
   <div class="project-content">
     <h2 class="lead">
-      <span><b>PARQUE DAS PEDRAS SALGADAS</b> - Árvore {{intervention.id_tree}}</span>
+      <span><b>PARQUE DE {{ intervention.parque | uppercase }}</b> - Árvore {{intervention.id_tree}}</span>
     </h2>
     <div class="container">
       <div class="row">
@@ -79,7 +79,7 @@
             <section class="input-filter">
               <div class="title">Zona</div>
               <div class="input-filter-content auto-margin">
-                <span>{{ intervention.tree.zone || "N/D"}}</span>
+                <span>{{ intervention.tree.zona || "N/D"}}</span>
               </div>
             </section>
             <section class="input-filter">

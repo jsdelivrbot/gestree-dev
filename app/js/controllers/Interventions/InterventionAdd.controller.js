@@ -36,6 +36,7 @@ function InterventionAddController($scope, $routeParams, $timeout, Interventions
     }
     InterventionsHttp.add(this.intervention)
       .then(function (res) {
+        _self.error = "";
         _self.message = "Intervenção adicionada com sucesso.";
         $timeout(function () {
           _goBack();

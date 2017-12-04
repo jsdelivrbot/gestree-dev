@@ -207,6 +207,8 @@ function InterventionListController($scope, Interventions, SortingService, Filte
 
   $scope.sort = SortingService.orderBySeasonYear;
 
+  console.log(Interventions);
+
   $scope.$watch(FilterSharedData.getFilter, _handleFilterUpdate, true);
   function _handleFilterUpdate(newVal, oldVal, scope) {
     scope.interventions = $filter('interventions-filter')(Interventions, newVal);
@@ -274,6 +276,55 @@ function TreeInterventionsController($scope, SideNavService, TreeInterventions, 
   function _handleFilterUpdate(newVal, oldVal, scope) {
     scope.interventions = $filter('interventions-filter')(TreeInterventions, newVal);
   }
+}
+angular
+  .module('unicerApp')
+  .filter('capitalize', Capitalize);
+
+function Capitalize() {
+  return function (input) {
+    if (!angular.isNumber(input)) {
+      return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
+    } else {
+      return input;
+    }
+  }
+}
+angular
+  .module('unicerApp')
+  .filter('interventions-filter', InterventionListFilter);
+
+function InterventionListFilter() {
+  return function (input, filterData) {
+    var filteredInterventions = input;
+
+    if (_hasNoFilters(filterData)) {
+      return input;
+    }
+
+    for (var prop in filterData) {
+      filteredInterventions = _filterArray(filteredInterventions, filterData, prop);
+    }
+    return filteredInterventions;
+  };
+
+  function _filterArray(array, filter, prop) {
+    var filtered = [];
+    for (var i = 0; i < array.length; i++) {
+      if (array[i][prop] === filter[prop]) {
+        filtered.push(array[i]);
+      }
+    }
+    return filtered;
+  }
+
+  function _hasNoFilters(filterData) {
+    for (var prop in filterData) {
+      if (filterData.hasOwnProperty(prop))
+        return false;
+    }
+    return true;
+  };
 }
 angular
   .module('unicerApp')
@@ -433,55 +484,6 @@ function TreeDetails() {
 };  
 angular
   .module('unicerApp')
-  .filter('capitalize', Capitalize);
-
-function Capitalize() {
-  return function (input) {
-    if (!angular.isNumber(input)) {
-      return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
-    } else {
-      return input;
-    }
-  }
-}
-angular
-  .module('unicerApp')
-  .filter('interventions-filter', InterventionListFilter);
-
-function InterventionListFilter() {
-  return function (input, filterData) {
-    var filteredInterventions = input;
-
-    if (_hasNoFilters(filterData)) {
-      return input;
-    }
-
-    for (var prop in filterData) {
-      filteredInterventions = _filterArray(filteredInterventions, filterData, prop);
-    }
-    return filteredInterventions;
-  };
-
-  function _filterArray(array, filter, prop) {
-    var filtered = [];
-    for (var i = 0; i < array.length; i++) {
-      if (array[i][prop] === filter[prop]) {
-        filtered.push(array[i]);
-      }
-    }
-    return filtered;
-  }
-
-  function _hasNoFilters(filterData) {
-    for (var prop in filterData) {
-      if (filterData.hasOwnProperty(prop))
-        return false;
-    }
-    return true;
-  };
-}
-angular
-  .module('unicerApp')
   .controller('InterventionAddController', InterventionAddController);
 
 InterventionAddController.$inject = [
@@ -518,6 +520,7 @@ function InterventionAddController($scope, $routeParams, $timeout, Interventions
     }
     InterventionsHttp.add(this.intervention)
       .then(function (res) {
+        _self.error = "";
         _self.message = "Intervenção adicionada com sucesso.";
         $timeout(function () {
           _goBack();
