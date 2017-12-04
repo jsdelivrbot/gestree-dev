@@ -20,8 +20,10 @@ function InterventionAddController($scope, $routeParams, $timeout, Interventions
     comments: null,
     team: '-'
   };
+  
   if ($routeParams.idTree) {
     $scope.intervention.id_tree = parseInt($routeParams.idTree);
+    $scope.intervention.park = Defaults.findPark($routeParams.park);
     $scope.disableID = true;
   }
 
@@ -50,13 +52,14 @@ function InterventionAddController($scope, $routeParams, $timeout, Interventions
     $scope.setSeason = setValue.bind("season");
     $scope.setYear = setValue.bind("year");
     $scope.setPeriodicity = setValue.bind("periodicity");
+    $scope.setPark = setValue.bind("park");
     function setValue(val) {
       $scope.intervention[this] = val;
     }
   }
   function _dataIsInvalid() {
     var errors = { size: 0 };
-    var requiredFields = ['id_tree', 'type', 'priority', 'season', 'year'];
+    var requiredFields = ['id_tree', 'park', 'type', 'priority', 'season', 'year'];
     requiredFields.map(function (field, index) {
       if (!$scope.intervention.hasOwnProperty(field)) {
         errors[field] = true;

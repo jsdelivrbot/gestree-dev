@@ -1,16 +1,30 @@
 <div id="intervention-add">
   <div class="top-bar">
-    <p1>Adiconar Nova Intervenção - Árvore {{ intervention.id_tree }}</p1>
+    <p1>Adicionar Nova Intervenção - Árvore {{ intervention.id_tree }}</p1>
   </div>
   <div class="content">
     <form name="interventionForm">
-      <section class="input-filter half-width inline">
-        <div class="title">Identificador da Árvore</div>
-        <div class="input-filter-content half-width auto-margin" ng-class="{'required':errors.id_tree}" style="min-width: unset">
-          <div class="input-group input-group-sm">
-            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-tree"></i></span>
-            <input type="number" class="form-control text-center" ng-model="intervention.id_tree" placeholder="ID da Árvore" aria-describedby="basic-addon1"
-              ng-disabled="disableID">
+      <section>
+        <div class="input-filter half-width inline">
+          <div class="title">Identificador da Árvore</div>
+          <div class="input-filter-content half-width auto-margin" ng-class="{'required':errors.id_tree}" style="min-width: unset">
+            <div class="input-group input-group-sm">
+              <span class="input-group-addon" id="basic-addon1"><i class="fa fa-tree"></i></span>
+              <input type="number" class="form-control text-center" ng-model="intervention.id_tree" placeholder="ID da Árvore" aria-describedby="basic-addon1"
+                ng-disabled="disableID">
+            </div>
+          </div>
+        </div>
+        <div class="input-filter half-width inline">
+          <div class="title">Parque</div>
+          <div class="input-filter-content full-width" ng-class="{'required':errors.park}">
+            <div class="dropdown">
+              <button ng-disabled="disableID" class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                        {{ intervention.park.name || "-" }} <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li class="dropdown-item" ng-repeat="park in defaults.parks" ng-click="setPark(park)"><a>{{park.name}}</a></li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>

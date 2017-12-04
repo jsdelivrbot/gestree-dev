@@ -94,7 +94,7 @@ function InterventionsHttp($q, $http, DirtyDataManager) {
     return deferred.promise;
   }
   function _prepareData(inter) {
-    return Object.assign({}, inter, { id_type: inter.type.id });
+    return Object.assign({}, inter,{ id_type: inter.type.id });
   }
 
 }

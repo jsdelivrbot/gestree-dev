@@ -417,7 +417,6 @@ function TreeDetails() {
     MapInteractionsService.getSelectInteraction().on('select', TreeDetailsService.getTreeDetails);
     $scope.$watch(TreeDetailsService.getSelectedTree, function (newVal, oldVal, scope) {
       scope.tree = newVal;
-      console.log(newVal);
       if (scope.tree) {
         if(DirtyDataManager.isTreeDirty()) TreeDetailsService.getTree(scope.tree.gid);    
         scope.visible = true;
@@ -503,8 +502,10 @@ function InterventionAddController($scope, $routeParams, $timeout, Interventions
     comments: null,
     team: '-'
   };
+  
   if ($routeParams.idTree) {
     $scope.intervention.id_tree = parseInt($routeParams.idTree);
+    $scope.intervention.park = Defaults.findPark($routeParams.park);
     $scope.disableID = true;
   }
 
@@ -533,13 +534,14 @@ function InterventionAddController($scope, $routeParams, $timeout, Interventions
     $scope.setSeason = setValue.bind("season");
     $scope.setYear = setValue.bind("year");
     $scope.setPeriodicity = setValue.bind("periodicity");
+    $scope.setPark = setValue.bind("park");
     function setValue(val) {
       $scope.intervention[this] = val;
     }
   }
   function _dataIsInvalid() {
     var errors = { size: 0 };
-    var requiredFields = ['id_tree', 'type', 'priority', 'season', 'year'];
+    var requiredFields = ['id_tree', 'park', 'type', 'priority', 'season', 'year'];
     requiredFields.map(function (field, index) {
       if (!$scope.intervention.hasOwnProperty(field)) {
         errors[field] = true;
@@ -1223,7 +1225,7 @@ function InterventionsHttp($q, $http, DirtyDataManager) {
     return deferred.promise;
   }
   function _prepareData(inter) {
-    return Object.assign({}, inter, { id_type: inter.type.id });
+    return Object.assign({}, inter,{ id_type: inter.type.id });
   }
 
 }
@@ -1413,6 +1415,8 @@ function DefaultInterventionData($q, InterventionTypesHttp) {
     getSeasons: getSeasons,
     getYears: getYears,
     getTeams: getTeams,
+    getParks: getParks,
+    findPark: findPark,
     getPeriodicities: getPeriodicities,
     getInterventionTypes: getInterventionTypes
   }
@@ -1423,6 +1427,8 @@ function DefaultInterventionData($q, InterventionTypesHttp) {
     defaults.years = getYears();
     defaults.periodicities = getPeriodicities();
     defaults.teams = getTeams();
+    defaults.parks = getParks();
+    defaults.findPark = findPark;
     InterventionTypesHttp.getInterventionTypes()
       .then(function (types) {
         defaults.types = types;
@@ -1441,6 +1447,21 @@ function DefaultInterventionData($q, InterventionTypesHttp) {
   }
   function getSeasons() {
     return ["Primavera", "Verão", "Outono", "Inverno"];
+  }
+  function getParks() {
+    return [{
+      id: "PSalgadas",
+      name: "Pedras Salgadas"
+    }, {
+      id: "Vidago",
+      name: "Vidago Palace"
+    }]
+  }
+  function findPark(name) {
+    var parks = getParks();
+    return parks.find(function (park) {
+      return park.name === name;
+    });
   }
   function getYears(year_range) {
     var YEAR_RANGE = year_range || 5;

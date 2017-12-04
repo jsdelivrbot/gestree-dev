@@ -33,7 +33,6 @@ module.exports = {
       }).catch(err => next(err));
   },
   filter(req, res, next) {
-    console.log("In Filter");
     db.interventions.filter({
       season: req.query.season,
       year: req.query.year

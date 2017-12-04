@@ -24,7 +24,6 @@ function TreeDetails() {
     MapInteractionsService.getSelectInteraction().on('select', TreeDetailsService.getTreeDetails);
     $scope.$watch(TreeDetailsService.getSelectedTree, function (newVal, oldVal, scope) {
       scope.tree = newVal;
-      console.log(newVal);
       if (scope.tree) {
         if(DirtyDataManager.isTreeDirty()) TreeDetailsService.getTree(scope.tree.gid);    
         scope.visible = true;

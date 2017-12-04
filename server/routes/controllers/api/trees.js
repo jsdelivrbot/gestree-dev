@@ -24,13 +24,11 @@ module.exports = {
   },
   // Add a new Intervention to the Tree (tid)
   postIntervention(req, res, next) {
-    console.log(req.body);
     req.body.tid = req.params.tid;
+    req.body.parque = req.body.park.name;
     db.trees.postIntervention(req.body).then(data => {
-      console.log(data);
       res.status(201).json(data);
     }).catch(err => {
-      console.log(err);
       next(err)
     });
   },

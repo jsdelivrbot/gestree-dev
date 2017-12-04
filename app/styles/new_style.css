@@ -1133,6 +1133,7 @@ md-icon {
     border-bottom: 1px #5cb85c solid;
     padding: 0.5em;
     width: 90%;
+    margin: 0 auto;
 }
 
 .input-filter-content-alt {

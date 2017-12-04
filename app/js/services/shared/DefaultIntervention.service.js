@@ -13,6 +13,8 @@ function DefaultInterventionData($q, InterventionTypesHttp) {
     getSeasons: getSeasons,
     getYears: getYears,
     getTeams: getTeams,
+    getParks: getParks,
+    findPark: findPark,
     getPeriodicities: getPeriodicities,
     getInterventionTypes: getInterventionTypes
   }
@@ -23,6 +25,8 @@ function DefaultInterventionData($q, InterventionTypesHttp) {
     defaults.years = getYears();
     defaults.periodicities = getPeriodicities();
     defaults.teams = getTeams();
+    defaults.parks = getParks();
+    defaults.findPark = findPark;
     InterventionTypesHttp.getInterventionTypes()
       .then(function (types) {
         defaults.types = types;
@@ -41,6 +45,21 @@ function DefaultInterventionData($q, InterventionTypesHttp) {
   }
   function getSeasons() {
     return ["Primavera", "Verão", "Outono", "Inverno"];
+  }
+  function getParks() {
+    return [{
+      id: "PSalgadas",
+      name: "Pedras Salgadas"
+    }, {
+      id: "Vidago",
+      name: "Vidago Palace"
+    }]
+  }
+  function findPark(name) {
+    var parks = getParks();
+    return parks.find(function (park) {
+      return park.name === name;
+    });
   }
   function getYears(year_range) {
     var YEAR_RANGE = year_range || 5;
