@@ -27,7 +27,7 @@ module.exports = {
   // Add a new Intervention to the Tree (tid)
   postIntervention(req, res, next) {
     req.body.tid = req.params.tid;
-    req.body.parque = req.body.park.name;
+    req.body.parque = req.params.parque;
     db.trees.postIntervention(req.body).then(data => {
       res.status(201).json(data);
     }).catch(err => {

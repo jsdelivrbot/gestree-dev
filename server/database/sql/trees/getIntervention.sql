@@ -1,3 +1,3 @@
 SELECT * 
-FROM "Interventions"."Interventions"
+FROM "gestree"."Interventions"
 WHERE id_tree = ${tid} AND id = ${iid}

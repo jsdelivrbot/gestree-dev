@@ -19,7 +19,7 @@ function InterventionsHttp($q, $http, DirtyDataManager) {
     var deferred = $q.defer();
     $http({
       method: 'POST',
-      url: '/api/trees/' + inter.id_tree + '/interventions',
+      url: '/api/trees/' + inter.park.name + '/' + inter.id_tree + '/interventions',
       data: _prepareData(inter)
     }).then(function (response) {
       DirtyDataManager.setDirty();
