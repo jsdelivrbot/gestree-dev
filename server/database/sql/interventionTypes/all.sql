@@ -1,2 +1,2 @@
 SELECT * 
-FROM "Interventions"."InterventionTypes";
+FROM "gestree"."InterventionTypes";

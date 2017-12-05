@@ -9,7 +9,8 @@ module.exports = {
   // Get Tree by tid
   get(req, res, next) {
     db.trees.get({
-      'tid': req.params.tid
+      'tid': req.params.tid,
+      'parque': req.params.parque
     }).then(data => {
       res.status(200).json(data);
     }).catch(err => next(err));
@@ -17,7 +18,8 @@ module.exports = {
   // Get Tree (tid) Interventions
   getInterventions(req, res, next) {
     db.trees.getInterventions({
-      'tid': req.params.tid
+      'tid': req.params.tid,
+      'parque': req.params.parque
     }).then(data => {
       res.status(200).json(data);
     }).catch(err => next(err));

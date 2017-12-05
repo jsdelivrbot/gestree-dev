@@ -12,12 +12,12 @@ a.gid as id_tree,
 '' as comments,
 (
     SELECT COUNT(*)::integer
-    FROM "Interventions"."Interventions" old
+    FROM "gestree"."Interventions" old
     WHERE old.id_tree = a.gid AND state != 'ABERTA'
 ) as closed_interventions,
 (
     SELECT COUNT(*)::integer
-    FROM "Interventions"."Interventions" old
+    FROM "gestree"."Interventions" old
     WHERE old.id_tree = a.gid AND state = 'ABERTA'
 ) as open_interventions
-FROM "PSalgadas".trees a
+FROM "gestree".trees a

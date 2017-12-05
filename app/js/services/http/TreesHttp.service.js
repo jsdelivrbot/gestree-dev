@@ -24,11 +24,13 @@ function TreesHttp($q, $http) {
     });
     return deferred.promise;
   }
-  function getTreeDetails(id_tree) {
+  function getTreeDetails(selectedTree) {
     var deferred = $q.defer();
+    var parque = selectedTree.getProperties().parque;
+    var id = selectedTree.getId();
     $http({
       method: 'GET',
-      url: '/api/trees/' + id_tree
+      url: '/api/trees/'+ parque + '/' + id
     }).then(function successCallback(response) {
       deferred.resolve(response.data);
     }, function errorCallback(err) {

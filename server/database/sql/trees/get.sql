@@ -1,14 +1,13 @@
 SELECT a.*,
-'Pedras Salgadas' as parque,
 (
     SELECT COUNT(*)::integer
-    FROM "Interventions"."Interventions" old
+    FROM "gestree"."Interventions" old
     WHERE old.id_tree = a.gid AND state != 'ABERTA'
 ) as closed_interventions,
 (
     SELECT COUNT(*)::integer
-    FROM "Interventions"."Interventions" old
+    FROM "gestree"."Interventions" old
     WHERE old.id_tree = a.gid AND state = 'ABERTA'
 ) as open_interventions
-FROM "PSalgadas".trees a
-WHERE a.gid = ${tid}
+FROM "gestree".trees a
+WHERE a.gid = ${tid} AND a.parque = ${parque}

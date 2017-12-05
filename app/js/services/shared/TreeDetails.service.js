@@ -17,7 +17,7 @@ function TreeDetailsService($q, TreesHttp, $rootScope, Dirty) {
   function getTreeDetails(evt) {
     var deferred = $q.defer();
     if (evt && evt.selected.length !== 0) {
-      getTree(evt.selected[0].getId());
+      getTree(evt.selected[0]);
     } else {
       $rootScope.$apply(function () {
         selectedTree = undefined;
@@ -27,8 +27,8 @@ function TreeDetailsService($q, TreesHttp, $rootScope, Dirty) {
   function getSelectedTree() {
     return selectedTree;
   }
-  function getTree(treeID) {
-    TreesHttp.getTreeDetails(treeID).then(function (tree) {
+  function getTree(selectedPoint) {
+    TreesHttp.getTreeDetails(selectedPoint).then(function (tree) {
       selectedTree = tree;
       Dirty.cleanTree();
     });

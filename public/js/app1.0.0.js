@@ -7,7 +7,7 @@ angular
     'ngRoute'
   ])
   .constant('GlobalURLs', {
-    host: "http://gistree.espigueiro.pt:8081",
+    host: "http://gistree.espigueiro.pt",
     print: "http://gistree.espigueiro.pt:8081/print-servlet-3.8.0/print/gestree/report.pdf"
   });
 angular
@@ -417,6 +417,7 @@ function TreeDetails() {
     MapInteractionsService.getSelectInteraction().on('select', TreeDetailsService.getTreeDetails);
     $scope.$watch(TreeDetailsService.getSelectedTree, function (newVal, oldVal, scope) {
       scope.tree = newVal;
+      console.log(newVal);
       if (scope.tree) {
         if(DirtyDataManager.isTreeDirty()) TreeDetailsService.getTree(scope.tree.gid);    
         scope.visible = true;
@@ -1357,11 +1358,13 @@ function TreesHttp($q, $http) {
     });
     return deferred.promise;
   }
-  function getTreeDetails(id_tree) {
+  function getTreeDetails(selectedTree) {
     var deferred = $q.defer();
+    var parque = selectedTree.getProperties().parque;
+    var id = selectedTree.getId();
     $http({
       method: 'GET',
-      url: '/api/trees/' + id_tree
+      url: '/api/trees/'+ parque + '/' + id
     }).then(function successCallback(response) {
       deferred.resolve(response.data);
     }, function errorCallback(err) {
@@ -2295,7 +2298,7 @@ function TreeDetailsService($q, TreesHttp, $rootScope, Dirty) {
   function getTreeDetails(evt) {
     var deferred = $q.defer();
     if (evt && evt.selected.length !== 0) {
-      getTree(evt.selected[0].getId());
+      getTree(evt.selected[0]);
     } else {
       $rootScope.$apply(function () {
         selectedTree = undefined;
@@ -2305,8 +2308,8 @@ function TreeDetailsService($q, TreesHttp, $rootScope, Dirty) {
   function getSelectedTree() {
     return selectedTree;
   }
-  function getTree(treeID) {
-    TreesHttp.getTreeDetails(treeID).then(function (tree) {
+  function getTree(selectedPoint) {
+    TreesHttp.getTreeDetails(selectedPoint).then(function (tree) {
       selectedTree = tree;
       Dirty.cleanTree();
     });

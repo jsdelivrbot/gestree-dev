@@ -1,4 +1,4 @@
-UPDATE "Interventions"."Interventions" 
+UPDATE "gestree"."Interventions" 
 SET 
 id_type = ${id_type},
 season = ${season}, 
