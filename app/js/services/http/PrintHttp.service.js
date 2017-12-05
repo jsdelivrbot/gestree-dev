@@ -23,7 +23,7 @@ function PrintHttp(GlobalURLs, $q, $http, $timeout) {
       })
       .then(_checkStatus)
       .then(function (res) {
-        deferred.resolve(GlobalURLs.host + res.downloadURL);
+        deferred.resolve(GlobalURLs.host_print + res.downloadURL);
       })
       .catch(function (err) {
         deferred.reject(err);
@@ -36,7 +36,7 @@ function PrintHttp(GlobalURLs, $q, $http, $timeout) {
     function _fetchData() {
       $http({
         method: 'GET',
-        url: GlobalURLs.host + statusURL
+        url: GlobalURLs.host_print + statusURL
       }).then(function (res) {
         if (res.data.done) {
           deferred.resolve(res.data);

@@ -64,29 +64,31 @@ function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, De
     var requestData = _getDefaultRequestData();
 
     requestData.params = params;
-    
+
     requestData.attributes.map.center = ol.proj.toLonLat(params.park.geometry.coordinates);
     requestData.attributes.parque = params.park.properties.nome;
+    requestData.attributes.map.scale = params.park.properties.scale;
+    requestData.attributes.map.layers[0].layers = params.park.properties.layers_to_print;
 
     if (params.contentType.key === "trees") {
       requestData.layout = "arvores";
-      requestData.outputFilename = "Árvores";
+      requestData.outputFilename = "Árvores - " + params.park.properties.nome;
       requestData.attributes.subtitle = "Impressão de Árvores";
       return _getTreeLink(requestData).then(function (downloadURL) {
         return {
-          name: 'Árvores.pdf',
+          name: 'Árvores - ' + params.park.properties.nome + '.pdf',
           url: downloadURL,
           icon: 'fa-file-pdf-o'
         }
       });
     } else {
       requestData.layout = "inter";
-      requestData.outputFilename = "Intervenções";
+      requestData.outputFilename = "Intervenções - " + params.park.properties.nome;
       requestData.attributes.subtitle = "Impressão de Intervenções";
       requestData.attributes.map.layers[0].styles = ["", "", "", "treeIntervention"];
       return _getInterventionsLink(requestData).then(function (downloadURL) {
         return {
-          name: 'Intervenções.pdf',
+          name: 'Intervenções  - ' + params.park.properties.nome +'.pdf',
           url: downloadURL,
           icon: 'fa-file-pdf-o'
         }
@@ -101,7 +103,7 @@ function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, De
         title: "Gestree - Gestão",
         map: {
           longitudeFirst: true,
-          scale: 4000,
+          scale: 6000,
           projection: "EPSG:4326",
           dpi: 254,
           height: 550,
@@ -111,12 +113,7 @@ function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, De
             {
               type: "WMS",
               baseURL: "http://localhost/geoserver/wms",
-              layers: [
-                "unicer:base",
-                "unicer:limite",
-                "unicer:edificios",
-                "unicer:arvores"
-              ],
+              layers: [],
               serverType: "geoserver"
             }
           ]
@@ -126,7 +123,7 @@ function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, De
     }
   }
   function _getTreeLink(requestData) {
-    return TreesHttp.getTrees()
+    return TreesHttp.getTrees(requestData.attributes.parque)
       .then(_getTreeTable)
       .then(function (datasource) {
         requestData.attributes.datasource.push({ title: "Árvores" });
@@ -159,6 +156,7 @@ function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, De
   }
   function _getInterventionsLink(requestData) {
     var filter = {};
+    filter.parque = requestData.attributes.parque;
     if (requestData.params.hasOwnProperty('season')) {
       filter.season = requestData.params.season;
     }

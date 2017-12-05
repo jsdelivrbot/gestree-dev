@@ -8,6 +8,7 @@ angular
   ])
   .constant('GlobalURLs', {
     host: "http://gistree.espigueiro.pt",
+    host_print: "http://gistree.espigueiro.pt:8081",
     print: "http://gistree.espigueiro.pt:8081/print-servlet-3.8.0/print/gestree/report.pdf"
   });
 angular
@@ -1127,7 +1128,7 @@ function InterventionsHttp($q, $http, DirtyDataManager) {
     add: add,
     getAll: getAll,
     get: get,
-    getFilteredInterventions: getFilter,
+    getFilteredInterventions: getFilteredInterventions,
     update: update,
     close: close
   };
@@ -1170,7 +1171,7 @@ function InterventionsHttp($q, $http, DirtyDataManager) {
     });
     return deferred.promise;
   }
-  function getFilter(filter) {
+  function getFilteredInterventions(filter) {
     var deferred = $q.defer();
     $http({
       method: 'GET',
@@ -1306,7 +1307,7 @@ function PrintHttp(GlobalURLs, $q, $http, $timeout) {
       })
       .then(_checkStatus)
       .then(function (res) {
-        deferred.resolve(GlobalURLs.host + res.downloadURL);
+        deferred.resolve(GlobalURLs.host_print + res.downloadURL);
       })
       .catch(function (err) {
         deferred.reject(err);
@@ -1319,7 +1320,7 @@ function PrintHttp(GlobalURLs, $q, $http, $timeout) {
     function _fetchData() {
       $http({
         method: 'GET',
-        url: GlobalURLs.host + statusURL
+        url: GlobalURLs.host_print + statusURL
       }).then(function (res) {
         if (res.data.done) {
           deferred.resolve(res.data);
@@ -1348,11 +1349,11 @@ function TreesHttp($q, $http) {
     getTreeInterventions: getTreeInterventions
   };
 
-  function getTrees() {
+  function getTrees(parque) {
     var deferred = $q.defer();
     $http({
       method: 'GET',
-      url: '/api/trees/'
+      url: '/api/trees/' + parque
     }).then(function successCallback(response) {
       deferred.resolve(response.data);
     }, function errorCallback(err) {
@@ -2086,29 +2087,31 @@ function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, De
     var requestData = _getDefaultRequestData();
 
     requestData.params = params;
-    
+
     requestData.attributes.map.center = ol.proj.toLonLat(params.park.geometry.coordinates);
     requestData.attributes.parque = params.park.properties.nome;
+    requestData.attributes.map.scale = params.park.properties.scale;
+    requestData.attributes.map.layers[0].layers = params.park.properties.layers_to_print;
 
     if (params.contentType.key === "trees") {
       requestData.layout = "arvores";
-      requestData.outputFilename = "Árvores";
+      requestData.outputFilename = "Árvores - " + params.park.properties.nome;
       requestData.attributes.subtitle = "Impressão de Árvores";
       return _getTreeLink(requestData).then(function (downloadURL) {
         return {
-          name: 'Árvores.pdf',
+          name: 'Árvores - ' + params.park.properties.nome + '.pdf',
           url: downloadURL,
           icon: 'fa-file-pdf-o'
         }
       });
     } else {
       requestData.layout = "inter";
-      requestData.outputFilename = "Intervenções";
+      requestData.outputFilename = "Intervenções - " + params.park.properties.nome;
       requestData.attributes.subtitle = "Impressão de Intervenções";
       requestData.attributes.map.layers[0].styles = ["", "", "", "treeIntervention"];
       return _getInterventionsLink(requestData).then(function (downloadURL) {
         return {
-          name: 'Intervenções.pdf',
+          name: 'Intervenções  - ' + params.park.properties.nome +'.pdf',
           url: downloadURL,
           icon: 'fa-file-pdf-o'
         }
@@ -2123,7 +2126,7 @@ function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, De
         title: "Gestree - Gestão",
         map: {
           longitudeFirst: true,
-          scale: 4000,
+          scale: 6000,
           projection: "EPSG:4326",
           dpi: 254,
           height: 550,
@@ -2133,12 +2136,7 @@ function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, De
             {
               type: "WMS",
               baseURL: "http://localhost/geoserver/wms",
-              layers: [
-                "unicer:base",
-                "unicer:limite",
-                "unicer:edificios",
-                "unicer:arvores"
-              ],
+              layers: [],
               serverType: "geoserver"
             }
           ]
@@ -2148,7 +2146,7 @@ function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, De
     }
   }
   function _getTreeLink(requestData) {
-    return TreesHttp.getTrees()
+    return TreesHttp.getTrees(requestData.attributes.parque)
       .then(_getTreeTable)
       .then(function (datasource) {
         requestData.attributes.datasource.push({ title: "Árvores" });
@@ -2181,6 +2179,7 @@ function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, De
   }
   function _getInterventionsLink(requestData) {
     var filter = {};
+    filter.parque = requestData.attributes.parque;
     if (requestData.params.hasOwnProperty('season')) {
       filter.season = requestData.params.season;
     }

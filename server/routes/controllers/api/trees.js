@@ -2,7 +2,7 @@ let db = require('../../../database').db;
 module.exports = {
   // GET All the trees
   all(req, res, next) {
-    db.trees.all().then(data => {
+    db.trees.all({parque: req.params.parque}).then(data => {
       res.status(200).json(data);
     }).catch(err => next(err));
   },

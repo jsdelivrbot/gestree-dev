@@ -1,6 +1,6 @@
 SELECT 
 a.gid as id_tree,
-'Zona A' as zone,
+a.zona as zone,
 'PINUS PINASTER (Teste)' as cient_name,
 'PINHEIRO-BRAVO (Teste)' as comon_name,
 2.3::float as height,
@@ -21,3 +21,4 @@ a.gid as id_tree,
     WHERE old.id_tree = a.gid AND state = 'ABERTA'
 ) as open_interventions
 FROM "gestree".trees a
+WHERE a.parque = ${parque}

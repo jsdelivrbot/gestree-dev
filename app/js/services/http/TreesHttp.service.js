@@ -12,11 +12,11 @@ function TreesHttp($q, $http) {
     getTreeInterventions: getTreeInterventions
   };
 
-  function getTrees() {
+  function getTrees(parque) {
     var deferred = $q.defer();
     $http({
       method: 'GET',
-      url: '/api/trees/'
+      url: '/api/trees/' + parque
     }).then(function successCallback(response) {
       deferred.resolve(response.data);
     }, function errorCallback(err) {

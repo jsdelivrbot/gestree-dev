@@ -34,6 +34,7 @@ module.exports = {
   },
   filter(req, res, next) {
     db.interventions.filter({
+      park: req.query.parque,
       season: req.query.season,
       year: req.query.year
     })

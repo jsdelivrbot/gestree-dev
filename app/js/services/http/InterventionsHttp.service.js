@@ -10,7 +10,7 @@ function InterventionsHttp($q, $http, DirtyDataManager) {
     add: add,
     getAll: getAll,
     get: get,
-    getFilteredInterventions: getFilter,
+    getFilteredInterventions: getFilteredInterventions,
     update: update,
     close: close
   };
@@ -53,7 +53,7 @@ function InterventionsHttp($q, $http, DirtyDataManager) {
     });
     return deferred.promise;
   }
-  function getFilter(filter) {
+  function getFilteredInterventions(filter) {
     var deferred = $q.defer();
     $http({
       method: 'GET',

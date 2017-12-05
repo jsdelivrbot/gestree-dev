@@ -3,7 +3,7 @@ const interventions = require('./controllers/api/interventions');
 const interventionTypes = require('./controllers/api/intervention_types');
 module.exports = function (router) {
 
-  router.get('/trees', trees.all);
+  router.get('/trees/:parque', trees.all);
   router.get('/trees/:parque/:tid', trees.get);
   router.get('/trees/:parque/:tid/interventions', trees.getInterventions);
   router.post('/trees/:parque/:tid/interventions', trees.postIntervention);
