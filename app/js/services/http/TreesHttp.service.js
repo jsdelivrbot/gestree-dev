@@ -26,8 +26,8 @@ function TreesHttp($q, $http) {
   }
   function getTreeDetails(selectedTree) {
     var deferred = $q.defer();
-    var parque = selectedTree.getProperties().parque;
-    var id = selectedTree.getId();
+    var parque = selectedTree.parque;
+    var id = selectedTree.id;
     $http({
       method: 'GET',
       url: '/api/trees/'+ parque + '/' + id
@@ -38,11 +38,11 @@ function TreesHttp($q, $http) {
     });
     return deferred.promise;
   }
-  function getTreeInterventions(id_tree) {
+  function getTreeInterventions(selectedTree) {
     var deferred = $q.defer();
     $http({
       method: 'GET',
-      url: '/api/trees/' + id_tree + '/interventions'
+      url: '/api/trees/'+ selectedTree.parque +'/' + selectedTree.id + '/interventions'
     }).then(function successCallback(response) {
       deferred.resolve(response.data);
     }, function errorCallback(err) {

@@ -48,7 +48,7 @@ angular
           Intervention: ['$route', 'InterventionsHttp', _getIntervention]
         }
       })
-      .when('/tree/:gid/interventions', {
+      .when('/tree/:parque/:gid/interventions', {
         templateUrl: 'views/templates/main/Tree-Interventions.html',
         controller: 'TreeInterventionsController',
         controllerAs: 'treeInterventionsCtrl',
@@ -74,5 +74,8 @@ function _getDefaults(Defaults) {
   return Defaults.getInterventionDefaults();
 }
 function _getTree($route, TreesHttp){
-  return TreesHttp.getTreeInterventions($route.current.params.gid);
+  var selectedTree = {};
+  selectedTree.id = $route.current.params.gid;
+  selectedTree.parque = $route.current.params.parque;
+  return TreesHttp.getTreeInterventions(selectedTree);
 }

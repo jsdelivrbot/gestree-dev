@@ -107,7 +107,7 @@ angular
           Intervention: ['$route', 'InterventionsHttp', _getIntervention]
         }
       })
-      .when('/tree/:gid/interventions', {
+      .when('/tree/:parque/:gid/interventions', {
         templateUrl: 'views/templates/main/Tree-Interventions.html',
         controller: 'TreeInterventionsController',
         controllerAs: 'treeInterventionsCtrl',
@@ -133,7 +133,10 @@ function _getDefaults(Defaults) {
   return Defaults.getInterventionDefaults();
 }
 function _getTree($route, TreesHttp){
-  return TreesHttp.getTreeInterventions($route.current.params.gid);
+  var selectedTree = {};
+  selectedTree.id = $route.current.params.gid;
+  selectedTree.parque = $route.current.params.parque;
+  return TreesHttp.getTreeInterventions(selectedTree);
 }
 angular
   .module('unicerApp')
@@ -417,9 +420,8 @@ function TreeDetails() {
     MapInteractionsService.getSelectInteraction().on('select', TreeDetailsService.getTreeDetails);
     $scope.$watch(TreeDetailsService.getSelectedTree, function (newVal, oldVal, scope) {
       scope.tree = newVal;
-      console.log(newVal);
       if (scope.tree) {
-        if(DirtyDataManager.isTreeDirty()) TreeDetailsService.getTree(scope.tree.gid);    
+        if(DirtyDataManager.isTreeDirty()) TreeDetailsService.getTree(scope.tree.gid, scope.tree.parque);    
         scope.visible = true;
         scope.hasInterventions = scope.tree.open_interventions + scope.tree.closed_interventions; 
       } else {
@@ -1360,8 +1362,8 @@ function TreesHttp($q, $http) {
   }
   function getTreeDetails(selectedTree) {
     var deferred = $q.defer();
-    var parque = selectedTree.getProperties().parque;
-    var id = selectedTree.getId();
+    var parque = selectedTree.parque;
+    var id = selectedTree.id;
     $http({
       method: 'GET',
       url: '/api/trees/'+ parque + '/' + id
@@ -1372,11 +1374,11 @@ function TreesHttp($q, $http) {
     });
     return deferred.promise;
   }
-  function getTreeInterventions(id_tree) {
+  function getTreeInterventions(selectedTree) {
     var deferred = $q.defer();
     $http({
       method: 'GET',
-      url: '/api/trees/' + id_tree + '/interventions'
+      url: '/api/trees/'+ selectedTree.parque +'/' + selectedTree.id + '/interventions'
     }).then(function successCallback(response) {
       deferred.resolve(response.data);
     }, function errorCallback(err) {
@@ -2298,7 +2300,8 @@ function TreeDetailsService($q, TreesHttp, $rootScope, Dirty) {
   function getTreeDetails(evt) {
     var deferred = $q.defer();
     if (evt && evt.selected.length !== 0) {
-      getTree(evt.selected[0]);
+      var selected = evt.selected[0];
+      getTree(selected.getId(), selected.getProperties().parque);
     } else {
       $rootScope.$apply(function () {
         selectedTree = undefined;
@@ -2308,7 +2311,10 @@ function TreeDetailsService($q, TreesHttp, $rootScope, Dirty) {
   function getSelectedTree() {
     return selectedTree;
   }
-  function getTree(selectedPoint) {
+  function getTree(id, parque) {
+    var selectedPoint = {};
+    selectedPoint.id = id;
+    selectedPoint.parque = parque;
     TreesHttp.getTreeDetails(selectedPoint).then(function (tree) {
       selectedTree = tree;
       Dirty.cleanTree();
