@@ -3,6 +3,6 @@ ty.value as type,
 t.zona as zone
 FROM "gestree"."Interventions" i
 JOIN "gestree"."InterventionTypes" ty ON ty.id = i.id_type
-JOIN "gestree".trees t ON t.gid = i.id_tree 
+JOIN "gestree".trees t ON t.gid = i.id_tree AND t.parque = 'Vidago Palace' 
 WHERE i.id_tree = ${tid} 
 AND i.parque = ${parque}

@@ -13,9 +13,9 @@
         "children": [{
             "title": "Localização",
             "data": {
-              "key": "_tree",
+              "key": "_tree_pedras",
               "workspace": "unicer",
-              "name": "arvores",
+              "name": "arvores_pedras",
               "type": "WFS",
               "extent": [43858.7242812507, 208452.333204688, 44110.6809999999, 209084.351648437],
               "opacity": 1,
@@ -26,9 +26,9 @@
           {
             "title": "Intervenções",
             "data": {
-              "key": "_tree",
+              "key": "_tree_pedras",
               "workspace": "unicer",
-              "name": "arvores",
+              "name": "arvores_pedras",
               "type": "WFS",
               "extent": [43858.7242812507, 208452.333204688, 44110.6809999999, 209084.351648437],
               "opacity": 1,
@@ -116,7 +116,33 @@
       "expanded": true,
       "checkbox": false,
       "radiogroup": true,
-      "children": []
+      "children": [{
+          "title": "Localização",
+          "data": {
+            "key": "_tree_vidago",
+            "workspace": "unicer",
+            "name": "arvores_vidago",
+            "type": "WFS",
+            "extent": [46283.1896687427, 217450.585892474, 46645.3069363016, 218536.060508136],
+            "opacity": 1,
+            "queryable": true,
+            "style": "treeDefault"
+          }
+        },
+        {
+          "title": "Intervenções",
+          "data": {
+            "key": "_tree_vidago",
+            "workspace": "unicer",
+            "name": "arvores_vidago",
+            "type": "WFS",
+            "extent": [46283.1896687427, 217450.585892474, 46645.3069363016, 218536.060508136],
+            "opacity": 1,
+            "queryable": true,
+            "style": "treeIntervention"
+          }
+        }
+      ]
     }, {
       "title": "Zonas",
       "folder": true,
