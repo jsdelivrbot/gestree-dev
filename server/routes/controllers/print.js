@@ -2,7 +2,7 @@ const csv = require('csv-express');
 const db = require('../../database/').db;
 module.exports = {
   trees_csv: (req, res, next) => {
-    db.trees.print_csv().then(data => {
+    db.trees.print_csv({parque: req.query.park}).then(data => {
       const filename = "Árvores - " + req.query.park;
       res.set('Content-Type', 'text/csv');
       res.set('Content-Disposition', 'attachment; filename="' + filename + '.csv"');
