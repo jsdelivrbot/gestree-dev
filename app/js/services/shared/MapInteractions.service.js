@@ -2,17 +2,19 @@ angular
   .module('unicerApp')
   .service('MapInteractionsService', MapInteractionsService);
 
-MapInteractionsService.$inject = ['MapService', 'LayerIdentifier', 'WFSStyles'];
+MapInteractionsService.$inject = ['MapService', 'LayerIdentifier', 'WFSStyles', '$timeout'];
 
-function MapInteractionsService(MapService, LayerIdentifier, WFSStyles) {
+function MapInteractionsService(MapService, LayerIdentifier, WFSStyles, $timeout) {
   var mapInteractions = MapService.getInteractions();
   var activeInteraction = {};
   var selectInteraction = new ol.interaction.Select({
     style: WFSStyles.treeSelected
   });
   setActiveInteraction('DragPan');
-  MapService.getMap().addInteraction(selectInteraction);
 
+  $timeout(function () {
+    MapService.getMap().addInteraction(selectInteraction);
+  }, 250)
   return {
     setActiveInteraction: setActiveInteraction,
     getActiveInteraction: getActiveInteraction,

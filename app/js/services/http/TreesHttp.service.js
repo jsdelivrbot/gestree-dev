@@ -40,6 +40,8 @@ function TreesHttp($q, $http) {
   }
   function getTreeInterventions(selectedTree) {
     var deferred = $q.defer();
+    console.log(selectedTree.parque);
+    console.log(selectedTree.id);
     $http({
       method: 'GET',
       url: '/api/trees/'+ selectedTree.parque +'/' + selectedTree.id + '/interventions'

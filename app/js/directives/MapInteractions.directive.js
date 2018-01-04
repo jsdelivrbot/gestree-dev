@@ -2,8 +2,8 @@ angular
   .module('unicerApp')
   .directive('mapInteractions', MapInteractions);
 
-MapInteractions.$inject = ['MapService'];
-function MapInteractions(MapService) {
+MapInteractions.$inject = ['MapService', '$timeout'];
+function MapInteractions(MapService, $timeout) {
   var directive = {
     bindToController: true,
     controller: MapInteractionsController,
@@ -18,10 +18,19 @@ function MapInteractions(MapService) {
   function link(scope, element, attrs) {
     var map = MapService.getMap();
     var mapControls = MapService.getControls();
-    mapControls.item(2).setTarget(element.find('#coordinate4326')[0]);
-    mapControls.item(2).setMap(map);
-    mapControls.item(3).setTarget(element.find('#coordinate27493')[0]);
-    mapControls.item(3).setMap(map);
+    if (mapControls) {
+      mapControls.item(2).setTarget(element.find('#coordinate4326')[0]);
+      mapControls.item(2).setMap(map);
+      mapControls.item(3).setTarget(element.find('#coordinate27493')[0]);
+      mapControls.item(3).setMap(map);
+    } else {
+      $timeout(function () {
+        mapControls.item(2).setTarget(element.find('#coordinate4326')[0]);
+        mapControls.item(2).setMap(map);
+        mapControls.item(3).setTarget(element.find('#coordinate27493')[0]);
+        mapControls.item(3).setMap(map);
+      }, 200)
+    }
   }
 
   MapInteractionsController.$inject = ['$scope', 'MapInteractionsService', 'LayerIdentifier', 'ParksHttp'];
@@ -56,10 +65,10 @@ function MapInteractions(MapService) {
       }, Promise.resolve([])).then(function (layerResults) {
         scope.$apply(function () {
           scope.hasLayerResults = false;
-          for(var i = 0; i< layerResults.length; i++){
-            if(layerResults[i].features.length !== 0){
-              scope.hasLayerResults = true;  
-            } 
+          for (var i = 0; i < layerResults.length; i++) {
+            if (layerResults[i].features.length !== 0) {
+              scope.hasLayerResults = true;
+            }
           }
           scope.layerResults = layerResults;
         });

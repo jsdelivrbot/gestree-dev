@@ -169,162 +169,6 @@ angular
   }])
 angular
   .module('unicerApp')
-  .directive('interventionItem', InterventionItem);
-
-function InterventionItem() {
-  var directive = {
-    bindToController: true,
-    controller: InterventionItemController,
-    controllerAs: 'intItemCtrl',
-    restrict: 'E',
-    scope: {
-      intervention: "="
-    },
-    templateUrl: 'views/templates/components/interventionItem.html'
-  };
-  return directive;
-}
-
-InterventionItemController.$inject = ['$scope', '$location']
-function InterventionItemController($scope, $location) {
-  var intItemCtrl = this;
-  $scope.edit = function () {
-    $location.path('/interventions/' + intItemCtrl.intervention.id + '/update');
-  };
-  $scope.info = function () {
-    $location.path('/interventions/' + intItemCtrl.intervention.id + '/info');
-  };
-  $scope.close = function () {
-    $location.path('/interventions/' + intItemCtrl.intervention.id + '/close');
-  };
-}
-angular
-  .module('unicerApp')
-  .directive('legendItem', LegendItem);
-
-function LegendItem() {
-  var directive = {
-    restrict: 'A',
-    scope: {
-      title: '@',
-    },
-    transclude: true,
-    templateUrl: 'views/templates/legendItem.html'
-  };
-  return directive;
-}
-angular
-  .module('unicerApp')
-  .directive('mapInteractions', MapInteractions);
-
-MapInteractions.$inject = ['MapService'];
-function MapInteractions(MapService) {
-  var directive = {
-    bindToController: true,
-    controller: MapInteractionsController,
-    controllerAs: 'itCtrl',
-    link: link,
-    restrict: 'E',
-    scope: {},
-    templateUrl: 'views/templates/main/MapInteractions.html'
-  }
-  return directive;
-
-  function link(scope, element, attrs) {
-    var map = MapService.getMap();
-    var mapControls = MapService.getControls();
-    mapControls.item(2).setTarget(element.find('#coordinate4326')[0]);
-    mapControls.item(2).setMap(map);
-    mapControls.item(3).setTarget(element.find('#coordinate27493')[0]);
-    mapControls.item(3).setMap(map);
-  }
-
-  MapInteractionsController.$inject = ['$scope', 'MapInteractionsService', 'LayerIdentifier', 'ParksHttp'];
-  function MapInteractionsController($scope, MapInteractionsService, LayerIdentifier, ParksHttp) {
-    var activeInteractionWatch, layerIdentifierWatch;
-
-    $scope.setInteraction = MapInteractionsService.setActiveInteraction;
-    $scope.isActive = MapInteractionsService.isActive;
-    $scope.setDefaultView = MapInteractionsService.setDefaultView;
-    ParksHttp.getParks().then(function (parks) {
-      $scope.parks = parks;
-      $scope.selectedPark = {};
-      $scope.selectPark = function (coor, proj) {
-        $scope.selectedPark = {};
-        MapInteractionsService.zoomTo(coor, proj);
-      }
-    });
-
-    $scope.$watch(MapInteractionsService.getActiveInteraction, _setActiveInteraction, true);
-    function _setActiveInteraction(newVal, oldVal, scope) {
-      scope.activeInteraction = newVal;
-    };
-
-    $scope.$watchCollection(LayerIdentifier.getLayers, _setLayerResults);
-    function _setLayerResults(newVal, oldVal, scope) {
-      newVal.reduce(function (promiseChain, currentValue) {
-        return promiseChain.then(function (chainResults) {
-          return currentValue.then(function (currentResult) {
-            return chainResults.concat(currentResult);
-          });
-        });
-      }, Promise.resolve([])).then(function (layerResults) {
-        scope.$apply(function () {
-          scope.hasLayerResults = false;
-          for(var i = 0; i< layerResults.length; i++){
-            if(layerResults[i].features.length !== 0){
-              scope.hasLayerResults = true;  
-            } 
-          }
-          scope.layerResults = layerResults;
-        });
-      });
-    };
-
-  }
-}
-angular
-  .module('unicerApp')
-  .directive('treeDetails', TreeDetails);
-
-function TreeDetails() {
-  var directive = {
-    bindToController: true,
-    controller: TreeDetailsController,
-    controllerAs: 'treeDetailsCtrl',
-    scope: {},
-    restrict: 'E',
-    templateUrl: 'views/templates/components/TreeDetails.html'
-  };
-  return directive;
-
-  TreeDetailsController.$inject = [
-    '$scope', 
-    'MapInteractionsService', 
-    'TreeDetailsService', 
-    'DirtyDataManager'
-  ];
-  function TreeDetailsController($scope, MapInteractionsService, TreeDetailsService, DirtyDataManager) {
-
-    MapInteractionsService.getSelectInteraction().on('select', TreeDetailsService.getTreeDetails);
-    $scope.$watch(TreeDetailsService.getSelectedTree, function (newVal, oldVal, scope) {
-      scope.tree = newVal;
-      if (scope.tree) {
-        if(DirtyDataManager.isTreeDirty()) TreeDetailsService.getTree(scope.tree.gid, scope.tree.parque);    
-        scope.visible = true;
-        scope.hasInterventions = scope.tree.open_interventions + scope.tree.closed_interventions; 
-      } else {
-        scope.visible = false;
-      }
-    });
-    $scope.$on('$destroy', function () {
-      MapInteractionsService.getSelectInteraction().un('select', TreeDetailsService.getTreeDetails);
-    });
-
-  }
-};  
-angular
-  .module('unicerApp')
   .controller('BaseLayerController', BaseLayerController);
 
 BaseLayerController.$inject = ['$scope'];
@@ -437,6 +281,171 @@ function TreeInterventionsController($scope, SideNavService, TreeInterventions, 
 }
 angular
   .module('unicerApp')
+  .directive('interventionItem', InterventionItem);
+
+function InterventionItem() {
+  var directive = {
+    bindToController: true,
+    controller: InterventionItemController,
+    controllerAs: 'intItemCtrl',
+    restrict: 'E',
+    scope: {
+      intervention: "="
+    },
+    templateUrl: 'views/templates/components/interventionItem.html'
+  };
+  return directive;
+}
+
+InterventionItemController.$inject = ['$scope', '$location']
+function InterventionItemController($scope, $location) {
+  var intItemCtrl = this;
+  $scope.edit = function () {
+    $location.path('/interventions/' + intItemCtrl.intervention.id + '/update');
+  };
+  $scope.info = function () {
+    $location.path('/interventions/' + intItemCtrl.intervention.id + '/info');
+  };
+  $scope.close = function () {
+    $location.path('/interventions/' + intItemCtrl.intervention.id + '/close');
+  };
+}
+angular
+  .module('unicerApp')
+  .directive('legendItem', LegendItem);
+
+function LegendItem() {
+  var directive = {
+    restrict: 'A',
+    scope: {
+      title: '@',
+    },
+    transclude: true,
+    templateUrl: 'views/templates/legendItem.html'
+  };
+  return directive;
+}
+angular
+  .module('unicerApp')
+  .directive('mapInteractions', MapInteractions);
+
+MapInteractions.$inject = ['MapService', '$timeout'];
+function MapInteractions(MapService, $timeout) {
+  var directive = {
+    bindToController: true,
+    controller: MapInteractionsController,
+    controllerAs: 'itCtrl',
+    link: link,
+    restrict: 'E',
+    scope: {},
+    templateUrl: 'views/templates/main/MapInteractions.html'
+  }
+  return directive;
+
+  function link(scope, element, attrs) {
+    var map = MapService.getMap();
+    var mapControls = MapService.getControls();
+    if (mapControls) {
+      mapControls.item(2).setTarget(element.find('#coordinate4326')[0]);
+      mapControls.item(2).setMap(map);
+      mapControls.item(3).setTarget(element.find('#coordinate27493')[0]);
+      mapControls.item(3).setMap(map);
+    } else {
+      $timeout(function () {
+        mapControls.item(2).setTarget(element.find('#coordinate4326')[0]);
+        mapControls.item(2).setMap(map);
+        mapControls.item(3).setTarget(element.find('#coordinate27493')[0]);
+        mapControls.item(3).setMap(map);
+      }, 200)
+    }
+  }
+
+  MapInteractionsController.$inject = ['$scope', 'MapInteractionsService', 'LayerIdentifier', 'ParksHttp'];
+  function MapInteractionsController($scope, MapInteractionsService, LayerIdentifier, ParksHttp) {
+    var activeInteractionWatch, layerIdentifierWatch;
+
+    $scope.setInteraction = MapInteractionsService.setActiveInteraction;
+    $scope.isActive = MapInteractionsService.isActive;
+    $scope.setDefaultView = MapInteractionsService.setDefaultView;
+    ParksHttp.getParks().then(function (parks) {
+      $scope.parks = parks;
+      $scope.selectedPark = {};
+      $scope.selectPark = function (coor, proj) {
+        $scope.selectedPark = {};
+        MapInteractionsService.zoomTo(coor, proj);
+      }
+    });
+
+    $scope.$watch(MapInteractionsService.getActiveInteraction, _setActiveInteraction, true);
+    function _setActiveInteraction(newVal, oldVal, scope) {
+      scope.activeInteraction = newVal;
+    };
+
+    $scope.$watchCollection(LayerIdentifier.getLayers, _setLayerResults);
+    function _setLayerResults(newVal, oldVal, scope) {
+      newVal.reduce(function (promiseChain, currentValue) {
+        return promiseChain.then(function (chainResults) {
+          return currentValue.then(function (currentResult) {
+            return chainResults.concat(currentResult);
+          });
+        });
+      }, Promise.resolve([])).then(function (layerResults) {
+        scope.$apply(function () {
+          scope.hasLayerResults = false;
+          for (var i = 0; i < layerResults.length; i++) {
+            if (layerResults[i].features.length !== 0) {
+              scope.hasLayerResults = true;
+            }
+          }
+          scope.layerResults = layerResults;
+        });
+      });
+    };
+
+  }
+}
+angular
+  .module('unicerApp')
+  .directive('treeDetails', TreeDetails);
+
+function TreeDetails() {
+  var directive = {
+    bindToController: true,
+    controller: TreeDetailsController,
+    controllerAs: 'treeDetailsCtrl',
+    scope: {},
+    restrict: 'E',
+    templateUrl: 'views/templates/components/TreeDetails.html'
+  };
+  return directive;
+
+  TreeDetailsController.$inject = [
+    '$scope', 
+    'MapInteractionsService', 
+    'TreeDetailsService', 
+    'DirtyDataManager'
+  ];
+  function TreeDetailsController($scope, MapInteractionsService, TreeDetailsService, DirtyDataManager) {
+
+    MapInteractionsService.getSelectInteraction().on('select', TreeDetailsService.getTreeDetails);
+    $scope.$watch(TreeDetailsService.getSelectedTree, function (newVal, oldVal, scope) {
+      scope.tree = newVal;
+      if (scope.tree) {
+        if(DirtyDataManager.isTreeDirty()) TreeDetailsService.getTree(scope.tree.gid, scope.tree.parque);    
+        scope.visible = true;
+        scope.hasInterventions = scope.tree.open_interventions + scope.tree.closed_interventions; 
+      } else {
+        scope.visible = false;
+      }
+    });
+    $scope.$on('$destroy', function () {
+      MapInteractionsService.getSelectInteraction().un('select', TreeDetailsService.getTreeDetails);
+    });
+
+  }
+};  
+angular
+  .module('unicerApp')
   .filter('capitalize', Capitalize);
 
 function Capitalize() {
@@ -483,6 +492,201 @@ function InterventionListFilter() {
     }
     return true;
   };
+}
+angular
+  .module('unicerApp')
+  .controller('InterventionAddController', InterventionAddController);
+
+InterventionAddController.$inject = [
+  '$scope',
+  '$routeParams',
+  '$timeout',
+  'InterventionsHttp',
+  'Defaults',
+  'SideNavService'
+];
+
+function InterventionAddController($scope, $routeParams, $timeout, InterventionsHttp, Defaults, SideNavService) {
+  SideNavService.hide();
+
+  $scope.defaults = Defaults;
+  $scope.intervention = {
+    periodicity: '-',
+    comments: null,
+    team: '-'
+  };
+  
+  if ($routeParams.idTree) {
+    $scope.intervention.id_tree = parseInt($routeParams.idTree);
+    $scope.intervention.park = Defaults.findPark($routeParams.park);
+    $scope.disableID = true;
+  }
+
+  $scope.back = _goBack;
+  
+  $scope.send = function () {
+    var _self = this;
+    if (!_dataIsInvalid()) {
+      return;
+    }
+    InterventionsHttp.add(this.intervention)
+      .then(function (res) {
+        _self.error = "";
+        _self.message = "Intervenção adicionada com sucesso.";
+        $timeout(function () {
+          _goBack();
+        }, 1000);
+      }).catch(function (err) {
+        _self.error = "Ocorreu um erro ao adicionar a intervenção.";
+      });
+  }
+
+  bindSetters()
+  function bindSetters() {
+    $scope.setType = setValue.bind("type");
+    $scope.setTeam = setValue.bind("team");
+    $scope.setSeason = setValue.bind("season");
+    $scope.setYear = setValue.bind("year");
+    $scope.setPeriodicity = setValue.bind("periodicity");
+    $scope.setPark = setValue.bind("park");
+    function setValue(val) {
+      $scope.intervention[this] = val;
+    }
+  }
+  function _dataIsInvalid() {
+    var errors = { size: 0 };
+    var requiredFields = ['id_tree', 'park', 'type', 'priority', 'season', 'year'];
+    requiredFields.map(function (field, index) {
+      if (!$scope.intervention.hasOwnProperty(field)) {
+        errors[field] = true;
+        errors.size++;
+      }
+    });
+    if (errors.size > 0) {
+      errors.message = "* Falta Preencher Campos Obrigatórios";
+    }
+    $scope.errors = errors;
+    return errors.size === 0;
+  }
+  function _goBack(){
+    SideNavService.show();
+    window.history.back();
+  }
+
+}
+angular
+  .module('unicerApp')
+  .controller('InterventionCloseController', InterventionCloseController);
+
+InterventionCloseController.$inject = [
+  '$scope',
+  'Intervention',
+  'InterventionsHttp',
+  '$timeout',
+  'SideNavService'
+];
+
+function InterventionCloseController($scope, Intervention, InterventionsHttp, $timeout, SideNavService) {
+  $scope.intervention = Intervention;
+  SideNavService.hide();
+
+  $scope.back = function () {
+    SideNavService.show();
+    window.history.back();
+  }
+  $scope.close = function (form) {
+    var _self = this;
+    _self.error = '';
+    if (form.$invalid) {
+      return;
+    }
+    _self.intervention.state = "FECHADA";
+    InterventionsHttp.close(_self.intervention)
+      .then(function (data) {
+        _self.message = "A intervenção foi fechada com sucesso.";
+        $timeout(function () {
+          window.history.back();
+          SideNavService.show();
+        }, 1000);
+      }).catch(function (err) {
+        _self.error = "Ocorreu um erro no fecho da intervenção.";
+      });
+  };
+}
+angular
+  .module('unicerApp')
+  .controller('InterventionInfoController', InterventionInfoController);
+
+InterventionInfoController.$inject = [
+  '$scope',
+  'Intervention',
+  'SideNavService'
+];
+
+function InterventionInfoController($scope, Intervention, SideNavService) {
+  SideNavService.hide();
+  $scope.intervention = Intervention;
+  $scope.back = function () {
+    SideNavService.show();
+    window.history.back();
+  }
+}
+angular
+  .module('unicerApp')
+  .controller('InterventionUpdateController', InterventionUpdateController);
+
+InterventionUpdateController.$inject = [
+  '$scope',
+  'Intervention',
+  'Defaults',
+  'InterventionsHttp',
+  'SideNavService'
+];
+
+function InterventionUpdateController($scope, Intervention, Defaults, InterventionsHttp, SideNavService) {
+  SideNavService.hide();
+
+  var _initalID = Intervention.id;
+  var interTypes = Defaults.types;
+
+  $scope.intervention = Intervention;
+  $scope.defaults = Defaults;
+
+  bindSetters();
+  setInterventionType();
+
+  $scope.save = function () {
+    $scope.intervention.id = _initalID;
+    $scope.error = '';
+    InterventionsHttp.update($scope.intervention)
+      .then(function (data) {
+        $scope.message = "A intervenção foi alterada com sucesso.";
+      }).catch(function (err) {
+        $scope.error = "Ocorreu um erro ao tentar alterar a intervenção";
+      });
+  }
+  $scope.back = function () {
+    SideNavService.show();
+    window.history.back();
+  }
+
+  function bindSetters() {
+    $scope.setType = setValue.bind("type");
+    $scope.setTeam = setValue.bind("team");
+    $scope.setSeason = setValue.bind("season");
+    $scope.setYear = setValue.bind("year");
+    $scope.setPeriodicity = setValue.bind("periodicity");
+
+    function setValue(val) {
+      $scope.intervention[this] = val;
+    }
+  }
+  function setInterventionType(){
+    $scope.intervention.type = interTypes.find(function(type){
+      return type.id === Intervention.id_type;
+    });
+  }
+
 }
 angular
   .module('unicerApp')
@@ -897,201 +1101,6 @@ function PrintResult() {
 }
 angular
   .module('unicerApp')
-  .controller('InterventionAddController', InterventionAddController);
-
-InterventionAddController.$inject = [
-  '$scope',
-  '$routeParams',
-  '$timeout',
-  'InterventionsHttp',
-  'Defaults',
-  'SideNavService'
-];
-
-function InterventionAddController($scope, $routeParams, $timeout, InterventionsHttp, Defaults, SideNavService) {
-  SideNavService.hide();
-
-  $scope.defaults = Defaults;
-  $scope.intervention = {
-    periodicity: '-',
-    comments: null,
-    team: '-'
-  };
-  
-  if ($routeParams.idTree) {
-    $scope.intervention.id_tree = parseInt($routeParams.idTree);
-    $scope.intervention.park = Defaults.findPark($routeParams.park);
-    $scope.disableID = true;
-  }
-
-  $scope.back = _goBack;
-  
-  $scope.send = function () {
-    var _self = this;
-    if (!_dataIsInvalid()) {
-      return;
-    }
-    InterventionsHttp.add(this.intervention)
-      .then(function (res) {
-        _self.error = "";
-        _self.message = "Intervenção adicionada com sucesso.";
-        $timeout(function () {
-          _goBack();
-        }, 1000);
-      }).catch(function (err) {
-        _self.error = "Ocorreu um erro ao adicionar a intervenção.";
-      });
-  }
-
-  bindSetters()
-  function bindSetters() {
-    $scope.setType = setValue.bind("type");
-    $scope.setTeam = setValue.bind("team");
-    $scope.setSeason = setValue.bind("season");
-    $scope.setYear = setValue.bind("year");
-    $scope.setPeriodicity = setValue.bind("periodicity");
-    $scope.setPark = setValue.bind("park");
-    function setValue(val) {
-      $scope.intervention[this] = val;
-    }
-  }
-  function _dataIsInvalid() {
-    var errors = { size: 0 };
-    var requiredFields = ['id_tree', 'park', 'type', 'priority', 'season', 'year'];
-    requiredFields.map(function (field, index) {
-      if (!$scope.intervention.hasOwnProperty(field)) {
-        errors[field] = true;
-        errors.size++;
-      }
-    });
-    if (errors.size > 0) {
-      errors.message = "* Falta Preencher Campos Obrigatórios";
-    }
-    $scope.errors = errors;
-    return errors.size === 0;
-  }
-  function _goBack(){
-    SideNavService.show();
-    window.history.back();
-  }
-
-}
-angular
-  .module('unicerApp')
-  .controller('InterventionCloseController', InterventionCloseController);
-
-InterventionCloseController.$inject = [
-  '$scope',
-  'Intervention',
-  'InterventionsHttp',
-  '$timeout',
-  'SideNavService'
-];
-
-function InterventionCloseController($scope, Intervention, InterventionsHttp, $timeout, SideNavService) {
-  $scope.intervention = Intervention;
-  SideNavService.hide();
-
-  $scope.back = function () {
-    SideNavService.show();
-    window.history.back();
-  }
-  $scope.close = function (form) {
-    var _self = this;
-    _self.error = '';
-    if (form.$invalid) {
-      return;
-    }
-    _self.intervention.state = "FECHADA";
-    InterventionsHttp.close(_self.intervention)
-      .then(function (data) {
-        _self.message = "A intervenção foi fechada com sucesso.";
-        $timeout(function () {
-          window.history.back();
-          SideNavService.show();
-        }, 1000);
-      }).catch(function (err) {
-        _self.error = "Ocorreu um erro no fecho da intervenção.";
-      });
-  };
-}
-angular
-  .module('unicerApp')
-  .controller('InterventionInfoController', InterventionInfoController);
-
-InterventionInfoController.$inject = [
-  '$scope',
-  'Intervention',
-  'SideNavService'
-];
-
-function InterventionInfoController($scope, Intervention, SideNavService) {
-  SideNavService.hide();
-  $scope.intervention = Intervention;
-  $scope.back = function () {
-    SideNavService.show();
-    window.history.back();
-  }
-}
-angular
-  .module('unicerApp')
-  .controller('InterventionUpdateController', InterventionUpdateController);
-
-InterventionUpdateController.$inject = [
-  '$scope',
-  'Intervention',
-  'Defaults',
-  'InterventionsHttp',
-  'SideNavService'
-];
-
-function InterventionUpdateController($scope, Intervention, Defaults, InterventionsHttp, SideNavService) {
-  SideNavService.hide();
-
-  var _initalID = Intervention.id;
-  var interTypes = Defaults.types;
-
-  $scope.intervention = Intervention;
-  $scope.defaults = Defaults;
-
-  bindSetters();
-  setInterventionType();
-
-  $scope.save = function () {
-    $scope.intervention.id = _initalID;
-    $scope.error = '';
-    InterventionsHttp.update($scope.intervention)
-      .then(function (data) {
-        $scope.message = "A intervenção foi alterada com sucesso.";
-      }).catch(function (err) {
-        $scope.error = "Ocorreu um erro ao tentar alterar a intervenção";
-      });
-  }
-  $scope.back = function () {
-    SideNavService.show();
-    window.history.back();
-  }
-
-  function bindSetters() {
-    $scope.setType = setValue.bind("type");
-    $scope.setTeam = setValue.bind("team");
-    $scope.setSeason = setValue.bind("season");
-    $scope.setYear = setValue.bind("year");
-    $scope.setPeriodicity = setValue.bind("periodicity");
-
-    function setValue(val) {
-      $scope.intervention[this] = val;
-    }
-  }
-  function setInterventionType(){
-    $scope.intervention.type = interTypes.find(function(type){
-      return type.id === Intervention.id_type;
-    });
-  }
-
-}
-angular
-  .module('unicerApp')
   .service('InterventionTypesHttp', InterventionTypesHttp);
 
 InterventionTypesHttp.$inject = ["$q", "$http"];
@@ -1379,6 +1388,8 @@ function TreesHttp($q, $http) {
   }
   function getTreeInterventions(selectedTree) {
     var deferred = $q.defer();
+    console.log(selectedTree.parque);
+    console.log(selectedTree.id);
     $http({
       method: 'GET',
       url: '/api/trees/'+ selectedTree.parque +'/' + selectedTree.id + '/interventions'
@@ -1939,17 +1950,19 @@ angular
   .module('unicerApp')
   .service('MapInteractionsService', MapInteractionsService);
 
-MapInteractionsService.$inject = ['MapService', 'LayerIdentifier', 'WFSStyles'];
+MapInteractionsService.$inject = ['MapService', 'LayerIdentifier', 'WFSStyles', '$timeout'];
 
-function MapInteractionsService(MapService, LayerIdentifier, WFSStyles) {
+function MapInteractionsService(MapService, LayerIdentifier, WFSStyles, $timeout) {
   var mapInteractions = MapService.getInteractions();
   var activeInteraction = {};
   var selectInteraction = new ol.interaction.Select({
     style: WFSStyles.treeSelected
   });
   setActiveInteraction('DragPan');
-  MapService.getMap().addInteraction(selectInteraction);
 
+  $timeout(function () {
+    MapService.getMap().addInteraction(selectInteraction);
+  }, 250)
   return {
     setActiveInteraction: setActiveInteraction,
     getActiveInteraction: getActiveInteraction,
