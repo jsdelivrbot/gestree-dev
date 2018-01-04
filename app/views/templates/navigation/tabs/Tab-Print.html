@@ -84,7 +84,7 @@
     <div ng-show="file">
       <button type="button" class="btn btn-success" ng-click="newPrint()"><i class="fa fa-refresh"> Nova Impressão </i></button>
     </div>
-    <div ng-hide="file">
+    <div ng-hide="file || isPrinting">
       <button type="button" class="btn btn-success" ng-click="print()"><i class="fa fa-print"> Imprimir </i></button>
     </div>
   </section>
