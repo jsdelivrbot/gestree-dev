@@ -10,15 +10,15 @@ module.exports = (rep, pgp) => {
     filter: values => _filter(values)
   };
   function _filter(values) {
-    var query = 'SELECT *, to_char(closed_at, \'DD/MM/YYYY\') as st_closed_at FROM "gestree"."Interventions" WHERE parque = \'' + values.park + '\'';
+    var query = 'SELECT i.*, it.value as type, to_char(closed_at, \'DD/MM/YYYY\') as st_closed_at FROM "gestree"."Interventions" i JOIN "gestree"."InterventionTypes" it ON it.id = i.id_type WHERE parque = \'' + values.park + '\'';
     if (values.season && values.year) {
-      query = 'SELECT *, to_char(closed_at, \'DD/MM/YYYY\') as st_closed_at FROM "gestree"."Interventions" WHERE parque = \'' + values.park + '\'' + ' AND season=\'' + values.season + '\' AND year=' + values.year;
+      query = 'SELECT i.*, it.value as type, to_char(closed_at, \'DD/MM/YYYY\') as st_closed_at FROM "gestree"."Interventions" i JOIN "gestree"."InterventionTypes" it ON it.id = i.id_type WHERE parque = \'' + values.park + '\'' + ' AND season=\'' + values.season + '\' AND year=' + values.year;
     } else {
       if (values.season) {
-        query = 'SELECT *, to_char(closed_at, \'DD/MM/YYYY\') as st_closed_at FROM "gestree"."Interventions" WHERE parque = \'' + values.park + '\'' + ' AND season=\'' + values.season + '\'';
+        query = 'SELECT i.*, it.value as type, to_char(closed_at, \'DD/MM/YYYY\') as st_closed_at FROM "gestree"."Interventions" i JOIN "gestree"."InterventionTypes" it ON it.id = i.id_type WHERE parque = \'' + values.park + '\'' + ' AND season=\'' + values.season + '\'';
       }
       if (values.year) {
-        query = 'SELECT *, to_char(closed_at, \'DD/MM/YYYY\') as st_closed_at FROM "gestree"."Interventions" WHERE parque = \'' + values.park + '\'' + ' AND year=' + values.year;
+        query = 'SELECT i.*, it.value as type, to_char(closed_at, \'DD/MM/YYYY\') as st_closed_at FROM "gestree"."Interventions" i JOIN "gestree"."InterventionTypes" it ON it.id = i.id_type WHERE parque = \'' + values.park + '\'' + ' AND year=' + values.year;
       }
     }
     return rep.manyOrNone(query, values);

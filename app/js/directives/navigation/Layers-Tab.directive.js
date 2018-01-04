@@ -135,7 +135,9 @@ function LayersTab(MapService, Layers, Legends, $timeout) {
     }
     function deselectAll() {
       this.tree.visit(function (node) {
-        node.setSelected(false);
+        if (!node.isFolder()) {
+          node.setSelected(false);
+        }
       });
     }
 

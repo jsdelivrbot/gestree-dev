@@ -86,13 +86,14 @@ function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, De
       requestData.outputFilename = "Intervenções - " + params.park.properties.nome;
       requestData.attributes.subtitle = "Impressão de Intervenções";
       requestData.attributes.map.layers[0].styles = ["", "", "", "treeIntervention"];
+      
       return _getInterventionsLink(requestData).then(function (downloadURL) {
         return {
           name: 'Intervenções  - ' + params.park.properties.nome +'.pdf',
           url: downloadURL,
           icon: 'fa-file-pdf-o'
         }
-      })
+      }) 
     }
   }
 
