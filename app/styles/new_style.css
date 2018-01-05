@@ -578,7 +578,7 @@ input[type=number] {
 
 ul.fancytree-container {
     height: 65vh;
-    overflow: auto;
+    overflow-x: hidden;
     border: 0;
     background-color: #f7f7f7;
     font-family: 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif !important;

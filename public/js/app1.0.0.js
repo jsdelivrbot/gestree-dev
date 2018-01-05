@@ -1101,307 +1101,6 @@ function PrintResult() {
 }
 angular
   .module('unicerApp')
-  .service('InterventionTypesHttp', InterventionTypesHttp);
-
-InterventionTypesHttp.$inject = ["$q", "$http"];
-
-function InterventionTypesHttp($q, $http) {
-  var interventionTypes;
-
-  return {
-    getInterventionTypes: getInterventionTypes
-  }
-
-  function getInterventionTypes() {
-    var deferred = $q.defer();
-    if (interventionTypes) {
-      deferred.resolve(interventionTypes);
-    } else {
-      $http.get("/api/intervention_types")
-        .then(function (res) {
-          interventionTypes = res.data;
-          deferred.resolve(res.data);
-        });
-    }
-    return deferred.promise;
-  }
-  
-}
-angular
-  .module('unicerApp')
-  .service('InterventionsHttp', InterventionsHttp);
-
-InterventionsHttp.$inject = ['$q', '$http', 'DirtyDataManager'];
-
-function InterventionsHttp($q, $http, DirtyDataManager) {
-
-  return {
-    add: add,
-    getAll: getAll,
-    get: get,
-    getFilteredInterventions: getFilteredInterventions,
-    update: update,
-    close: close
-  };
-
-  function add(inter) {
-    var deferred = $q.defer();
-    $http({
-      method: 'POST',
-      url: '/api/trees/' + inter.park.name + '/' + inter.id_tree + '/interventions',
-      data: _prepareData(inter)
-    }).then(function (response) {
-      DirtyDataManager.setDirty();
-      deferred.resolve(response.data);
-    }, function (err) {
-      deferred.reject(err);
-    });
-    return deferred.promise;
-  }
-  function getAll() {
-    var deferred = $q.defer();
-    $http({
-      method: 'GET',
-      url: '/api/interventions'
-    }).then(function successCallback(response) {
-      deferred.resolve(response.data);
-    }, function errorCallback(err) {
-      deferred.reject(err);
-    });
-    return deferred.promise;
-  }
-  function get(id) {
-    var deferred = $q.defer();
-    $http({
-      method: 'GET',
-      url: 'api/interventions/' + id
-    }).then(function successCallback(response) {
-      deferred.resolve(response.data);
-    }, function errorCallback(err) {
-      deferred.reject(err);
-    });
-    return deferred.promise;
-  }
-  function getFilteredInterventions(filter) {
-    var deferred = $q.defer();
-    $http({
-      method: 'GET',
-      url: 'api/interventions/filter',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      params: filter
-    }).then(function successCallback(response) {
-      deferred.resolve(response.data);
-    }, function errorCallback(err) {
-      deferred.reject(err);
-    });
-    return deferred.promise;
-  }
-  function update(inter) {
-    return _updateRequest(_prepareData(inter));
-  }
-  function close(inter) {
-    return _updateRequest(inter);
-  }
-
-  function _updateRequest(inter) {
-    var deferred = $q.defer();
-    $http({
-      method: 'PUT',
-      url: 'api/interventions/' + inter.id,
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      data: inter
-    }).then(function successCallback(response) {
-      DirtyDataManager.setDirty();
-      deferred.resolve(response.data);
-    }, function errorCallback(err) {
-      deferred.reject(err);
-    });
-    return deferred.promise;
-  }
-  function _prepareData(inter) {
-    return Object.assign({}, inter,{ id_type: inter.type.id });
-  }
-
-}
-angular
-  .module('unicerApp')
-  .service('LayersHttp', LayersHttp);
-
-LayersHttp.$inject = ['$q', '$http', 'GlobalURLs'];
-
-function LayersHttp($q, $http, GlobalURLs) {
-
-  return {
-    fetch: fetch,
-    fetchInfo: fetchInfo
-  };
-
-  function fetch(data) {
-    var deferred = $q.defer();
-    $http({
-      method: 'GET',
-      url: GlobalURLs.host+'/geoserver/wfs',
-      params: data
-    }).then(function (response) {
-      deferred.resolve(response.data);
-    });
-    return deferred.promise;
-  }
-  function fetchInfo(layer, coordinate, view) {
-    var deferred = $q.defer();
-    var url = layer.getSource().getGetFeatureInfoUrl(
-      ol.proj.transform(coordinate, "EPSG:3857", ol.proj.get('EPSG:27493')),
-      view.getResolution(),
-      ol.proj.get('EPSG:27493'), {
-        'INFO_FORMAT': 'application/json'
-      });
-    $http({
-      method: 'GET',
-      url: url
-    }).then(function (response) {
-      deferred.resolve(response.data);
-    });
-    return deferred.promise;
-  }
-
-}
-angular
-  .module('unicerApp')
-  .factory('ParksHttp', ParksHttp);
-
-ParksHttp.$inject = ['$http', '$q'];
-
-function ParksHttp($http, $q) {
-  return {
-    getParks: get
-  };
-
-  function get() {
-    var deferred = $q.defer();
-    $http({
-      method: 'GET',
-      url: '/locations'
-    }).then(function successCallback(response) {
-      deferred.resolve(response.data.features);
-    }, function errorCallback(err) {
-      deferred.reject(err);
-    });
-    return deferred.promise;
-  }
-}
-angular
-  .module('unicerApp')
-  .service('PrintHttp', PrintHttp);
-
-PrintHttp.$inject = ['GlobalURLs', '$q', '$http', '$timeout'];
-
-function PrintHttp(GlobalURLs, $q, $http, $timeout) {
-
-  return {
-    printTrees: print,
-    printInterventions: print
-  };
-
-  function print(requestData) {
-    var deferred = $q.defer();
-    $http({
-      method: 'POST',
-      url: GlobalURLs.print,
-      data: requestData,
-    })
-      .then(function (response) {
-        return response.data.statusURL;
-      })
-      .then(_checkStatus)
-      .then(function (res) {
-        deferred.resolve(GlobalURLs.host_print + res.downloadURL);
-      })
-      .catch(function (err) {
-        deferred.reject(err);
-      });
-    return deferred.promise;
-  }
-  function _checkStatus(statusURL) {
-    var deferred = $q.defer();
-    _fetchData();
-    function _fetchData() {
-      $http({
-        method: 'GET',
-        url: GlobalURLs.host_print + statusURL
-      }).then(function (res) {
-        if (res.data.done) {
-          deferred.resolve(res.data);
-        } else {
-          $timeout(function () {
-            _fetchData();
-          }, 1500);
-        }
-      });
-    }
-    return deferred.promise;
-  }
-
-};
-angular
-  .module('unicerApp')
-  .service('TreesHttp', TreesHttp);
-
-TreesHttp.$inject = ['$q', '$http'];
-
-function TreesHttp($q, $http) {
-
-  return {
-    getTrees: getTrees,
-    getTreeDetails: getTreeDetails,
-    getTreeInterventions: getTreeInterventions
-  };
-
-  function getTrees(parque) {
-    var deferred = $q.defer();
-    $http({
-      method: 'GET',
-      url: '/api/trees/' + parque
-    }).then(function successCallback(response) {
-      deferred.resolve(response.data);
-    }, function errorCallback(err) {
-      deferred.reject(err);
-    });
-    return deferred.promise;
-  }
-  function getTreeDetails(selectedTree) {
-    var deferred = $q.defer();
-    var parque = selectedTree.parque;
-    var id = selectedTree.id;
-    $http({
-      method: 'GET',
-      url: '/api/trees/'+ parque + '/' + id
-    }).then(function successCallback(response) {
-      deferred.resolve(response.data);
-    }, function errorCallback(err) {
-      deferred.reject(err);
-    });
-    return deferred.promise;
-  }
-  function getTreeInterventions(selectedTree) {
-    var deferred = $q.defer();
-    $http({
-      method: 'GET',
-      url: '/api/trees/'+ selectedTree.parque +'/' + selectedTree.id + '/interventions'
-    }).then(function successCallback(response) {
-      deferred.resolve(response.data);
-    }, function errorCallback(err) {
-      deferred.reject(err);
-    });
-    return deferred.promise;
-  }
-
-}
-angular
-  .module('unicerApp')
   .service('DefaultInterventionData', DefaultInterventionData);
 
 DefaultInterventionData.$inject = ['$q', 'InterventionTypesHttp'];
@@ -1834,6 +1533,33 @@ function MapService($timeout) {
               'LAYERS': 'unicer:edificios'
             },
             extent: [43858.7242812507, 208452.333204688, 44110.6809999999, 209084.351648437],
+          }),
+        }),
+        new ol.layer.Image({
+          source: new ol.source.ImageWMS({
+            url: 'http://gistree.espigueiro.pt/geoserver/wms',
+            params: {
+              'LAYERS': 'unicer:limite_vidago'
+            },
+            extent: [46283.1896687427, 217450.585892474, 46645.3069363016, 218536.060508136],
+          }),
+        }),
+        new ol.layer.Image({
+          source: new ol.source.ImageWMS({
+            url: 'http://gistree.espigueiro.pt/geoserver/wms',
+            params: {
+              'LAYERS': 'unicer:base_vidago'
+            },
+            extent: [46283.1896687427, 217450.585892474, 46645.3069363016, 218536.060508136],
+          }),
+        }),
+        new ol.layer.Image({
+          source: new ol.source.ImageWMS({
+            url: 'http://gistree.espigueiro.pt/geoserver/wms',
+            params: {
+              'LAYERS': 'unicer:edificios_vidago'
+            },
+            extent: [46283.1896687427, 217450.585892474, 46645.3069363016, 218536.060508136],
           }),
         })
       ],
@@ -2335,6 +2061,307 @@ function TreeDetailsService($q, TreesHttp, $rootScope, Dirty) {
   }
 
 }  
+angular
+  .module('unicerApp')
+  .service('InterventionTypesHttp', InterventionTypesHttp);
+
+InterventionTypesHttp.$inject = ["$q", "$http"];
+
+function InterventionTypesHttp($q, $http) {
+  var interventionTypes;
+
+  return {
+    getInterventionTypes: getInterventionTypes
+  }
+
+  function getInterventionTypes() {
+    var deferred = $q.defer();
+    if (interventionTypes) {
+      deferred.resolve(interventionTypes);
+    } else {
+      $http.get("/api/intervention_types")
+        .then(function (res) {
+          interventionTypes = res.data;
+          deferred.resolve(res.data);
+        });
+    }
+    return deferred.promise;
+  }
+  
+}
+angular
+  .module('unicerApp')
+  .service('InterventionsHttp', InterventionsHttp);
+
+InterventionsHttp.$inject = ['$q', '$http', 'DirtyDataManager'];
+
+function InterventionsHttp($q, $http, DirtyDataManager) {
+
+  return {
+    add: add,
+    getAll: getAll,
+    get: get,
+    getFilteredInterventions: getFilteredInterventions,
+    update: update,
+    close: close
+  };
+
+  function add(inter) {
+    var deferred = $q.defer();
+    $http({
+      method: 'POST',
+      url: '/api/trees/' + inter.park.name + '/' + inter.id_tree + '/interventions',
+      data: _prepareData(inter)
+    }).then(function (response) {
+      DirtyDataManager.setDirty();
+      deferred.resolve(response.data);
+    }, function (err) {
+      deferred.reject(err);
+    });
+    return deferred.promise;
+  }
+  function getAll() {
+    var deferred = $q.defer();
+    $http({
+      method: 'GET',
+      url: '/api/interventions'
+    }).then(function successCallback(response) {
+      deferred.resolve(response.data);
+    }, function errorCallback(err) {
+      deferred.reject(err);
+    });
+    return deferred.promise;
+  }
+  function get(id) {
+    var deferred = $q.defer();
+    $http({
+      method: 'GET',
+      url: 'api/interventions/' + id
+    }).then(function successCallback(response) {
+      deferred.resolve(response.data);
+    }, function errorCallback(err) {
+      deferred.reject(err);
+    });
+    return deferred.promise;
+  }
+  function getFilteredInterventions(filter) {
+    var deferred = $q.defer();
+    $http({
+      method: 'GET',
+      url: 'api/interventions/filter',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      params: filter
+    }).then(function successCallback(response) {
+      deferred.resolve(response.data);
+    }, function errorCallback(err) {
+      deferred.reject(err);
+    });
+    return deferred.promise;
+  }
+  function update(inter) {
+    return _updateRequest(_prepareData(inter));
+  }
+  function close(inter) {
+    return _updateRequest(inter);
+  }
+
+  function _updateRequest(inter) {
+    var deferred = $q.defer();
+    $http({
+      method: 'PUT',
+      url: 'api/interventions/' + inter.id,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: inter
+    }).then(function successCallback(response) {
+      DirtyDataManager.setDirty();
+      deferred.resolve(response.data);
+    }, function errorCallback(err) {
+      deferred.reject(err);
+    });
+    return deferred.promise;
+  }
+  function _prepareData(inter) {
+    return Object.assign({}, inter,{ id_type: inter.type.id });
+  }
+
+}
+angular
+  .module('unicerApp')
+  .service('LayersHttp', LayersHttp);
+
+LayersHttp.$inject = ['$q', '$http', 'GlobalURLs'];
+
+function LayersHttp($q, $http, GlobalURLs) {
+
+  return {
+    fetch: fetch,
+    fetchInfo: fetchInfo
+  };
+
+  function fetch(data) {
+    var deferred = $q.defer();
+    $http({
+      method: 'GET',
+      url: GlobalURLs.host+'/geoserver/wfs',
+      params: data
+    }).then(function (response) {
+      deferred.resolve(response.data);
+    });
+    return deferred.promise;
+  }
+  function fetchInfo(layer, coordinate, view) {
+    var deferred = $q.defer();
+    var url = layer.getSource().getGetFeatureInfoUrl(
+      ol.proj.transform(coordinate, "EPSG:3857", ol.proj.get('EPSG:27493')),
+      view.getResolution(),
+      ol.proj.get('EPSG:27493'), {
+        'INFO_FORMAT': 'application/json'
+      });
+    $http({
+      method: 'GET',
+      url: url
+    }).then(function (response) {
+      deferred.resolve(response.data);
+    });
+    return deferred.promise;
+  }
+
+}
+angular
+  .module('unicerApp')
+  .factory('ParksHttp', ParksHttp);
+
+ParksHttp.$inject = ['$http', '$q'];
+
+function ParksHttp($http, $q) {
+  return {
+    getParks: get
+  };
+
+  function get() {
+    var deferred = $q.defer();
+    $http({
+      method: 'GET',
+      url: '/locations'
+    }).then(function successCallback(response) {
+      deferred.resolve(response.data.features);
+    }, function errorCallback(err) {
+      deferred.reject(err);
+    });
+    return deferred.promise;
+  }
+}
+angular
+  .module('unicerApp')
+  .service('PrintHttp', PrintHttp);
+
+PrintHttp.$inject = ['GlobalURLs', '$q', '$http', '$timeout'];
+
+function PrintHttp(GlobalURLs, $q, $http, $timeout) {
+
+  return {
+    printTrees: print,
+    printInterventions: print
+  };
+
+  function print(requestData) {
+    var deferred = $q.defer();
+    $http({
+      method: 'POST',
+      url: GlobalURLs.print,
+      data: requestData,
+    })
+      .then(function (response) {
+        return response.data.statusURL;
+      })
+      .then(_checkStatus)
+      .then(function (res) {
+        deferred.resolve(GlobalURLs.host_print + res.downloadURL);
+      })
+      .catch(function (err) {
+        deferred.reject(err);
+      });
+    return deferred.promise;
+  }
+  function _checkStatus(statusURL) {
+    var deferred = $q.defer();
+    _fetchData();
+    function _fetchData() {
+      $http({
+        method: 'GET',
+        url: GlobalURLs.host_print + statusURL
+      }).then(function (res) {
+        if (res.data.done) {
+          deferred.resolve(res.data);
+        } else {
+          $timeout(function () {
+            _fetchData();
+          }, 1500);
+        }
+      });
+    }
+    return deferred.promise;
+  }
+
+};
+angular
+  .module('unicerApp')
+  .service('TreesHttp', TreesHttp);
+
+TreesHttp.$inject = ['$q', '$http'];
+
+function TreesHttp($q, $http) {
+
+  return {
+    getTrees: getTrees,
+    getTreeDetails: getTreeDetails,
+    getTreeInterventions: getTreeInterventions
+  };
+
+  function getTrees(parque) {
+    var deferred = $q.defer();
+    $http({
+      method: 'GET',
+      url: '/api/trees/' + parque
+    }).then(function successCallback(response) {
+      deferred.resolve(response.data);
+    }, function errorCallback(err) {
+      deferred.reject(err);
+    });
+    return deferred.promise;
+  }
+  function getTreeDetails(selectedTree) {
+    var deferred = $q.defer();
+    var parque = selectedTree.parque;
+    var id = selectedTree.id;
+    $http({
+      method: 'GET',
+      url: '/api/trees/'+ parque + '/' + id
+    }).then(function successCallback(response) {
+      deferred.resolve(response.data);
+    }, function errorCallback(err) {
+      deferred.reject(err);
+    });
+    return deferred.promise;
+  }
+  function getTreeInterventions(selectedTree) {
+    var deferred = $q.defer();
+    $http({
+      method: 'GET',
+      url: '/api/trees/'+ selectedTree.parque +'/' + selectedTree.id + '/interventions'
+    }).then(function successCallback(response) {
+      deferred.resolve(response.data);
+    }, function errorCallback(err) {
+      deferred.reject(err);
+    });
+    return deferred.promise;
+  }
+
+}
 angular
   .module('unicerApp')
   .service('SortingService', SortingService);
