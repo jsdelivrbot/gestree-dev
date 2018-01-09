@@ -5,6 +5,10 @@
       <div class="title">Parque</div>
       <div class="radio-filter-content">
         <div class="radio radio-primary">
+          <input type="radio" name="parque" id="parque0" ng-value="undefined" ng-model="filterData.parque">
+          <label for="parque0">Ambos</label>
+        </div>
+        <div class="radio radio-primary">
           <input type="radio" name="parque" id="parque1" value="Pedras Salgadas" ng-model="filterData.parque">
           <label for="parque1">Pedras Salgadas - Spa & Nature Park</label>
         </div>
@@ -14,12 +18,25 @@
         </div>
       </div>
     </section>
+    <section class="input-filter" ng-show="filterData.parque">
+      <div class="title">Zona do Parque</div>
+      <div class="input-filter-content">
+        <div class="dropdown">
+          <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+              {{ data.zone || " -- " }} <span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <li class="dropdown-item" ng-repeat="zone in zones" ng-click="setZone(zone)"><a>{{zone.nome}}</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
     <section class="input-filter">
       <div class="title">Árvore</div>
       <div class="input-filter-content">
         <div class="input-group input-group-sm" style="width: 50%">
           <span class="input-group-addon" id="basic-addon1"><i class="fa fa-tree"></i></span>
-          <input type="number" class="form-control" ng-change="setIdTree(filterData.id_tree)" ng-model="filterData.id_tree" placeholder="Identificador" aria-describedby="basic-addon1">
+          <input type="number" class="form-control" ng-change="setIdTree(filterData.id_tree)" ng-model="filterData.id_tree" placeholder="Identificador"
+            aria-describedby="basic-addon1">
         </div>
       </div>
     </section>
@@ -70,6 +87,10 @@
     <section class="radio-filter">
       <div class="title">Prioridade</div>
       <div class="radio-filter-content-inline">
+        <div class="radio radio-primary">
+          <input type="radio" name="priority0" id="priority0" ng-value='undefined' ng-model="filterData.priority">
+          <label for="priority0">Todas</label>
+        </div>
         <div class="radio radio-primary">
           <input type="radio" name="priority1" id="priority1" ng-value='1' ng-model="filterData.priority">
           <label for="priority1">1</label>

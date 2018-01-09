@@ -25,6 +25,7 @@ function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, De
         parks: parks,
         seasons: Defaults.getSeasons(),
         years: Defaults.getYears(),
+        teams: Defaults.getTeams(),
         contentTypes: [
           {
             key: 'trees',
@@ -41,7 +42,8 @@ function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, De
           }, {
             key: "pdf",
             value: ".pdf (Printable Document Format)"
-          }]
+          }],
+          parksWithZones: Defaults.getParks()
       }
     });
   }
@@ -57,6 +59,8 @@ function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, De
     };
     if (params.season) data.params.season = params.season;
     if (params.year) data.params.year = params.year;
+    if (params.zone) data.params.zone = params.zone.id;
+    if (params.team) data.params.team = params.team;
     deferred.resolve(data);
     return deferred.promise;
   }
@@ -124,7 +128,7 @@ function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, De
     }
   }
   function _getTreeLink(requestData) {
-    return TreesHttp.getTrees(requestData.attributes.parque)
+    return TreesHttp.getTrees(requestData.params)
       .then(_getTreeTable)
       .then(function (datasource) {
         requestData.attributes.datasource.push({ title: "Árvores" });
@@ -157,13 +161,20 @@ function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, De
   }
   function _getInterventionsLink(requestData) {
     var filter = {};
-    filter.parque = requestData.attributes.parque;
-    if (requestData.params.hasOwnProperty('season')) {
+    filter.park = requestData.attributes.parque;
+    if (requestData.params.hasOwnProperty('season') && requestData.params.season !== "--") {
       filter.season = requestData.params.season;
     }
-    if (requestData.params.hasOwnProperty('year')) {
+    if (requestData.params.hasOwnProperty('year') && requestData.params.year !== "--") {
       filter.year = requestData.params.year;
     }
+    if (requestData.params.hasOwnProperty('team') && requestData.params.team !== "--"){
+      filter.team = requestData.params.team;
+    }
+    if (requestData.params.hasOwnProperty('zone') && requestData.params.zone !== "--"){
+      filter.zone = requestData.params.zone.id;
+    }
+    console.log(requestData.params);
     return InterventionsHttp.getFilteredInterventions(filter)
       .then(_getInterventionsTable)
       .then(function (datasource) {

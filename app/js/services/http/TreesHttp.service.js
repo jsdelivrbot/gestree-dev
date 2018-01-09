@@ -12,17 +12,21 @@ function TreesHttp($q, $http) {
     getTreeInterventions: getTreeInterventions
   };
 
-  function getTrees(parque) {
+  function getTrees(params) {
+    var filter;
+    if (params.zone) filter = { zone: params.zone.id };
+
     var deferred = $q.defer();
     $http({
       method: 'GET',
-      url: '/api/trees/' + parque
+      url: '/api/trees/' + params.park.properties.nome,
+      params: filter
     }).then(function successCallback(response) {
       deferred.resolve(response.data);
     }, function errorCallback(err) {
       deferred.reject(err);
     });
-    return deferred.promise;
+    return deferred.promise; 
   }
   function getTreeDetails(selectedTree) {
     var deferred = $q.defer();
@@ -30,7 +34,7 @@ function TreesHttp($q, $http) {
     var id = selectedTree.id;
     $http({
       method: 'GET',
-      url: '/api/trees/'+ parque + '/' + id
+      url: '/api/trees/' + parque + '/' + id
     }).then(function successCallback(response) {
       deferred.resolve(response.data);
     }, function errorCallback(err) {
@@ -42,7 +46,7 @@ function TreesHttp($q, $http) {
     var deferred = $q.defer();
     $http({
       method: 'GET',
-      url: '/api/trees/'+ selectedTree.parque +'/' + selectedTree.id + '/interventions'
+      url: '/api/trees/' + selectedTree.parque + '/' + selectedTree.id + '/interventions'
     }).then(function successCallback(response) {
       deferred.resolve(response.data);
     }, function errorCallback(err) {

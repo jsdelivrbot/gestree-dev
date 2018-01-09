@@ -2,9 +2,19 @@ let db = require('../../../database').db;
 module.exports = {
   // GET All the trees
   all(req, res, next) {
-    db.trees.all({parque: req.params.parque}).then(data => {
-      res.status(200).json(data);
-    }).catch(err => next(err));
+    if (req.query.zone) {
+      db.trees.allWithZone({
+        parque: req.params.parque,
+        zone: req.query.zone
+      }
+      ).then(data => {
+        res.status(200).json(data);
+      }).catch(err => next(err));
+    } else {
+      db.trees.all({ parque: req.params.parque }).then(data => {
+        res.status(200).json(data);
+      }).catch(err => next(err));
+    }
   },
   // Get Tree by tid
   get(req, res, next) {

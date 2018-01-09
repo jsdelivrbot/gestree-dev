@@ -15,12 +15,12 @@ module.exports = function (router) {
       scale: 4000
     }, {
       gid: 2,
-      geom: { "type": "Point", "coordinates": [-843316.1645941734, 5105620.796140056] },
+      geom: { "type": "Point", "coordinates": [-843359.4678760921, 5105789.834108349] },
       nome: "Vidago Palace",
       layers_to_print: [
-        "unicer:base",
-        "unicer:limite",
-        "unicer:edificios",
+        "unicer:base_vidago",
+        "unicer:limite_vidago",
+        "unicer:edificios_vidago",
         "unicer:arvores_vidago"
       ],
       scale: 6000

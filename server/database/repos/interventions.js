@@ -10,17 +10,34 @@ module.exports = (rep, pgp) => {
     filter: values => _filter(values)
   };
   function _filter(values) {
-    var query = 'SELECT i.*, it.value as type, to_char(closed_at, \'DD/MM/YYYY\') as st_closed_at FROM "gestree"."Interventions" i JOIN "gestree"."InterventionTypes" it ON it.id = i.id_type WHERE parque = \'' + values.park + '\'';
-    if (values.season && values.year) {
-      query = 'SELECT i.*, it.value as type, to_char(closed_at, \'DD/MM/YYYY\') as st_closed_at FROM "gestree"."Interventions" i JOIN "gestree"."InterventionTypes" it ON it.id = i.id_type WHERE parque = \'' + values.park + '\'' + ' AND season=\'' + values.season + '\' AND year=' + values.year;
-    } else {
-      if (values.season) {
-        query = 'SELECT i.*, it.value as type, to_char(closed_at, \'DD/MM/YYYY\') as st_closed_at FROM "gestree"."Interventions" i JOIN "gestree"."InterventionTypes" it ON it.id = i.id_type WHERE parque = \'' + values.park + '\'' + ' AND season=\'' + values.season + '\'';
-      }
-      if (values.year) {
-        query = 'SELECT i.*, it.value as type, to_char(closed_at, \'DD/MM/YYYY\') as st_closed_at FROM "gestree"."Interventions" i JOIN "gestree"."InterventionTypes" it ON it.id = i.id_type WHERE parque = \'' + values.park + '\'' + ' AND year=' + values.year;
-      }
+
+    console.log(values);
+
+    var query = 'SELECT i.*,'
+      + ' it.value as type,'
+      + ' t.zona,'
+      + ' to_char(closed_at, \'DD/MM/YYYY\') as st_closed_at'
+      + ' FROM "gestree"."Interventions" i '
+      + ' JOIN "gestree"."InterventionTypes" it ON it.id = i.id_type'
+      + ' JOIN "gestree".trees t ON t.gid = i.id_tree AND t.parque = \'' + values.park + '\''
+      + ' WHERE i.parque = \'' + values.park + '\'';
+
+    if (values.team) {
+      query += ' AND i.team = \'' + values.team + '\'';
     }
+
+    if (values.season) {
+      query += ' AND i.season =\'' + values.season + '\'';
+    }
+
+    if (values.year) {
+      query += ' AND i.year = ' + values.year;
+    }
+
+    if (values.zone) {
+      query += ' AND t.id_zona = ' + values.zone;
+    }
+
     return rep.manyOrNone(query, values);
   }
 };

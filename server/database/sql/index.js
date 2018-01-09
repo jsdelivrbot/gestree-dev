@@ -42,6 +42,7 @@ function sql(file) {
 module.exports = {
     trees: {
         all: sql('trees/all.sql'),
+        allWithZone: sql('trees/allWithZone.sql'),
         get: sql('trees/get.sql'),
         getInterventions: sql('trees/getInterventions.sql'),
         postIntervention: sql('trees/postIntervention.sql'),

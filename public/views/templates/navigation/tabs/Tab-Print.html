@@ -8,7 +8,19 @@
           <button required class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
           {{ printData.park.properties.nome || '--' }} <span class="caret"></span></button>
           <ul class="dropdown-menu">
-            <li class="dropdown-item" ng-repeat="park in defaults.parks" ng-click="setPark(park)"><a>{{park.properties.nome}}</a></li>
+            <li class="dropdown-item" ng-repeat="park in defaultPrint.parks" ng-click="setPark(park)"><a>{{park.properties.nome}}</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section class="input-filter" ng-show="printData.park">
+      <div class="title">Zona do Parque</div>
+      <div class="input-filter-content">
+        <div class="dropdown">
+          <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                {{ printData.zone.nome || "--" }} <span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <li class="dropdown-item" ng-repeat="zone in zones" ng-click="setZone(zone)"><a>{{zone.nome}}</a></li>
           </ul>
         </div>
       </div>
@@ -20,7 +32,7 @@
           <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
           {{ printData.contentType.value || '--' }} <span class="caret"></span></button>
           <ul class="dropdown-menu">
-            <li class="dropdown-item" ng-repeat="content in defaults.contentTypes" ng-click="setContent(content)"><a>{{content.value}}</a></li>
+            <li class="dropdown-item" ng-repeat="content in defaultPrint.contentTypes" ng-click="setContent(content)"><a>{{content.value}}</a></li>
           </ul>
         </div>
       </div>
@@ -33,7 +45,7 @@
             <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
             {{ printData.season || '--'}} <span class="caret"></span></button>
             <ul class="dropdown-menu">
-              <li class="dropdown-item" ng-repeat="season in defaults.seasons" ng-click="setSeason(season)"><a>{{season}}</a></li>
+              <li class="dropdown-item" ng-repeat="season in defaultPrint.seasons" ng-click="setSeason(season)"><a>{{season}}</a></li>
             </ul>
           </div>
         </div>
@@ -43,9 +55,21 @@
         <div class="input-filter-content-alt">
           <div class="dropdown">
             <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-            {{ printData.year || '--'}} <span class="caret"></span></button>
+            {{ printData.year || "--"}} <span class="caret"></span></button>
             <ul class="dropdown-menu">
-              <li class="dropdown-item" ng-repeat="year in defaults.years" ng-click="setYear(year)"><a>{{year}}</a></li>
+              <li class="dropdown-item" ng-repeat="year in defaultPrint.years" ng-click="setYear(year)"><a>{{year}}</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="input-filter-inline">
+        <div class="title">Equipa: </div>
+        <div class="input-filter-content-alt">
+          <div class="dropdown">
+            <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                      {{ printData.team || "--" }} <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item" ng-repeat="team in defaultPrint.teams" ng-click="setTeam(team)"><a>{{team}}</a></li>
             </ul>
           </div>
         </div>
@@ -58,7 +82,7 @@
           <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
           {{ printData.format.value || '--'}} <span class="caret"></span></button>
           <ul class="dropdown-menu">
-            <li class="dropdown-item" ng-repeat="format in defaults.formats" ng-click="setFormat(format)"><a>{{format.value}}</a></li>
+            <li class="dropdown-item" ng-repeat="format in defaultPrint.formats" ng-click="setFormat(format)"><a>{{format.value}}</a></li>
           </ul>
         </div>
       </div>

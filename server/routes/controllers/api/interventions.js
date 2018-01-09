@@ -33,11 +33,7 @@ module.exports = {
       }).catch(err => next(err));
   },
   filter(req, res, next) {
-    db.interventions.filter({
-      park: req.query.parque,
-      season: req.query.season,
-      year: req.query.year
-    })
+    db.interventions.filter(req.query)
       .then(data => {
         res.status(200).json(data);
       }).catch(err => {
