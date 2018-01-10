@@ -11,26 +11,567 @@
         "checkbox": false,
         "radiogroup": true,
         "children": [{
-            "title": "Localização",
+          "title": "Localização",
+          "data": {
+            "key": "_tree_pedras",
+            "workspace": "unicer",
+            "name": "arvores_pedras",
+            "type": "WFS",
+            "extent": [43858.7242812507, 208452.333204688, 44110.6809999999, 209084.351648437],
+            "opacity": 1,
+            "queryable": true,
+            "style": "treeDefault"
+          }
+        }]
+      },
+      {
+        "title": "Intervenções",
+        "folder": true,
+        "checkbox": true,
+        "children": [{
+            "title": "Avenida das Fontes",
             "data": {
-              "key": "_tree_pedras",
+              "filter": {
+                "id_zona": 31
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_31",
               "workspace": "unicer",
               "name": "arvores_pedras",
               "type": "WFS",
-              "extent": [43858.7242812507, 208452.333204688, 44110.6809999999, 209084.351648437],
+              "extent": [43860.674, 208462.308267831, 44097.2807250976, 209065.765373682],
               "opacity": 1,
               "queryable": true,
-              "style": "treeDefault"
+              "style": "treeIntervention"
+            }
+          }, {
+            "title": "Balneário Termal",
+            "data": {
+              "filter": {
+                "id_zona": 3
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_3",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [43944.388, 208558.958497075, 44079.4575729246, 208761.9924],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
             }
           },
           {
-            "title": "Intervenções",
+            "title": "Campo de Ténis",
             "data": {
-              "key": "_tree_pedras",
+              "filter": {
+                "id_zona": 12
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_12",
               "workspace": "unicer",
               "name": "arvores_pedras",
               "type": "WFS",
-              "extent": [43858.7242812507, 208452.333204688, 44110.6809999999, 209084.351648437],
+              "extent": [43899.64585, 208821.67024974, 44003.3538, 208976.830814358],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Capela",
+            "data": {
+              "filter": {
+                "id_zona": 29
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_29",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [43817.4569173673, 208839.35423794, 43926.1175885201, 208925.9889],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          }, {
+            "title": "Casa da Azinheira",
+            "data": {
+              "filter": {
+                "id_zona": 15
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_15",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [43721.3482, 208615.4776, 43768.0393855883, 208681.267182222],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Casa da Faia",
+            "data": {
+              "filter": {
+                "id_zona": 26
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_26",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [43858.3909098116, 208494.818440665, 43929.893, 208614.527200818],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Casa da Tuia",
+            "data": {
+              "filter": {
+                "id_zona": 16
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_16",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [43750.0611671879, 208593.273, 43793.9665045547, 208681.267182222],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          }, {
+            "title": "Casa de Chá",
+            "data": {
+              "filter": {
+                "id_zona": 13
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_13",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [43946.0438227177, 208753.476593041, 44001.5058629713, 208909.724520881],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Casa de Passaros",
+            "data": {
+              "filter": {
+                "id_zona": 8
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_8",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [43755.35975, 208728.23185276, 43855.3323169366, 208888.738395483],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Casa do Abeto",
+            "data": {
+              "filter": {
+                "id_zona": 25
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_25",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [43828.1214863097, 208499.677652578, 43881.3827272647, 208566.820099047],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          }, {
+            "title": "Casa do Azevinho",
+            "data": {
+              "filter": {
+                "id_zona": 19
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_19",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [43788.2826429618, 208573.496059248, 43817.3121629101, 208616.864925832],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Casa do Bordo",
+            "data": {
+              "filter": {
+                "id_zona": 20
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_20",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [43772.9819990117, 208506.837045523, 43797.4231315278, 208535.199459113],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Casa do Carvalho Negral",
+            "data": {
+              "filter": {
+                "id_zona": 21
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_21",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [43789.3800840071, 208526.490621593, 43818.2851528213, 208578.365719],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          }, {
+            "title": "Casa do Castanheiro",
+            "data": {
+              "filter": {
+                "id_zona": 27
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_27",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [43813.3174754019, 208557.97762405, 43868.7814479943, 208625.954908031],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Casa do Cedro",
+            "data": {
+              "filter": {
+                "id_zona": 24
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_24",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [43817.0686, 208463.878, 43897.6652416267, 208511.573574314],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Casa do Ciprestre",
+            "data": {
+              "filter": {
+                "id_zona": 22
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_22",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [43813.9369405137, 208542.105280908, 43851.4265850152, 208581.965479248],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          }, {
+            "title": "Casa do Esquilo",
+            "data": {
+              "filter": {
+                "id_zona": 18
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_18",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [43774.2690017352, 208529.79802407, 43795.2600848045, 208599.904547939],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Casa do Medronheiro",
+            "data": {
+              "filter": {
+                "id_zona": 23
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_23",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [43787.6314, 208489.252, 43834.8236761157, 208555.267029872],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Casa do Pinheiro",
+            "data": {
+              "filter": {
+                "id_zona": 17
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_17",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [43779.533072807, 208598.443974244, 43823.3042601858, 208653.539027209],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          }, {
+            "title": "Casino",
+            "data": {
+              "filter": {
+                "id_zona": 11
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_11",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [43708.8045554272, 208651.455150922, 43860.9311741564, 208792.6210551],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Depósito",
+            "data": {
+              "filter": {
+                "id_zona": 9
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_9",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [43675.3470696784, 208735.692170034, 43760.3152877867, 208807.489803537],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Garagens e Portaria",
+            "data": {
+              "filter": {
+                "id_zona": 6
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_6",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [43929.6661950791, 208976.830814358, 44013.273286719, 209083.716484633],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          }, {
+            "title": "Grande Alcalina",
+            "data": {
+              "filter": {
+                "id_zona": 14
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_14",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [43914.261, 208696.10370806, 43977.4295654196, 208775.993215322],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Grande Hotel",
+            "data": {
+              "filter": {
+                "id_zona": 30
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_30",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [43813.7904562498, 208703.114, 43954.6267233635, 208865.970411081],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Gruta",
+            "data": {
+              "filter": {
+                "id_zona": 7
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_7",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [43818.7644829972, 208881.2312, 43948.0857603283, 209019.950946566],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Lago e Minigolfe",
+            "data": {
+              "filter": {
+                "id_zona": 2
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_2",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [44001.7157, 208742.580507337, 44109.087974707, 208966.24787249],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Monte Avelames",
+            "data": {
+              "filter": {
+                "id_zona": 28
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_28",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [43806.3575659664, 208579.118763725, 43950.955, 208708.419],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          }, {
+            "title": "Observatório",
+            "data": {
+              "filter": {
+                "id_zona": 10
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_10",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [43661.0130375914, 208627.8333, 43738.6023425355, 208744.921138485],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Parque Infantil e Chalet",
+            "data": {
+              "filter": {
+                "id_zona": 5
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_5",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [43876.2414736616, 208452.031403359, 44010.5816, 208529.594558112],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Piscina",
+            "data": {
+              "filter": {
+                "id_zona": 1
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_1",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [44025.0045, 208930.067086977, 44092.9299807205, 209034.242339843],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Roseiral",
+            "data": {
+              "filter": {
+                "id_zona": 4
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_pedras_4",
+              "workspace": "unicer",
+              "name": "arvores_pedras",
+              "type": "WFS",
+              "extent": [43943.6884744044, 208483.8044, 44036.3608023003, 208599.229999999],
               "opacity": 1,
               "queryable": true,
               "style": "treeIntervention"
@@ -117,26 +658,288 @@
         "checkbox": false,
         "radiogroup": true,
         "children": [{
-            "title": "Localização",
+          "title": "Localização",
+          "data": {
+            "key": "_tree_vidago",
+            "workspace": "unicer",
+            "name": "arvores_vidago",
+            "type": "WFS",
+            "extent": [46283.1896687427, 217450.585892474, 46645.3069363016, 218536.060508136],
+            "opacity": 1,
+            "queryable": true,
+            "style": "treeDefault"
+          }
+        }]
+      },
+      {
+        "title": "Intervenções",
+        "folder": true,
+        "checkbox": true,
+        "children": [{
+            "title": "Avenida das Fontes",
             "data": {
-              "key": "_tree_vidago",
+              "filter": {
+                "id_zona": 5
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_vidago_5",
               "workspace": "unicer",
               "name": "arvores_vidago",
               "type": "WFS",
-              "extent": [46283.1896687427, 217450.585892474, 46645.3069363016, 218536.060508136],
+              "extent": [46498.9845, 217489.999483097, 46617.9621575461, 218292.684272455],
               "opacity": 1,
               "queryable": true,
-              "style": "treeDefault"
+              "style": "treeIntervention"
             }
           },
           {
-            "title": "Intervenções",
+            "title": "Centro de Congressos",
             "data": {
-              "key": "_tree_vidago",
+              "filter": {
+                "id_zona": 9
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_vidago_9",
               "workspace": "unicer",
               "name": "arvores_vidago",
               "type": "WFS",
-              "extent": [46283.1896687427, 217450.585892474, 46645.3069363016, 218536.060508136],
+              "extent": [46531.0181966032, 218328.025252417, 46611.3708937015, 218536.060508136],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Cercado do Burro",
+            "data": {
+              "filter": {
+                "id_zona": 1
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_vidago_1",
+              "workspace": "unicer",
+              "name": "arvores_vidago",
+              "type": "WFS",
+              "extent": [46462.4218118696, 217532.605501288, 46600.5077900117, 217756.265708016],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Clubhouse",
+            "data": {
+              "filter": {
+                "id_zona": 12
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_vidago_12",
+              "workspace": "unicer",
+              "name": "arvores_vidago",
+              "type": "WFS",
+              "extent": [46463.7985, 218075.577275582, 46519.88, 218187.320802064],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Coreto 1",
+            "data": {
+              "filter": {
+                "id_zona": 6
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_vidago_6",
+              "workspace": "unicer",
+              "name": "arvores_vidago",
+              "type": "WFS",
+              "extent": [46530.2394254834, 218071.528419621, 46645.3069363016, 218264.365380945],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Coreto 2",
+            "data": {
+              "filter": {
+                "id_zona": 10
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_vidago_10",
+              "workspace": "unicer",
+              "name": "arvores_vidago",
+              "type": "WFS",
+              "extent": [46522.4717137596, 218246.620071557, 46626.8075489991, 218317.355],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Entrada",
+            "data": {
+              "filter": {
+                "id_zona": 14
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_vidago_14",
+              "workspace": "unicer",
+              "name": "arvores_vidago",
+              "type": "WFS",
+              "extent": [46442.9466141505, 218243.386091724, 46614.724, 218391.981280812],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Estacionamento de Serviço",
+            "data": {
+              "filter": {
+                "id_zona": 7
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_vidago_7",
+              "workspace": "unicer",
+              "name": "arvores_vidago",
+              "type": "WFS",
+              "extent": [46283.1896687427, 218154.7335, 46449.6357537877, 218529.551575359],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Fonte 1 e Chalet",
+            "data": {
+              "filter": {
+                "id_zona": 13
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_vidago_13",
+              "workspace": "unicer",
+              "name": "arvores_vidago",
+              "type": "WFS",
+              "extent": [46448.0619874613, 218185.800733946, 46520.17699, 218272.364644886],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Fonte 2 e Lago",
+            "data": {
+              "filter": {
+                "id_zona": 11
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_vidago_11",
+              "workspace": "unicer",
+              "name": "arvores_vidago",
+              "type": "WFS",
+              "extent": [46424.6972411675, 217990.095, 46511.151050836, 218109.876342416],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Fonte Salus",
+            "data": {
+              "filter": {
+                "id_zona": 4
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_vidago_4",
+              "workspace": "unicer",
+              "name": "arvores_vidago",
+              "type": "WFS",
+              "extent": [46565.2760966469, 217450.585892474, 46611.1989985182, 217536.050609917],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Lago",
+            "data": {
+              "filter": {
+                "id_zona": 15
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_vidago_15",
+              "workspace": "unicer",
+              "name": "arvores_vidago",
+              "type": "WFS",
+              "extent": [46395.5568659415, 218338.942193524, 46565.7453503453, 218534.829583112],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Núcleo Rural e Polidesportivo",
+            "data": {
+              "filter": {
+                "id_zona": 2
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_vidago_2",
+              "workspace": "unicer",
+              "name": "arvores_vidago",
+              "type": "WFS",
+              "extent": [46396.4359028875, 217751.996580544, 46564.3968249448, 217906.678646599],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Starter Golf",
+            "data": {
+              "filter": {
+                "id_zona": 3
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_vidago_3",
+              "workspace": "unicer",
+              "name": "arvores_vidago",
+              "type": "WFS",
+              "extent": [46459.1213036824, 217877.710345068, 46542.9697665875, 217992.14321878],
+              "opacity": 1,
+              "queryable": true,
+              "style": "treeIntervention"
+            }
+          },
+          {
+            "title": "Traseiras do Hotel",
+            "data": {
+              "filter": {
+                "id_zona": 8
+              },
+              "multiLegend": true,
+              "multiLegendID": "inter_pedras",
+              "key": "_tree_vidago_8",
+              "workspace": "unicer",
+              "name": "arvores_vidago",
+              "type": "WFS",
+              "extent": [46291.6051170259, 218221.679164848, 46486.0405655678, 218531.764791995],
               "opacity": 1,
               "queryable": true,
               "style": "treeIntervention"
@@ -144,7 +947,6 @@
           }
         ]
       },
-
       {
         "title": "Zonas",
         "folder": true,

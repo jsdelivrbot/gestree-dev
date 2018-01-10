@@ -45,8 +45,12 @@ function Layers(MapService, LayersHttp, WFSStyles, DirtyDataManager) {
               typename: layerData.workspace + ":" + layerData.name,
               srsname: 'EPSG:27493',
               outputFormat: 'application/json',
-              bbox: ol.proj.transformExtent(extent, 'EPSG:3857', ol.proj.get('EPSG:27493')).join(',') + ',' + ol.proj.get('EPSG:27493').getCode(),
               format_options: 'id_policy:gid'
+            }
+            if(layerData.filter){
+              dataOptions.CQL_FILTER = "id_zona="+layerData.filter.id_zona; 
+            }else{
+              dataOptions.bbox = ol.proj.transformExtent(extent, 'EPSG:3857', ol.proj.get('EPSG:27493')).join(',') + ',' + ol.proj.get('EPSG:27493').getCode()
             }
             LayersHttp
               .fetch(dataOptions)

@@ -174,7 +174,6 @@ function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, De
     if (requestData.params.hasOwnProperty('zone') && requestData.params.zone !== "--"){
       filter.zone = requestData.params.zone.id;
     }
-    console.log(requestData.params);
     return InterventionsHttp.getFilteredInterventions(filter)
       .then(_getInterventionsTable)
       .then(function (datasource) {

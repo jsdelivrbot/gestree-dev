@@ -25,7 +25,7 @@ var paths = {
   scripts: {
     js: './public/js/*.js',
     css: './public/css/*.css',
-    openlayersjs: './public/lib/openlayers/dist/ol.js',
+    openlayersjs: './public/lib/openlayers/dist/ol-debug.js',
     openlayerscss: './public/lib/openlayers/dist/ol.css'
   },
   compileScripts: {

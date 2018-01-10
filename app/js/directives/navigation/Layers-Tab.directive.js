@@ -36,7 +36,7 @@ function LayersTab(MapService, Layers, Legends, $timeout) {
           loading: "fa fa-spinner"
         }
       },
-      clickFolderMode: 2,
+      //clickFolderMode: 2,
       selectMode: 3,
       source: {
         url: '/layers',
@@ -86,24 +86,40 @@ function LayersTab(MapService, Layers, Legends, $timeout) {
           children.forEach(function (layer) {
             layer.data.key = layer.data.key || layer.key;
             Layers.addLayer(layer.data);
-            Legends.addLegend(layer);
+            if (layer.data.multiLegend) {
+              Legends.addMultiLegend(layer);
+            } else {
+              Legends.addLegend(layer);
+            }
           });
         } else {
           children.forEach(function (layer) {
             layer.data.key = layer.data.key || layer.key;
             Layers.removeLayer(layer.data);
-            Legends.removeLegend(layer);
+            if (layer.data.multiLegend) {
+              Legends.removeMultiLegend(layer);
+            } else {
+              Legends.removeLegend(layer);
+            }
           });
         }
       } else {
         if (eventData.node.isSelected()) {
           eventData.node.data.key = eventData.node.data.key || eventData.node.key;
           Layers.addLayer(eventData.node.data);
-          Legends.addLegend(eventData.node);
+          if (eventData.node.data.multiLegend) {
+            Legends.addMultiLegend(eventData.node);
+          } else {
+            Legends.addLegend(eventData.node);
+          }
         } else {
           eventData.node.data.key = eventData.node.data.key || eventData.node.key;
-          Legends.removeLegend(eventData.node);
-          Layers.removeLayer(eventData.node.data)
+          Layers.removeLayer(eventData.node.data);
+          if (eventData.node.data.multiLegend) {
+            Legends.removeMultiLegend(eventData.node);
+          } else {
+            Legends.removeLegend(eventData.node);
+          }
         }
       }
     }, 1);

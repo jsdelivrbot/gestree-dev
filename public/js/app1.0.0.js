@@ -835,7 +835,7 @@ function LayersTab(MapService, Layers, Legends, $timeout) {
           loading: "fa fa-spinner"
         }
       },
-      clickFolderMode: 2,
+      //clickFolderMode: 2,
       selectMode: 3,
       source: {
         url: '/layers',
@@ -885,24 +885,40 @@ function LayersTab(MapService, Layers, Legends, $timeout) {
           children.forEach(function (layer) {
             layer.data.key = layer.data.key || layer.key;
             Layers.addLayer(layer.data);
-            Legends.addLegend(layer);
+            if (layer.data.multiLegend) {
+              Legends.addMultiLegend(layer);
+            } else {
+              Legends.addLegend(layer);
+            }
           });
         } else {
           children.forEach(function (layer) {
             layer.data.key = layer.data.key || layer.key;
             Layers.removeLayer(layer.data);
-            Legends.removeLegend(layer);
+            if (layer.data.multiLegend) {
+              Legends.removeMultiLegend(layer);
+            } else {
+              Legends.removeLegend(layer);
+            }
           });
         }
       } else {
         if (eventData.node.isSelected()) {
           eventData.node.data.key = eventData.node.data.key || eventData.node.key;
           Layers.addLayer(eventData.node.data);
-          Legends.addLegend(eventData.node);
+          if (eventData.node.data.multiLegend) {
+            Legends.addMultiLegend(eventData.node);
+          } else {
+            Legends.addLegend(eventData.node);
+          }
         } else {
           eventData.node.data.key = eventData.node.data.key || eventData.node.key;
-          Legends.removeLegend(eventData.node);
-          Layers.removeLayer(eventData.node.data)
+          Layers.removeLayer(eventData.node.data);
+          if (eventData.node.data.multiLegend) {
+            Legends.removeMultiLegend(eventData.node);
+          } else {
+            Legends.removeLegend(eventData.node);
+          }
         }
       }
     }, 1);
@@ -1717,8 +1733,12 @@ function Layers(MapService, LayersHttp, WFSStyles, DirtyDataManager) {
               typename: layerData.workspace + ":" + layerData.name,
               srsname: 'EPSG:27493',
               outputFormat: 'application/json',
-              bbox: ol.proj.transformExtent(extent, 'EPSG:3857', ol.proj.get('EPSG:27493')).join(',') + ',' + ol.proj.get('EPSG:27493').getCode(),
               format_options: 'id_policy:gid'
+            }
+            if(layerData.filter){
+              dataOptions.CQL_FILTER = "id_zona="+layerData.filter.id_zona; 
+            }else{
+              dataOptions.bbox = ol.proj.transformExtent(extent, 'EPSG:3857', ol.proj.get('EPSG:27493')).join(',') + ',' + ol.proj.get('EPSG:27493').getCode()
             }
             LayersHttp
               .fetch(dataOptions)
@@ -1836,11 +1856,36 @@ function LegendsService() {
       legendas: []
     }
   ];
+  var multiLegendsManager = {};
 
   return {
     getLegends: getLegends,
     addLegend: addLegend,
-    removeLegend: removeLegend
+    addMultiLegend: addMultiLegend,
+    removeLegend: removeLegend,
+    removeMultiLegend: removeMultiLegend
+  }
+
+
+  function addMultiLegend(layer) {
+    var legendID = layer.data.multiLegendID;
+    if (multiLegendsManager[legendID] && multiLegendsManager[legendID].length !== 0) {
+      if (multiLegendsManager[legendID].indexOf(layer.data.key) === -1) {
+        multiLegendsManager[legendID].push(layer.data.key);
+      }
+    } else {
+      multiLegendsManager[legendID] = [];
+      multiLegendsManager[legendID].push(layer.data.key);
+      addLegend(layer);
+    }
+  }
+  function removeMultiLegend(layer) {
+    var legendID = layer.data.multiLegendID;
+    var index = multiLegendsManager[legendID].indexOf(layer.data.key);
+    multiLegendsManager[legendID].splice(index, 1);
+    if (multiLegendsManager[legendID].length === 0) {
+      removeLegend(layer);
+    }
   }
 
   function addLegend(layer) {
@@ -1853,13 +1898,13 @@ function LegendsService() {
       var layerIndex = _findIndex(legends[parkIndex].legendas[groupIndex].data, layer);
       if (layerIndex == -1) {
         legends[parkIndex].legendas[groupIndex].data.push({
-          _key: layer.data.key,
+          _key: layer.data.multiLegendID || layer.data.key,
           title: layer.title,
           url: 'http://gistree.espigueiro.pt/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.1.1&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=' + layer.data.workspace + ':' + layer.data.name + '&LEGEND_OPTIONS=forceLabels:on;fontSize:11&SCALE=1000000&Style=' + style
         });
       } else {
         legends[parkIndex].legendas[groupIndex].data[layerIndex] = {
-          _key: layer.data.key,
+          _key: layer.data.multiLegendID || layer.data.key,
           title: layer.title,
           url: 'http://gistree.espigueiro.pt/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.1.1&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=' + layer.data.workspace + ':' + layer.data.name + '&LEGEND_OPTIONS=forceLabels:on;fontSize:11&SCALE=1000000&Style=' + style
         }
@@ -1901,7 +1946,7 @@ function LegendsService() {
   }
   function _findIndex(array, data) {
     return array.findIndex(function (e) {
-      return e._key == this.data.key;
+      return e._key == this.data.multiLegendID || this.data.key;
     }, data);
   }
   function _removeAt(a, i) {
@@ -2353,7 +2398,6 @@ function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, De
     if (requestData.params.hasOwnProperty('zone') && requestData.params.zone !== "--"){
       filter.zone = requestData.params.zone.id;
     }
-    console.log(requestData.params);
     return InterventionsHttp.getFilteredInterventions(filter)
       .then(_getInterventionsTable)
       .then(function (datasource) {
@@ -2517,11 +2561,11 @@ angular
 function WFSStyles() {
 
   var _styles = {
-    defaultStyle: new ol.style.Style({
+    treeDefault: new ol.style.Style({
       image: new ol.style.Circle({
         radius: 3,
         fill: new ol.style.Fill({
-          color: [24, 72, 26, 0.8]
+          color: [24, 72, 26, 1]
         }),
         stroke: new ol.style.Stroke({
           color: [0, 0, 0, 1]
@@ -2544,15 +2588,23 @@ function WFSStyles() {
     intervention: new ol.style.Style({
       image: new ol.style.Circle({
         radius: 4,
-        fill: new ol.style.Fill({
-          color: [72, 15, 15, 1]
-        }),
         stroke: new ol.style.Stroke({
-          color: [0, 0, 0, 1],
+          color: [70, 15, 15, 1],
           width: 2
         })
       }),
       zIndex: 50
+    }),
+    noIntervention: new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: 3,
+        fill: new ol.style.Fill({
+          color: [24, 72, 26, 0.7]
+        }),
+        stroke: new ol.style.Stroke({
+          color: [0, 0, 0, 1]
+        }),
+      })
     })
   };
 
@@ -2563,19 +2615,46 @@ function WFSStyles() {
     treeHighlight: treeHighlight
   }
 
-  function treeSelected(){
-    return _styles.selected;
+  function treeSelected(feature, res) {
+    var style = _styles.selected;
+    if (res < 0.6) {
+      addLabel.call(style, feature.getId().toString());
+    }else{
+      style.setText(null);
+    }
+    return style;
   }
-  function treeDefault() {
-    return _styles.defaultStyle;
+  function treeDefault(feature, res) {
+    var style = _styles.treeDefault;
+    if (res < 0.6) {
+      addLabel.call(style, feature.getId().toString());
+    }else{
+      style.setText(null);
+    }
+    return style;
   }
-  function treeIntervention(feature, layer) {
-    return feature.getProperties().has_inter ? _styles.intervention : _styles.defaultStyle;
+  function treeIntervention(feature, res) {
+    return feature.getProperties().has_inter ? _styles.intervention : _styles.noIntervention;
   }
   function treeHighlight(selectedFeatureID) {
     return function (feature, layer) {
       return selectedFeatureID === feature.getId() ? _styles.selected : _styles.defaultStyle;
     }
+  }
+
+  function addLabel(label) {
+    this.setText(new ol.style.Text({
+      text: label,
+      offsetX: 7,
+      offsetY: -7,
+      scale: 1,
+      stroke: new ol.style.Stroke({
+        color: [0, 0, 0, 1]
+      }),
+      fill: new ol.style.Fill({
+        color: [0, 0, 0, 1]
+      })
+    }))
   }
 
 }
