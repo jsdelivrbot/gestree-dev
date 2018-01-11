@@ -89,7 +89,7 @@ function WFSStyles() {
   function addLabel(label) {
     this.setText(new ol.style.Text({
       text: label,
-      offsetX: 7,
+      offsetX: 10,
       offsetY: -7,
       scale: 1,
       stroke: new ol.style.Stroke({

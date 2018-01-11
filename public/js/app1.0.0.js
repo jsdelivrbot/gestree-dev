@@ -1735,9 +1735,9 @@ function Layers(MapService, LayersHttp, WFSStyles, DirtyDataManager) {
               outputFormat: 'application/json',
               format_options: 'id_policy:gid'
             }
-            if(layerData.filter){
-              dataOptions.CQL_FILTER = "id_zona="+layerData.filter.id_zona; 
-            }else{
+            if (layerData.filter) {
+              dataOptions.CQL_FILTER = "id_zona=" + layerData.filter.id_zona;
+            } else {
               dataOptions.bbox = ol.proj.transformExtent(extent, 'EPSG:3857', ol.proj.get('EPSG:27493')).join(',') + ',' + ol.proj.get('EPSG:27493').getCode()
             }
             LayersHttp
@@ -1753,24 +1753,27 @@ function Layers(MapService, LayersHttp, WFSStyles, DirtyDataManager) {
               });
           },
           strategy: ol.loadingstrategy.bbox,
-          updateWhileAnimating: true
-        })
+          updateWhileAnimating: true,
+        }),
+        priority: layerData.priority
       });
-      wfsLayer.isVisible = true;
+
       if (layerData.style) {
         wfsLayer.setStyle(WFSStyles[layerData.style]);
       }
       if (layerData.opacity) {
         wfsLayer.setOpacity(layerData.opacity);
       }
-      MapService.getMap().addLayer(wfsLayer);
+
+      _addLayerWithPriority(wfsLayer, layerData);
+      wfsLayer.isVisible = true;
       layers[layerData.key] = wfsLayer;
     } else {
       if (layerData.style) {
         layers[layerData.key].setStyle(WFSStyles[layerData.style]);
       }
       if (!layers[layerData.key].isVisible) {
-        MapService.getMap().addLayer(layers[layerData.key]);
+        _addLayerWithPriority(layers[layerData.key], layerData);
         layers[layerData.key].isVisible = true;
       }
     }
@@ -1789,14 +1792,15 @@ function Layers(MapService, LayersHttp, WFSStyles, DirtyDataManager) {
         minResolution: _calculateResolution(layerData.maxZoom),
         maxResolution: _calculateResolution(layerData.minZoom),
         group: layerData.group,
-        queryable: layerData.queryable
+        queryable: layerData.queryable,
+        priority: layerData.priority
       });
-      MapService.getMap().addLayer(wmsLayer);
+      _addLayerWithPriority(wmsLayer, layerData);
       wmsLayer.isVisible = true;
       layers[layerData.key] = wmsLayer;
     } else {
       if (!layers[layerData.key].isVisible) {
-        MapService.getMap().addLayer(layers[layerData.key]);
+        _addLayerWithPriority(layers[layerData.key], layerData);
         layers[layerData.key].isVisible = true;
       }
     }
@@ -1815,14 +1819,15 @@ function Layers(MapService, LayersHttp, WFSStyles, DirtyDataManager) {
         minResolution: _calculateResolution(layerData.maxZoom),
         maxResolution: _calculateResolution(layerData.minZoom),
         group: layerData.group,
-        queryable: layerData.queryable
+        queryable: layerData.queryable,
+        priority: layerData.priority
       });
-      MapService.getMap().addLayer(wmsLayer);
+      _addLayerWithPriority(wmsLayer, layerData);
       wmsLayer.isVisible = true;
       layers[layerData.key] = wmsLayer;
     } else {
       if (!layers[layerData.key].isVisible) {
-        MapService.getMap().addLayer(layers[layerData.key]);
+        _addLayerWithPriority(layers[layerData.key], layerData);
         layers[layerData.key].isVisible = true;
       }
     }
@@ -1839,6 +1844,19 @@ function Layers(MapService, LayersHttp, WFSStyles, DirtyDataManager) {
       return Math.floor(156543.04 / (Math.pow(2, zoomLevel)));
     }
   };
+
+  function _addLayerWithPriority(layer, layerData) {
+    var map = MapService.getMap();
+    var aLayers = map.getLayers().getArray();
+    var index = aLayers.findIndex(function (el) {
+      return el.getProperties().priority > layerData.priority;
+    })
+    if (index !== -1) {
+      map.getLayers().insertAt(index, layer);
+    } else {
+      map.addLayer(layer);
+    }
+  }
 
 }
 angular
@@ -2645,7 +2663,7 @@ function WFSStyles() {
   function addLabel(label) {
     this.setText(new ol.style.Text({
       text: label,
-      offsetX: 7,
+      offsetX: 10,
       offsetY: -7,
       scale: 1,
       stroke: new ol.style.Stroke({
