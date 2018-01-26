@@ -1,7 +1,7 @@
 [{
     "title": "Parque de Pedras Salgadas",
     "folder": true,
-    "expanded": true,
+    "expanded": false,
     "checkbox": false,
     "key": "PSalgadas",
     "children": [{
@@ -684,7 +684,7 @@
   {
     "title": "Vidago Palace",
     "folder": true,
-    "expanded": true,
+    "expanded": false,
     "checkbox": false,
     "key": "Vidago",
     "children": [{
