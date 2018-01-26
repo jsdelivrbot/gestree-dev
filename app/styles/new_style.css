@@ -635,7 +635,7 @@ span.fancytree-icon {
 }
 
 .interventions-font + ul {
-    font-size: 9px;
+    font-size: 9px !important;
 }
 
 .icon-padding span.fancytree-icon {
