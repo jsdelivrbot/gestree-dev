@@ -614,7 +614,7 @@
       {
         "title": "Zonas",
         "folder": true,
-        "expanded": true,
+        "expanded": false,
         "children": [{
           "title": "Zonas - Pedras Salgadas",
           "preselected": false,
@@ -1002,7 +1002,7 @@
       {
         "title": "Zonas",
         "folder": true,
-        "expanded": true,
+        "expanded": false,
         "children": [{
           "title": "Zonas - Vidago Palace",
           "preselected": false,
