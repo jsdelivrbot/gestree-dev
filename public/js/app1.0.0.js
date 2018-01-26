@@ -2611,7 +2611,7 @@ function WFSStyles() {
       image: new ol.style.Circle({
         radius: 4,
         stroke: new ol.style.Stroke({
-          color: [70, 15, 15, 1],
+          color: [200, 5, 5, 1],
           width: 2
         })
       }),
