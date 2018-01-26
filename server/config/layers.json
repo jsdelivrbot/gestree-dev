@@ -29,6 +29,7 @@
         "title": "Intervenções",
         "folder": true,
         "checkbox": true,
+        "extraClasses": "Teste",
         "children": [{
             "title": "Avenida das Fontes",
             "data": {
