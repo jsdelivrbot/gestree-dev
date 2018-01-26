@@ -103,7 +103,11 @@ function LegendsService() {
   }
   function _findIndex(array, data) {
     return array.findIndex(function (e) {
-      return e._key == this.data.multiLegendID || this.data.key;
+      if (this.data.multiLegendID) {
+        return e._key == this.data.multiLegendID;
+      } else {
+        return e._key == this.data.key;
+      }
     }, data);
   }
   function _removeAt(a, i) {

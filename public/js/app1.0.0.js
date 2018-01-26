@@ -281,6 +281,55 @@ function TreeInterventionsController($scope, SideNavService, TreeInterventions, 
 }
 angular
   .module('unicerApp')
+  .filter('capitalize', Capitalize);
+
+function Capitalize() {
+  return function (input) {
+    if (!angular.isNumber(input)) {
+      return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
+    } else {
+      return input;
+    }
+  }
+}
+angular
+  .module('unicerApp')
+  .filter('interventions-filter', InterventionListFilter);
+
+function InterventionListFilter() {
+  return function (input, filterData) {
+    var filteredInterventions = input;
+
+    if (_hasNoFilters(filterData)) {
+      return input;
+    }
+
+    for (var prop in filterData) {
+      filteredInterventions = _filterArray(filteredInterventions, filterData, prop);
+    }
+    return filteredInterventions;
+  };
+
+  function _filterArray(array, filter, prop) {
+    var filtered = [];
+    for (var i = 0; i < array.length; i++) {
+      if (array[i][prop] === filter[prop]) {
+        filtered.push(array[i]);
+      }
+    }
+    return filtered;
+  }
+
+  function _hasNoFilters(filterData) {
+    for (var prop in filterData) {
+      if (filterData.hasOwnProperty(prop))
+        return false;
+    }
+    return true;
+  };
+}
+angular
+  .module('unicerApp')
   .directive('interventionItem', InterventionItem);
 
 function InterventionItem() {
@@ -444,55 +493,6 @@ function TreeDetails() {
 
   }
 };  
-angular
-  .module('unicerApp')
-  .filter('capitalize', Capitalize);
-
-function Capitalize() {
-  return function (input) {
-    if (!angular.isNumber(input)) {
-      return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
-    } else {
-      return input;
-    }
-  }
-}
-angular
-  .module('unicerApp')
-  .filter('interventions-filter', InterventionListFilter);
-
-function InterventionListFilter() {
-  return function (input, filterData) {
-    var filteredInterventions = input;
-
-    if (_hasNoFilters(filterData)) {
-      return input;
-    }
-
-    for (var prop in filterData) {
-      filteredInterventions = _filterArray(filteredInterventions, filterData, prop);
-    }
-    return filteredInterventions;
-  };
-
-  function _filterArray(array, filter, prop) {
-    var filtered = [];
-    for (var i = 0; i < array.length; i++) {
-      if (array[i][prop] === filter[prop]) {
-        filtered.push(array[i]);
-      }
-    }
-    return filtered;
-  }
-
-  function _hasNoFilters(filterData) {
-    for (var prop in filterData) {
-      if (filterData.hasOwnProperty(prop))
-        return false;
-    }
-    return true;
-  };
-}
 angular
   .module('unicerApp')
   .controller('InterventionAddController', InterventionAddController);
@@ -1964,7 +1964,11 @@ function LegendsService() {
   }
   function _findIndex(array, data) {
     return array.findIndex(function (e) {
-      return e._key == this.data.multiLegendID || this.data.key;
+      if (this.data.multiLegendID) {
+        return e._key == this.data.multiLegendID;
+      } else {
+        return e._key == this.data.key;
+      }
     }, data);
   }
   function _removeAt(a, i) {
