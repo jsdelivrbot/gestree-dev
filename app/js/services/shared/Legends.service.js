@@ -5,7 +5,7 @@ angular
 function LegendsService() {
   var legends = [
     {
-      title: "Parque de Pedras Salgadas",
+      title: "Pedras Salgadas",
       legendas: []
     },
     {
