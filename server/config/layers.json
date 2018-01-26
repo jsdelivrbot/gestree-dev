@@ -713,6 +713,7 @@
         "title": "Intervenções",
         "folder": true,
         "checkbox": true,
+        "extraClasses": "interventions_font",
         "children": [{
             "title": "Avenida das Fontes",
             "data": {

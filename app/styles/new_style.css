@@ -582,7 +582,7 @@ ul.fancytree-container {
     border: 0;
     background-color: #f7f7f7;
     font-family: 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif !important;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .tree-container {
@@ -635,7 +635,7 @@ span.fancytree-icon {
 }
 
 span.fancytree-node.interventions_font + ul {
-    font-size: 9px !important;
+    font-size: 11px !important;
 }
 
 .icon-padding span.fancytree-icon {
