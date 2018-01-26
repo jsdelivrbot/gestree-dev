@@ -9,7 +9,7 @@ function WFSStyles() {
       image: new ol.style.Circle({
         radius: 3,
         fill: new ol.style.Fill({
-          color: [15, 115, 15, 1]
+          color: [10, 230, 10, 1]
         }),
         stroke: new ol.style.Stroke({
           color: [0, 0, 0, 1]
@@ -43,7 +43,7 @@ function WFSStyles() {
       image: new ol.style.Circle({
         radius: 3,
         fill: new ol.style.Fill({
-          color: [15, 115, 15, 0.7]
+          color: [10, 230, 10, 0.7]
         }),
         stroke: new ol.style.Stroke({
           color: [0, 0, 0, 1]
