@@ -29,9 +29,9 @@
         "title": "Intervenções",
         "folder": true,
         "checkbox": true,
-        "extraClasses": "interventions_font",
         "children": [{
             "title": "Avenida das Fontes",
+            "extraClasses": "interventions_font",
             "data": {
               "filter": {
                 "id_zona": 31
