@@ -634,7 +634,7 @@ span.fancytree-icon {
     cursor: pointer !important;
 }
 
-.interventions-font + ul {
+span.fancytree-node.interventions_font + ul {
     font-size: 9px !important;
 }
 
