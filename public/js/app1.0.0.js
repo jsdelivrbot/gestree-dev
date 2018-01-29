@@ -2001,7 +2001,7 @@ function MapService($timeout) {
             extent: [43858.7242812507, 208452.333204688, 44110.6809999999, 209084.351648437],
           }),
         }),
-        new ol.layer.Image({
+        /* new ol.layer.Image({
           source: new ol.source.ImageWMS({
             url: 'http://gistree.espigueiro.pt/geoserver/wms',
             params: {
@@ -2009,7 +2009,7 @@ function MapService($timeout) {
             },
             extent: [43858.7242812507, 208452.333204688, 44110.6809999999, 209084.351648437],
           }),
-        }),
+        }), */
         new ol.layer.Image({
           source: new ol.source.ImageWMS({
             url: 'http://gistree.espigueiro.pt/geoserver/wms',
@@ -2028,7 +2028,7 @@ function MapService($timeout) {
             extent: [46283.1896687427, 217450.585892474, 46645.3069363016, 218536.060508136],
           }),
         }),
-        new ol.layer.Image({
+        /* new ol.layer.Image({
           source: new ol.source.ImageWMS({
             url: 'http://gistree.espigueiro.pt/geoserver/wms',
             params: {
@@ -2036,7 +2036,7 @@ function MapService($timeout) {
             },
             extent: [46283.1896687427, 217450.585892474, 46645.3069363016, 218536.060508136],
           }),
-        }),
+        }), */
         new ol.layer.Image({
           source: new ol.source.ImageWMS({
             url: 'http://gistree.espigueiro.pt/geoserver/wms',
