@@ -9,6 +9,7 @@ module.exports = function (router) {
       layers_to_print: [
         "unicer:base",
         "unicer:limite",
+        "unicer:zonas_pedras_salgadas",
         "unicer:edificios",
         "unicer:arvores_pedras"
       ],
@@ -20,6 +21,7 @@ module.exports = function (router) {
       layers_to_print: [
         "unicer:base_vidago",
         "unicer:limite_vidago",
+        "unicer:zonas_vidago",
         "unicer:edificios_vidago",
         "unicer:arvores_vidago"
       ],

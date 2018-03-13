@@ -2328,11 +2328,12 @@ function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, De
 
     requestData.attributes.parque = params.park.properties.nome;
     requestData.attributes.map.layers[0].layers = params.park.properties.layers_to_print;
-
+    
     if (params.contentType.key === "trees") {
       requestData.layout = "arvores";
       requestData.outputFilename = "Árvores - " + params.park.properties.nome;
       requestData.attributes.subtitle = "Impressão de Árvores";
+      requestData.attributes.map.layers[0].styles = ["", "", "limites_zonas", "", ""];
       return _getTreeLink(requestData).then(function (downloadURL) {
         return {
           name: 'Árvores - ' + params.park.properties.nome + '.pdf',
@@ -2344,7 +2345,7 @@ function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, De
       requestData.layout = "inter";
       requestData.outputFilename = "Intervenções - " + params.park.properties.nome;
       requestData.attributes.subtitle = "Impressão de Intervenções";
-      requestData.attributes.map.layers[0].styles = ["", "", "", "treeIntervention"];
+      requestData.attributes.map.layers[0].styles = ["", "", "limites_zonas", "", "treeIntervention"];
 
       return _getInterventionsLink(requestData).then(function (downloadURL) {
         return {
