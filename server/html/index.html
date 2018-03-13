@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="unicerApp">
+  <head>
+    <title>Gestree - Unicer</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Plataforma WebSIG">
+    <meta name="keywords" content="Vila Real, WebSIG, Gistree">
+    <meta name="author" content="Gistree, Sistemas de Informação Geográfica, Floresta e Ambiente, Lda">
+    <base href="/">
+    <!-- bower:css-->
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="/lib/jquery.fancytree/dist/skin-bootstrap/ui.fancytree.css" />
+    <link rel="stylesheet" href="/lib/angular-ui-select/dist/select.css" />
+    <link rel="stylesheet" href="/lib/angular-material/angular-material.css" />
+    <!-- endbower-->
+    <!-- inject:css-->
+    <link rel="stylesheet" href="lib/openlayers/dist/ol.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- endinject-->
+    <link rel="shortcut icon" href="images/favicon.ico">
+  </head>
+  <body ng-cloak>
+    <nav class="navbar navbar-toggleable-md fixed-top justify-content-between"><a href="#" class="navbar-brand"><img src="/images/menu/logo.png" width="75" height="45"></a><a href="/auth/logout" target="_self" class="btn btn-logout">Logout    </a></nav>
+    <div class="container-fluid no-padding full-height">
+      <div class="row no-gutters full-height">
+        <div id="navigation" ng-class="{'col-3': navigationVisibility}" class="full-height"><side-nav></side-nav></div>
+        <div id="container" ng-view="" ng-class="navigationVisibility ? 'col-9' : 'col-12'" class="full-height">                </div>
+      </div>
+    </div>
+    <!-- bower:js-->
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script src="/lib/tether/dist/js/tether.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="/lib/jquery-ui/jquery-ui.js"></script>
+    <script src="/lib/jquery.fancytree/dist/src/jquery.fancytree.js"></script>
+    <script src="/lib/jquery.fancytree/dist/src/jquery.fancytree.edit.js"></script>
+    <script src="/lib/jquery.fancytree/dist/src/jquery.fancytree.glyph.js"></script>
+    <script src="/lib/jquery.fancytree/dist/src/jquery.fancytree.wide.js"></script>
+    <script src="/lib/proj4/dist/proj4.js"></script>
+    <script src="/lib/angular/angular.js"></script>
+    <script src="/lib/angular-ui-select/dist/select.js"></script>
+    <script src="/lib/angular-sanitize/angular-sanitize.js"></script>
+    <script src="/lib/angular-animate/angular-animate.js"></script>
+    <script src="/lib/angular-aria/angular-aria.js"></script>
+    <script src="/lib/angular-messages/angular-messages.js"></script>
+    <script src="/lib/angular-material/angular-material.js"></script>
+    <script src="/lib/moment/moment.js"></script>
+    <script src="/lib/angular-route/angular-route.js"></script>
+    <!-- endbower-->
+    <!-- inject:js-->
+    <script src="lib/openlayers/dist/ol-debug.js"></script>
+    <script src="js/app1.0.0.js"></script>
+    <!-- endinject-->
+  </body>
+</html>

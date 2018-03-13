@@ -43,7 +43,7 @@ function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, De
             key: "pdf",
             value: ".pdf (Printable Document Format)"
           }],
-          parksWithZones: Defaults.getParks()
+        parksWithZones: Defaults.getParks()
       }
     });
   }
@@ -53,7 +53,7 @@ function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, De
       url: 'print/csv/' + params.contentType.key,
       name: params.contentType.value + '.csv',
       params: {
-        park: params.park.properties.nome 
+        park: params.park.properties.nome
       },
       icon: 'fa-file-excel-o'
     };
@@ -69,9 +69,18 @@ function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, De
 
     requestData.params = params;
 
-    requestData.attributes.map.center = ol.proj.toLonLat(params.park.geometry.coordinates);
+    if (params.zone) {
+      var transformedExtent = ol.proj.transformExtent(params.zone.extent, 'EPSG:27493', 'EPSG:4326')
+      requestData.attributes.map.bbox = ol.proj.transformExtent(params.zone.extent, 'EPSG:27493', 'EPSG:4326');
+    } else {
+      requestData.attributes.map.center = ol.proj.toLonLat(params.park.geometry.coordinates);
+      requestData.attributes.map.scale = params.park.properties.scale;
+      requestData.attributes.map.longitudeFirst = true;
+      requestData.attributes.map.height = 550;
+      requestData.attributes.map.width = 500;
+    }
+
     requestData.attributes.parque = params.park.properties.nome;
-    requestData.attributes.map.scale = params.park.properties.scale;
     requestData.attributes.map.layers[0].layers = params.park.properties.layers_to_print;
 
     if (params.contentType.key === "trees") {
@@ -90,14 +99,14 @@ function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, De
       requestData.outputFilename = "Intervenções - " + params.park.properties.nome;
       requestData.attributes.subtitle = "Impressão de Intervenções";
       requestData.attributes.map.layers[0].styles = ["", "", "", "treeIntervention"];
-      
+
       return _getInterventionsLink(requestData).then(function (downloadURL) {
         return {
-          name: 'Intervenções  - ' + params.park.properties.nome +'.pdf',
+          name: 'Intervenções  - ' + params.park.properties.nome + '.pdf',
           url: downloadURL,
           icon: 'fa-file-pdf-o'
         }
-      }) 
+      })
     }
   }
 
@@ -107,13 +116,11 @@ function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, De
       attributes: {
         title: "Gestree - Gestão",
         map: {
-          longitudeFirst: true,
-          scale: 6000,
           projection: "EPSG:4326",
           dpi: 254,
-          height: 550,
-          width: 500,
           rotation: 0,
+          useAdjustBounds: true,
+          useNearestScale: true,
           layers: [
             {
               type: "WMS",
@@ -135,6 +142,7 @@ function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, De
         requestData.attributes.datasource[0].table = datasource;
         return requestData;
       }).then(function (requestData) {
+        console.log(JSON.stringify(requestData));
         return PrintHttp.printTrees(requestData);
       });
   }
@@ -168,10 +176,10 @@ function PrintManager($q, ParksHttp, PrintHttp, TreesHttp, InterventionsHttp, De
     if (requestData.params.hasOwnProperty('year') && requestData.params.year !== "--") {
       filter.year = requestData.params.year;
     }
-    if (requestData.params.hasOwnProperty('team') && requestData.params.team !== "--"){
+    if (requestData.params.hasOwnProperty('team') && requestData.params.team !== "--") {
       filter.team = requestData.params.team;
     }
-    if (requestData.params.hasOwnProperty('zone') && requestData.params.zone !== "--"){
+    if (requestData.params.hasOwnProperty('zone') && requestData.params.zone !== "--") {
       filter.zone = requestData.params.zone.id;
     }
     return InterventionsHttp.getFilteredInterventions(filter)

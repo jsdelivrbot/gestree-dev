@@ -18,8 +18,9 @@ var gulp = require('gulp'),
 
 //Paths to watch for changes using the watch task.
 var paths = {
-  jade: 'app/**/*.jade',
-  index: 'public/index.html',
+  jade: 'app/views/**/*.jade',
+  jade_index: 'app/index.jade',
+  index: 'server/html/index.html',
   openlayers: 'node_modules/openlayers/**',
   images: ['app/images/**/*'],
   scripts: {
@@ -30,8 +31,8 @@ var paths = {
   },
   compileScripts: {
     js: [
-      'app/js/app.js', 
-      'app/js/configurations/**.js', 
+      'app/js/app.js',
+      'app/js/configurations/**.js',
       'app/js/**/**/*.js'],
     css: 'app/styles/*.+(less|css)'
   },
@@ -73,7 +74,13 @@ gulp.task('jade:compile', function () {
     .pipe(jade({
       pretty: true
     }))
-    .pipe(gulp.dest('./public'));
+    .pipe(gulp.dest('./public/views'));
+  gulp
+    .src(paths.jade_index)
+    .pipe(jade({
+      pretty: true
+    }))
+    .pipe(gulp.dest('./server/html'));
 });
 
 //Concatinate js into index.js, minify and save in public/js.
@@ -102,14 +109,21 @@ gulp.task('css:minify', function () {
 gulp.task('scripts:inject', ['jade:compile'], function () {
   gulp
     .src(paths.index)
-    .pipe(wiredep())
+    .pipe(wiredep({
+      addRootSlash: false,
+      ignorePath: '../../public'
+    }))
     .pipe(gulpinject(gulp.src([paths.scripts.openlayersjs, paths.scripts.js]), {
-      relative: true
+      addRootSlash: false,
+      relative: true,
+      ignorePath: '../../public'
     }))
     .pipe(gulpinject(gulp.src([paths.scripts.openlayerscss, paths.scripts.css]), {
-      relative: true
+      addRootSlash: false,
+      relative: true,
+      ignorePath: '../../public'
     }))
-    .pipe(gulp.dest('./public/'));
+    .pipe(gulp.dest('./server/html'));
 });
 
 //Watch for changes in files.

@@ -58,5 +58,9 @@ module.exports = {
     },
     interventionTypes: {
         all: sql('interventionTypes/all.sql')
+    },
+    users: {
+        checkUser: sql('users/checkUser.sql'),
+        find: sql('users/find.sql')
     }
 };

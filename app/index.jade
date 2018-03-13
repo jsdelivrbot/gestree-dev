@@ -4,9 +4,10 @@ html(lang='en' ng-app='unicerApp')
     title Gestree - Unicer
     include views/layouts/head
   body(ng-cloak)
-    nav.navbar.navbar-toggleable-md.fixed-top
+    nav.navbar.navbar-toggleable-md.fixed-top.justify-content-between
       a.navbar-brand(href='#')
         img(src="/images/menu/logo.png" width="75" height="45")
+      a.btn.btn-logout(href='/auth/logout' target='_self') Logout    
     .container-fluid.no-padding.full-height
       .row.no-gutters.full-height
         #navigation.full-height(ng-class="{'col-3': navigationVisibility}")

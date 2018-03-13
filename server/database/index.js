@@ -8,7 +8,8 @@ var promise = require('bluebird');
 var repos = {
     trees: require('./repos/trees'),
     interventions: require('./repos/interventions'),
-    interventionTypes: require('./repos/intervention_types')
+    interventionTypes: require('./repos/intervention_types'),
+    users: require('./repos/users')
 };
 // pg-promise initialization options:
 var options = {
@@ -23,6 +24,7 @@ var options = {
         obj.trees = repos.trees(obj, pgp);
         obj.interventions = repos.interventions(obj, pgp);
         obj.interventionTypes = repos.interventionTypes(obj, pgp);
+        obj.users = repos.users(obj, pgp);
     }
 };
 // Database connection parameters:
