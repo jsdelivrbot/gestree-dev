@@ -6,20 +6,20 @@
     <div class="identificacao">
       <div class="subtitle"> Identificação </div>
       <ul>
-        <li>Zona: <span>{{tree.zona || "Não Definida"}}</span></li>
-        <li>Nome Científico: <span>{{ tree.cientifico || "Não Definido" }}</span></li>
-        <li>Nome Comum: <span>{{ tree.comum || "Não Definido" }}</span></li>
-        <li>Tipo: <span>{{ tree.tipo || "Não Definido" }}</span></li>
+        <li>Zona: <span>{{tree.zone || "Não Definida"}}</span></li>
+        <li>Nome Científico: <span>{{ tree.cient_name || "Não Definido" }}</span></li>
+        <li>Nome Comum: <span>{{ tree.comon_name || "Não Definido" }}</span></li>
+        <li>Tipo: <span>{{ tree.type || "Não Definido" }}</span></li>
       </ul>
     </div>
     <div class="parametros">
       <div class="subtitle"> Parâmetros Dentrométricos </div>
       <ul>
-        <li>Diâmetro: <span> {{ tree.diametro || "Não Definido" }} </span></li>
-        <li>Altura: <span>{{ tree.altura || "Não Definida" }}</span></li>
-        <li>Diâmetro Copa: <span>{{ tree.diametro_copa || "Não Definida" }}</span></li>
-        <li>Idade Aproximada: <span>{{ tree.idade || "Não Definida" }}</span></li>
-        <li>Ano de Plantação: <span>{{ tree.ano || "Não Definido" }}</span></li>
+        <li>Diâmetro: <span> {{ tree.diameter || " - " }} cm </span></li>
+        <li>Altura: <span>{{ tree.height || " - " }} m </span></li>
+        <li>Diâmetro Copa: <span>{{ tree.diameter_top || " - " }} cm</span></li>
+        <li>Idade: <span>{{ tree.age || "Não Definida" }}</span></li>
+        <li>Ano de Plantação: <span>{{ tree.year || "Não Definido" }}</span></li>
       </ul>
     </div>
     <div class="intervencoes">

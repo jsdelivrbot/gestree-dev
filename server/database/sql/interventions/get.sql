@@ -2,7 +2,19 @@ SELECT i.*,
 ty.value as value_type,
 (SELECT row_to_json(tree) as tree
  FROM ( 
- SELECT a.*
+ SELECT 
+  a.gid as id_tree,
+  a.zona as zone,
+  a.id_zona as zone_id,
+  a.parque as parque,
+  a.n_cient as cient_name,
+  a.n_comum as comon_name,
+  a.f_h as height,
+  a.f_d as diameter,
+  a.f_dc as diameter_top,
+  a.s_tipo_m as type,
+  a.i_ano_p as year,
+  a.s_idd as age
  FROM "gestree".trees a
  WHERE a.gid = i.id_tree AND a.parque = i.parque) tree)
 FROM "gestree"."Interventions" as i
